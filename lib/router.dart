@@ -6,6 +6,10 @@ import 'screens/onboarding_flow.dart';
 import 'screens/home_screen.dart';
 import 'screens/marketplace_screen.dart';
 import 'screens/mirror_hours_screen.dart';
+import 'screens/notif_lock_screen.dart';
+import 'screens/notif_banner_screen.dart';
+import 'screens/notif_modal_screen.dart';
+import 'screens/alchemist_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
@@ -41,6 +45,26 @@ final GoRouter appRouter = GoRouter(
       path: '/mirror-hours',
       builder: (BuildContext context, GoRouterState state) =>
           const MirrorHoursScreen(),
+    ),
+    GoRoute(
+      path: '/notif-lock',
+      builder: (BuildContext context, GoRouterState state) =>
+          const NotifLockScreen(),
+    ),
+    GoRoute(
+      path: '/notif-banner',
+      builder: (BuildContext context, GoRouterState state) =>
+          const NotifBannerScreen(),
+    ),
+    GoRoute(
+      path: '/notif-modal',
+      builder: (BuildContext context, GoRouterState state) =>
+          const NotifModalScreen(),
+    ),
+    GoRoute(
+      path: '/alchemist',
+      builder: (BuildContext context, GoRouterState state) =>
+          const AlchemistScreen(),
     ),
   ],
 );

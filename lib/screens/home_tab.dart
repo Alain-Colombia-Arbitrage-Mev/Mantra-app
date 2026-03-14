@@ -251,7 +251,7 @@ class HomeTab extends StatelessWidget {
                 subtitle: 'Genera tu audio con IA · Voz clonada',
                 icon: LucideIcons.mic,
                 accentColor: AppColors.primary,
-                onTap: () => context.push('/marketplace'),
+                onTap: () => context.push('/alchemist'),
               ),
               const SizedBox(height: 10),
               _ActionCard(
