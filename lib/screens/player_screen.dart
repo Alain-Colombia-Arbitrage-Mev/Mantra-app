@@ -6,6 +6,10 @@ import '../services/audio_service.dart';
 import '../theme.dart';
 import '../widgets/screen_bg.dart';
 
+// Free royalty-free ambient meditation audio from Pixabay.
+const _kDemoAudioUrl =
+    'https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3';
+
 class PlayerScreen extends StatefulWidget {
   const PlayerScreen({super.key});
 
@@ -15,6 +19,27 @@ class PlayerScreen extends StatefulWidget {
 
 class _PlayerScreenState extends State<PlayerScreen> {
   final _audio = MantrasAudioService.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _startPlayback();
+  }
+
+  Future<void> _startPlayback() async {
+    try {
+      await _audio.playUrl(_kDemoAudioUrl);
+    } catch (_) {
+      // Silently ignore network or codec errors — the UI degrades gracefully
+      // because all controls are driven by streams that emit nothing when idle.
+    }
+  }
+
+  @override
+  void dispose() {
+    _audio.stop();
+    super.dispose();
+  }
 
   // Format a Duration to mm:ss string.
   String _fmt(Duration d) {

@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import '../services/audio_service.dart';
 import '../theme.dart';
+
+// Same demo track used by PlayerScreen.
+const _kDemoAudioUrl =
+    'https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3';
 
 class PlayerEnhancedScreen extends StatefulWidget {
   const PlayerEnhancedScreen({super.key});
@@ -12,10 +18,35 @@ class PlayerEnhancedScreen extends StatefulWidget {
 }
 
 class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
-  bool _isPlaying = false;
-  double _progress = 0.35;
+  final _audio = MantrasAudioService.instance;
   bool _isShuffle = false;
   bool _isRepeat = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _startPlayback();
+  }
+
+  Future<void> _startPlayback() async {
+    try {
+      await _audio.playUrl(_kDemoAudioUrl);
+    } catch (_) {
+      // Graceful degradation — streams emit nothing, UI stays interactive.
+    }
+  }
+
+  @override
+  void dispose() {
+    _audio.stop();
+    super.dispose();
+  }
+
+  String _fmt(Duration d) {
+    final m = d.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final s = d.inSeconds.remainder(60).toString().padLeft(2, '0');
+    return '$m:$s';
+  }
 
   static const List<_TrackItem> _tracks = [
     _TrackItem('Lantern Festival', 'Grinta', Color(0xFFDDA0DD)),
@@ -205,145 +236,178 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                           ),
                           const SizedBox(height: 20),
 
-                          // ── Progress bar ────────────────────────────────
-                          GestureDetector(
-                            onHorizontalDragUpdate: (d) {
-                              final box = context.findRenderObject()
-                                  as RenderBox?;
-                              if (box == null) return;
-                              final newVal =
-                                  (_progress + d.delta.dx / box.size.width)
-                                      .clamp(0.0, 1.0);
-                              setState(() => _progress = newVal);
-                            },
-                            child: Column(
-                              children: [
-                                SliderTheme(
-                                  data: SliderTheme.of(context).copyWith(
-                                    trackHeight: 3,
-                                    thumbShape: const RoundSliderThumbShape(
-                                      enabledThumbRadius: 6,
-                                    ),
-                                    activeTrackColor: AppColors.primary,
-                                    inactiveTrackColor: AppColors.white
-                                        .withValues(alpha: 0.15),
-                                    thumbColor: Colors.white,
-                                    overlayColor: AppColors.primary.withValues(
-                                      alpha: 0.2,
-                                    ),
-                                  ),
-                                  child: Slider(
-                                    value: _progress,
-                                    onChanged: (v) =>
-                                        setState(() => _progress = v),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 4,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                          // ── Progress bar (stream-driven) ─────────────────
+                          StreamBuilder<Duration?>(
+                            stream: _audio.durationStream,
+                            builder: (context, durationSnap) {
+                              final duration =
+                                  durationSnap.data ?? Duration.zero;
+                              return StreamBuilder<Duration>(
+                                stream: _audio.positionStream,
+                                builder: (context, posSnap) {
+                                  final position =
+                                      posSnap.data ?? Duration.zero;
+                                  final ratio =
+                                      (duration.inMilliseconds > 0)
+                                          ? (position.inMilliseconds /
+                                                  duration.inMilliseconds)
+                                              .clamp(0.0, 1.0)
+                                          : 0.0;
+                                  return Column(
                                     children: [
-                                      Text(
-                                        '12:30',
-                                        style: GoogleFonts.urbanist(
-                                          fontSize: 12,
-                                          color: AppColors.textTertiary,
+                                      SliderTheme(
+                                        data: SliderTheme.of(context).copyWith(
+                                          trackHeight: 3,
+                                          thumbShape:
+                                              const RoundSliderThumbShape(
+                                            enabledThumbRadius: 6,
+                                          ),
+                                          activeTrackColor: AppColors.primary,
+                                          inactiveTrackColor: AppColors.white
+                                              .withValues(alpha: 0.15),
+                                          thumbColor: Colors.white,
+                                          overlayColor:
+                                              AppColors.primary.withValues(
+                                            alpha: 0.2,
+                                          ),
+                                        ),
+                                        child: Slider(
+                                          value: ratio,
+                                          onChanged: (v) {
+                                            if (duration > Duration.zero) {
+                                              _audio.seek(
+                                                Duration(
+                                                  milliseconds: (duration
+                                                              .inMilliseconds *
+                                                          v)
+                                                      .round(),
+                                                ),
+                                              );
+                                            }
+                                          },
                                         ),
                                       ),
-                                      Text(
-                                        '35:48',
-                                        style: GoogleFonts.urbanist(
-                                          fontSize: 12,
-                                          color: AppColors.textTertiary,
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 4,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              _fmt(position),
+                                              style: GoogleFonts.urbanist(
+                                                fontSize: 12,
+                                                color: AppColors.textTertiary,
+                                              ),
+                                            ),
+                                            Text(
+                                              _fmt(duration),
+                                              style: GoogleFonts.urbanist(
+                                                fontSize: 12,
+                                                color: AppColors.textTertiary,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                                  );
+                                },
+                              );
+                            },
                           ),
                           const SizedBox(height: 16),
 
-                          // ── Controls ─────────────────────────────────────
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              // Shuffle
-                              GestureDetector(
-                                onTap: () =>
-                                    setState(() => _isShuffle = !_isShuffle),
-                                child: Icon(
-                                  LucideIcons.shuffle,
-                                  color: _isShuffle
-                                      ? AppColors.primary
-                                      : AppColors.textMuted,
-                                  size: 22,
-                                ),
-                              ),
-                              // Skip back
-                              GestureDetector(
-                                onTap: () {},
-                                child: const Icon(
-                                  LucideIcons.skipBack,
-                                  color: Colors.white,
-                                  size: 26,
-                                ),
-                              ),
-                              // Play/Pause
-                              GestureDetector(
-                                onTap: () =>
-                                    setState(() => _isPlaying = !_isPlaying),
-                                child: Container(
-                                  width: 66,
-                                  height: 66,
-                                  decoration: BoxDecoration(
-                                    gradient: AppGradients.primaryButton,
-                                    shape: BoxShape.circle,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: AppColors.primary.withValues(
-                                          alpha: 0.5,
-                                        ),
-                                        blurRadius: 24,
-                                        offset: const Offset(0, 8),
+                          // ── Controls (stream-driven play/pause) ───────────
+                          StreamBuilder<PlayerState>(
+                            stream: _audio.playerStateStream,
+                            builder: (context, snap) {
+                              final playing = snap.data?.playing ?? false;
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  // Shuffle
+                                  GestureDetector(
+                                    onTap: () => setState(
+                                        () => _isShuffle = !_isShuffle),
+                                    child: Icon(
+                                      LucideIcons.shuffle,
+                                      color: _isShuffle
+                                          ? AppColors.primary
+                                          : AppColors.textMuted,
+                                      size: 22,
+                                    ),
+                                  ),
+                                  // Skip back
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: const Icon(
+                                      LucideIcons.skipBack,
+                                      color: Colors.white,
+                                      size: 26,
+                                    ),
+                                  ),
+                                  // Play/Pause
+                                  GestureDetector(
+                                    onTap: () {
+                                      if (playing) {
+                                        _audio.pause();
+                                      } else {
+                                        _audio.resume();
+                                      }
+                                    },
+                                    child: Container(
+                                      width: 66,
+                                      height: 66,
+                                      decoration: BoxDecoration(
+                                        gradient: AppGradients.primaryButton,
+                                        shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: AppColors.primary.withValues(
+                                              alpha: 0.5,
+                                            ),
+                                            blurRadius: 24,
+                                            offset: const Offset(0, 8),
+                                          ),
+                                        ],
                                       ),
-                                    ],
+                                      child: Icon(
+                                        playing
+                                            ? LucideIcons.pause
+                                            : LucideIcons.play,
+                                        color: Colors.white,
+                                        size: 28,
+                                      ),
+                                    ),
                                   ),
-                                  child: Icon(
-                                    _isPlaying
-                                        ? LucideIcons.pause
-                                        : LucideIcons.play,
-                                    color: Colors.white,
-                                    size: 28,
+                                  // Skip forward
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: const Icon(
+                                      LucideIcons.skipForward,
+                                      color: Colors.white,
+                                      size: 26,
+                                    ),
                                   ),
-                                ),
-                              ),
-                              // Skip forward
-                              GestureDetector(
-                                onTap: () {},
-                                child: const Icon(
-                                  LucideIcons.skipForward,
-                                  color: Colors.white,
-                                  size: 26,
-                                ),
-                              ),
-                              // Repeat
-                              GestureDetector(
-                                onTap: () =>
-                                    setState(() => _isRepeat = !_isRepeat),
-                                child: Icon(
-                                  LucideIcons.repeat,
-                                  color: _isRepeat
-                                      ? AppColors.primary
-                                      : AppColors.textMuted,
-                                  size: 22,
-                                ),
-                              ),
-                            ],
+                                  // Repeat
+                                  GestureDetector(
+                                    onTap: () =>
+                                        setState(() => _isRepeat = !_isRepeat),
+                                    child: Icon(
+                                      LucideIcons.repeat,
+                                      color: _isRepeat
+                                          ? AppColors.primary
+                                          : AppColors.textMuted,
+                                      size: 22,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
                           ),
                           const SizedBox(height: 28),
 
