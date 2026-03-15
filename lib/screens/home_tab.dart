@@ -105,7 +105,7 @@ class HomeTab extends StatelessWidget {
 
               // ── Session Card ────────────────────────────────────────
               GestureDetector(
-              onTap: () => context.push('/player'),
+              onTap: () => context.push('/daily-ritual'),
               child: Container(
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(

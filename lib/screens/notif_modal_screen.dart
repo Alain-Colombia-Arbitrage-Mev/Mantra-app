@@ -295,7 +295,7 @@ class NotifModalScreen extends StatelessWidget {
                   const SizedBox(height: 24),
                   // Purple CTA
                   GestureDetector(
-                    onTap: () => context.push('/player'),
+                    onTap: () => context.push('/tehilim'),
                     child: Container(
                       width: double.infinity,
                       height: 60,

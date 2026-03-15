@@ -39,18 +39,21 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                 ScreenNav(
                   title: 'Mercado Social · Hecho para ti',
                   showBack: true,
-                  trailing: Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: AppColors.white.withValues(alpha: 0.1),
-                      shape: BoxShape.circle,
-                      border: Border.all(color: AppColors.surfaceBorderLight),
-                    ),
-                    child: const Icon(
-                      LucideIcons.search,
-                      color: Colors.white,
-                      size: 18,
+                  trailing: GestureDetector(
+                    onTap: () => context.push('/search'),
+                    child: Container(
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        color: AppColors.white.withValues(alpha: 0.1),
+                        shape: BoxShape.circle,
+                        border: Border.all(color: AppColors.surfaceBorderLight),
+                      ),
+                      child: const Icon(
+                        LucideIcons.search,
+                        color: Colors.white,
+                        size: 18,
+                      ),
                     ),
                   ),
                 ),

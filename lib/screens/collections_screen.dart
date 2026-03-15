@@ -50,7 +50,7 @@ class CollectionsScreen extends StatelessWidget {
 
                 // ── Featured card ────────────────────────────────────────
                 GestureDetector(
-                  onTap: () => context.push('/player'),
+                  onTap: () => context.push('/playlist-detail'),
                   child: _FeaturedCard(),
                 ),
                 const SizedBox(height: 24),

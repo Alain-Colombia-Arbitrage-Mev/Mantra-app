@@ -37,10 +37,13 @@ class MeditateTab extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  const Icon(
-                    LucideIcons.slidersHorizontal,
-                    color: Color(0xCCFFFFFF),
-                    size: 24,
+                  GestureDetector(
+                    onTap: () => context.push('/search'),
+                    child: const Icon(
+                      LucideIcons.slidersHorizontal,
+                      color: Color(0xCCFFFFFF),
+                      size: 24,
+                    ),
                   ),
                 ],
               ),

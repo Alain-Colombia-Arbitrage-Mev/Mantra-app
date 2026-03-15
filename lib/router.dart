@@ -27,6 +27,19 @@ import 'screens/my_profile_screen.dart';
 import 'screens/new_alarm_screen.dart';
 import 'screens/achievements_screen.dart';
 import 'screens/invite_friends_screen.dart';
+// Screens 43-49
+import 'screens/subscription_screen.dart';
+import 'screens/player_enhanced_screen.dart';
+import 'screens/chakras_screen.dart';
+import 'screens/lunar_rituals_screen.dart';
+import 'screens/manifestation_screen.dart';
+import 'screens/sacred_frequencies_screen.dart';
+// Extra screens
+import 'screens/daily_ritual_screen.dart';
+import 'screens/search_screen.dart';
+import 'screens/playlist_detail_screen.dart';
+import 'screens/gratitude_journal_screen.dart';
+import 'screens/tehilim_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
@@ -104,17 +117,78 @@ final GoRouter appRouter = GoRouter(
       builder: (_, __) => const HealingScreen(),
     ),
     GoRoute(path: '/sessions', builder: (_, __) => const SessionsScreen()),
-    GoRoute(path: '/book-session', builder: (_, __) => const BookSessionScreen()),
-    GoRoute(path: '/sound-library', builder: (_, __) => const SoundLibraryScreen()),
-    GoRoute(path: '/more-collections', builder: (_, __) => const MoreCollectionsScreen()),
+    GoRoute(
+      path: '/book-session',
+      builder: (_, __) => const BookSessionScreen(),
+    ),
+    GoRoute(
+      path: '/sound-library',
+      builder: (_, __) => const SoundLibraryScreen(),
+    ),
+    GoRoute(
+      path: '/more-collections',
+      builder: (_, __) => const MoreCollectionsScreen(),
+    ),
     GoRoute(path: '/agenda', builder: (_, __) => const AgendaScreen()),
     // Settings / profile sub-screens
-    GoRoute(path: '/notifications-settings', builder: (_, __) => const NotificationsSettingsScreen()),
+    GoRoute(
+      path: '/notifications-settings',
+      builder: (_, __) => const NotificationsSettingsScreen(),
+    ),
     GoRoute(path: '/language', builder: (_, __) => const LanguageScreen()),
     GoRoute(path: '/terms', builder: (_, __) => const TermsScreen()),
     GoRoute(path: '/my-profile', builder: (_, __) => const MyProfileScreen()),
     GoRoute(path: '/new-alarm', builder: (_, __) => const NewAlarmScreen()),
-    GoRoute(path: '/achievements', builder: (_, __) => const AchievementsScreen()),
+    GoRoute(
+      path: '/achievements',
+      builder: (_, __) => const AchievementsScreen(),
+    ),
     GoRoute(path: '/invite', builder: (_, __) => const InviteFriendsScreen()),
+    // ── Screens 43-49 ─────────────────────────────────────────────────────
+    GoRoute(
+      path: '/subscription',
+      builder: (_, __) => const SubscriptionScreen(),
+    ),
+    GoRoute(
+      path: '/player-enhanced',
+      builder: (_, __) => const PlayerEnhancedScreen(),
+    ),
+    GoRoute(
+      path: '/chakras',
+      builder: (_, __) => const ChakrasScreen(),
+    ),
+    GoRoute(
+      path: '/lunar-rituals',
+      builder: (_, __) => const LunarRitualsScreen(),
+    ),
+    GoRoute(
+      path: '/manifestation',
+      builder: (_, __) => const ManifestationScreen(),
+    ),
+    GoRoute(
+      path: '/sacred-frequencies',
+      builder: (_, __) => const SacredFrequenciesScreen(),
+    ),
+    // ── Extra UX screens ──────────────────────────────────────────────────
+    GoRoute(
+      path: '/daily-ritual',
+      builder: (_, __) => const DailyRitualScreen(),
+    ),
+    GoRoute(
+      path: '/search',
+      builder: (_, __) => const SearchScreen(),
+    ),
+    GoRoute(
+      path: '/playlist-detail',
+      builder: (_, __) => const PlaylistDetailScreen(),
+    ),
+    GoRoute(
+      path: '/gratitude-journal',
+      builder: (_, __) => const GratitudeJournalScreen(),
+    ),
+    GoRoute(
+      path: '/tehilim',
+      builder: (_, __) => const TehilimScreen(),
+    ),
   ],
 );

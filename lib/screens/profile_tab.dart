@@ -67,7 +67,7 @@ class ProfileTab extends StatelessWidget {
                     iconColor: AppColors.gold,
                     title: 'Plan Pro · Activo',
                     subtitle: 'Renueva el 15 de Marzo 2026',
-                    onTap: () => context.push('/more-collections'),
+                    onTap: () => context.push('/subscription'),
                     trailing: const Icon(
                       LucideIcons.chevronRight,
                       color: AppColors.textTertiary,

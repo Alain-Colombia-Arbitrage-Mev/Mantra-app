@@ -1,7 +1,7 @@
 name: mandala_app
 description: Mantras - Astrology & Wellness App
 publish_to: 'none'
-version: 1.6.0+7
+version: 2.0.0+8
 
 environment:
   sdk: ^3.11.0
