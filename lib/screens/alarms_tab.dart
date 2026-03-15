@@ -233,7 +233,7 @@ class _AlarmsTabState extends State<AlarmsTab> {
 
               // ── CTA ─────────────────────────────────────────────────
               GestureDetector(
-                onTap: () => context.push('/sound-library'),
+                onTap: () => context.push('/new-alarm'),
                 child: Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(vertical: 16),

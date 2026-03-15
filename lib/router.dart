@@ -20,6 +20,13 @@ import 'screens/book_session_screen.dart';
 import 'screens/sound_library_screen.dart';
 import 'screens/more_collections_screen.dart';
 import 'screens/agenda_screen.dart';
+import 'screens/notifications_settings_screen.dart';
+import 'screens/language_screen.dart';
+import 'screens/terms_screen.dart';
+import 'screens/my_profile_screen.dart';
+import 'screens/new_alarm_screen.dart';
+import 'screens/achievements_screen.dart';
+import 'screens/invite_friends_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
@@ -101,5 +108,13 @@ final GoRouter appRouter = GoRouter(
     GoRoute(path: '/sound-library', builder: (_, __) => const SoundLibraryScreen()),
     GoRoute(path: '/more-collections', builder: (_, __) => const MoreCollectionsScreen()),
     GoRoute(path: '/agenda', builder: (_, __) => const AgendaScreen()),
+    // Settings / profile sub-screens
+    GoRoute(path: '/notifications-settings', builder: (_, __) => const NotificationsSettingsScreen()),
+    GoRoute(path: '/language', builder: (_, __) => const LanguageScreen()),
+    GoRoute(path: '/terms', builder: (_, __) => const TermsScreen()),
+    GoRoute(path: '/my-profile', builder: (_, __) => const MyProfileScreen()),
+    GoRoute(path: '/new-alarm', builder: (_, __) => const NewAlarmScreen()),
+    GoRoute(path: '/achievements', builder: (_, __) => const AchievementsScreen()),
+    GoRoute(path: '/invite', builder: (_, __) => const InviteFriendsScreen()),
   ],
 );

@@ -138,19 +138,7 @@ class ProfileTab extends StatelessWidget {
                     iconColor: AppColors.textTertiary,
                     title: 'Ajustes',
                     subtitle: 'Notificaciones, idioma y más',
-                    onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Próximamente',
-                          style: GoogleFonts.urbanist(),
-                        ),
-                        backgroundColor: AppColors.primary,
-                        behavior: SnackBarBehavior.floating,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
+                    onTap: () => context.push('/my-profile'),
                     trailing: const Icon(
                       LucideIcons.chevronRight,
                       color: AppColors.textTertiary,
