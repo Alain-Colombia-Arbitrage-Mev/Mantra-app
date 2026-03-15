@@ -10,6 +10,11 @@ import 'screens/notif_lock_screen.dart';
 import 'screens/notif_banner_screen.dart';
 import 'screens/notif_modal_screen.dart';
 import 'screens/alchemist_screen.dart';
+import 'screens/player_screen.dart';
+import 'screens/collections_screen.dart';
+import 'screens/sleep_screen.dart';
+import 'screens/library_screen.dart';
+import 'screens/healing_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
@@ -65,6 +70,26 @@ final GoRouter appRouter = GoRouter(
       path: '/alchemist',
       builder: (BuildContext context, GoRouterState state) =>
           const AlchemistScreen(),
+    ),
+    GoRoute(
+      path: '/player',
+      builder: (_, __) => const PlayerScreen(),
+    ),
+    GoRoute(
+      path: '/collections',
+      builder: (_, __) => const CollectionsScreen(),
+    ),
+    GoRoute(
+      path: '/sleep',
+      builder: (_, __) => const SleepScreen(),
+    ),
+    GoRoute(
+      path: '/library',
+      builder: (_, __) => const LibraryScreen(),
+    ),
+    GoRoute(
+      path: '/healing',
+      builder: (_, __) => const HealingScreen(),
     ),
   ],
 );
