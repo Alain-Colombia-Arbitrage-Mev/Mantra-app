@@ -41,6 +41,14 @@ import 'screens/search_screen.dart';
 import 'screens/playlist_detail_screen.dart';
 import 'screens/gratitude_journal_screen.dart';
 import 'screens/tehilim_screen.dart';
+// Silva method screens
+import 'screens/silva_hub_screen.dart';
+import 'screens/silva_alfa_screen.dart';
+import 'screens/silva_mirror_screen.dart';
+import 'screens/silva_water_screen.dart';
+import 'screens/silva_fingers_screen.dart';
+import 'screens/silva_lab_screen.dart';
+import 'screens/silva_screen_mental.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
@@ -195,5 +203,19 @@ final GoRouter appRouter = GoRouter(
       path: '/tehilim',
       builder: (_, __) => const TehilimScreen(),
     ),
+    // ── Método Silva ──────────────────────────────────────────────────
+    GoRoute(path: '/silva', builder: (_, __) => const SilvaHubScreen()),
+    GoRoute(path: '/silva/alfa', builder: (_, __) => const SilvaAlfaScreen()),
+    GoRoute(
+        path: '/silva/mirror', builder: (_, __) => const SilvaMirrorScreen()),
+    GoRoute(
+        path: '/silva/water', builder: (_, __) => const SilvaWaterScreen()),
+    GoRoute(
+        path: '/silva/fingers',
+        builder: (_, __) => const SilvaFingersScreen()),
+    GoRoute(path: '/silva/lab', builder: (_, __) => const SilvaLabScreen()),
+    GoRoute(
+        path: '/silva/screen',
+        builder: (_, __) => const SilvaScreenMentalScreen()),
   ],
 );

@@ -65,73 +65,43 @@ class MeditateTab extends StatelessWidget {
 
               // ── Featured card ────────────────────────────────────────
               GestureDetector(
-              onTap: () => context.push('/player'),
-              child: Container(
-                height: 96,
-                decoration: BoxDecoration(
-                  color: const Color(0xCC6C5CE7),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Stack(
-                  children: [
-                    // sparkles icon at (16, 34)
-                    const Positioned(
-                      left: 16,
-                      top: 34,
-                      child: Icon(
-                        LucideIcons.sparkles,
-                        color: Color(0xFFFFEAA7),
-                        size: 28,
-                      ),
-                    ),
-                    // Column of texts at (56, 20)
-                    Positioned(
-                      left: 56,
-                      top: 20,
-                      right: 60,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Activa la Abundancia · Ondas Theta',
-                            style: GoogleFonts.urbanist(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
+                onTap: () => context.push('/player'),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                  decoration: BoxDecoration(
+                    color: const Color(0xCC6C5CE7),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(LucideIcons.sparkles, color: Color(0xFFFFEAA7), size: 28),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Activa la Abundancia · Ondas Theta',
+                              style: GoogleFonts.urbanist(fontSize: 15, fontWeight: FontWeight.w700, color: Colors.white),
                             ),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            '12 min · Theta 4-7Hz · ★4.8 · 2.3k bio-hackers',
-                            style: GoogleFonts.urbanist(
-                              fontSize: 13,
-                              color: const Color(0xCCFFEAA7),
+                            const SizedBox(height: 4),
+                            Text(
+                              '12 min · Theta 4-7Hz · ★4.8 · 2.3k bio-hackers',
+                              style: GoogleFonts.urbanist(fontSize: 13, color: const Color(0xCCFFEAA7)),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    // Play button at (306, 30)
-                    Positioned(
-                      left: 306,
-                      top: 30,
-                      child: Container(
+                      const SizedBox(width: 10),
+                      Container(
                         width: 36,
                         height: 36,
-                        decoration: const BoxDecoration(
-                          color: Color(0x33FFFFFF),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          LucideIcons.play,
-                          color: Colors.white,
-                          size: 18,
-                        ),
+                        decoration: const BoxDecoration(color: Color(0x33FFFFFF), shape: BoxShape.circle),
+                        child: const Icon(LucideIcons.play, color: Colors.white, size: 18),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
               ),
 
               const SizedBox(height: 114), // y:254 - y:140 = 114
@@ -192,7 +162,7 @@ class MeditateTab extends StatelessWidget {
 
               const SizedBox(height: 12),
 
-              // ── Grid Row 2 ───────────────────────────────────────────
+              // ── Grid Row 2 ────────────────────────────────────────────
               Row(
                 children: [
                   Expanded(
@@ -231,6 +201,62 @@ class MeditateTab extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+              const SizedBox(height: 24),
+
+              // ── Método Silva banner ───────────────────────────────────
+              GestureDetector(
+                onTap: () => context.push('/silva'),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 14),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [Color(0xCC008180), Color(0xCC6C5CE7)],
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        LucideIcons.brain,
+                        color: Color(0xFF55EFC4),
+                        size: 24,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Método Silva',
+                              style: GoogleFonts.urbanist(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              '6 técnicas de control mental',
+                              style: GoogleFonts.urbanist(
+                                fontSize: 12,
+                                color: const Color(0xCCFFFFFF),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Icon(
+                        LucideIcons.chevronRight,
+                        color: Colors.white,
+                        size: 18,
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),

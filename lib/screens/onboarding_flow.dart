@@ -26,7 +26,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   }
 
   void _next() {
-    if (_currentPage < 7) {
+    if (_currentPage < 8) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 350),
         curve: Curves.easeInOut,
@@ -54,12 +54,13 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         children: [
           _Page1Welcome(onNext: _next),
           _Page2Objectives(onNext: _next),
-          _Page3Experience(onNext: _next),
-          _Page4WhatsApp(onNext: _next),
-          _Page5Intentions(onNext: _next),
-          _Page6Account(onNext: _next),
-          _Page7Paywall(onNext: _next, onBack: _prev),
-          const _Page8FinalWelcome(),
+          _Page3FuturoYo(onNext: _next),
+          _Page4Experience(onNext: _next),
+          _Page5WhatsApp(onNext: _next),
+          _Page6Intentions(onNext: _next),
+          _Page7Account(onNext: _next),
+          _Page8Paywall(onNext: _next, onBack: _prev),
+          const _Page9FinalWelcome(),
         ],
       ),
     );
@@ -733,17 +734,169 @@ class _Page2ObjectivesState extends State<_Page2Objectives> {
   }
 }
 
-// ─── Page 3 — Experience (09 · Tu Camino) ─────────────────────────────────────
+// ─── Page 3 — Futuro Yo (09 · Tu Visión) ──────────────────────────────────────
 
-class _Page3Experience extends StatefulWidget {
+class _Page3FuturoYo extends StatelessWidget {
   final VoidCallback onNext;
-  const _Page3Experience({required this.onNext});
+  const _Page3FuturoYo({required this.onNext});
 
   @override
-  State<_Page3Experience> createState() => _Page3ExperienceState();
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [AppColors.backgroundStart, AppColors.backgroundEnd],
+        ),
+      ),
+      child: SafeArea(
+        child: Column(
+          children: [
+            // Hero image
+            _HeroImage(
+              assetPath: 'assets/images/quiz_hero.png',
+              height: 240,
+            ),
+
+            // Scrollable content
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Progress bar: 3 colored, 4 gray
+                    _ProgressBar(
+                      segmentColors: [
+                        AppColors.primary,
+                        AppColors.primary,
+                        AppColors.amber,
+                        AppColors.white.withValues(alpha: 0.15),
+                        AppColors.white.withValues(alpha: 0.15),
+                        AppColors.white.withValues(alpha: 0.15),
+                        AppColors.white.withValues(alpha: 0.15),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+
+                    // Step label — gold
+                    Text(
+                      'TU VISIÓN',
+                      style: GoogleFonts.urbanist(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFFF9A826),
+                        letterSpacing: 2,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+
+                    Text(
+                      'Describe tu\nfuturo yo',
+                      style: GoogleFonts.urbanist(
+                        fontSize: 28,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.white,
+                        height: 1.15,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+
+                    Text(
+                      'Cierra los ojos un momento. ¿Cómo te ves\ncuando logres tu transformación?',
+                      style: GoogleFonts.urbanist(
+                        fontSize: 14,
+                        color: AppColors.white.withValues(alpha: 0.55),
+                        height: 1.5,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Text area
+                    Container(
+                      height: 120,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: const Color(0x0AFFFFFF),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: const Color(0x20FFFFFF),
+                          width: 1,
+                        ),
+                      ),
+                      child: TextField(
+                        maxLines: 4,
+                        style: GoogleFonts.urbanist(
+                          fontSize: 14,
+                          color: AppColors.white,
+                          height: 1.5,
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText:
+                              'Me veo en paz, con abundancia, rodeado/a de amor y con un propósito claro cada mañana...',
+                          hintStyle: GoogleFonts.urbanist(
+                            fontSize: 13,
+                            fontStyle: FontStyle.italic,
+                            color: AppColors.white.withValues(alpha: 0.30),
+                            height: 1.5,
+                          ),
+                          isDense: true,
+                          contentPadding: EdgeInsets.zero,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+
+                    // Hint
+                    Center(
+                      child: Text(
+                        'Esto queda entre tú y el universo — nadie más lo verá',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.urbanist(
+                          fontSize: 11,
+                          color: AppColors.white.withValues(alpha: 0.40),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // CTA
+                    _PurpleCta(
+                      label: 'Continuar',
+                      onTap: onNext,
+                      height: 56,
+                      cornerRadius: 16,
+                    ),
+                    const SizedBox(height: 12),
+
+                    Center(
+                      child: _SkipLink(onTap: onNext),
+                    ),
+                    const SizedBox(height: 8),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
-class _Page3ExperienceState extends State<_Page3Experience> {
+// ─── Page 4 — Experience (10 · Tu Camino) ─────────────────────────────────────
+
+class _Page4Experience extends StatefulWidget {
+  final VoidCallback onNext;
+  const _Page4Experience({required this.onNext});
+
+  @override
+  State<_Page4Experience> createState() => _Page4ExperienceState();
+}
+
+class _Page4ExperienceState extends State<_Page4Experience> {
   int _selectedLevel = 0;
   int _selectedTime = 0;
 
@@ -1066,15 +1219,15 @@ class _Page3ExperienceState extends State<_Page3Experience> {
 
 // ─── Page 4 — WhatsApp (10 · Tu Tribu) ────────────────────────────────────────
 
-class _Page4WhatsApp extends StatefulWidget {
+class _Page5WhatsApp extends StatefulWidget {
   final VoidCallback onNext;
-  const _Page4WhatsApp({required this.onNext});
+  const _Page5WhatsApp({required this.onNext});
 
   @override
-  State<_Page4WhatsApp> createState() => _Page4WhatsAppState();
+  State<_Page5WhatsApp> createState() => _Page5WhatsAppState();
 }
 
-class _Page4WhatsAppState extends State<_Page4WhatsApp> {
+class _Page5WhatsAppState extends State<_Page5WhatsApp> {
   bool _useWhatsapp = true;
   final TextEditingController _phoneController = TextEditingController();
 
@@ -1373,15 +1526,15 @@ class _Page4WhatsAppState extends State<_Page4WhatsApp> {
 
 // ─── Page 5 — Intentions (11 · Tu Intención) ──────────────────────────────────
 
-class _Page5Intentions extends StatefulWidget {
+class _Page6Intentions extends StatefulWidget {
   final VoidCallback onNext;
-  const _Page5Intentions({required this.onNext});
+  const _Page6Intentions({required this.onNext});
 
   @override
-  State<_Page5Intentions> createState() => _Page5IntentionsState();
+  State<_Page6Intentions> createState() => _Page6IntentionsState();
 }
 
-class _Page5IntentionsState extends State<_Page5Intentions> {
+class _Page6IntentionsState extends State<_Page6Intentions> {
   int _selected = 2; // "Salud" pre-selected
 
   static const _intentions = [
@@ -1582,15 +1735,15 @@ class _Page5IntentionsState extends State<_Page5Intentions> {
 
 // ─── Page 6 — Account (12 · Tu Espacio) ───────────────────────────────────────
 
-class _Page6Account extends StatefulWidget {
+class _Page7Account extends StatefulWidget {
   final VoidCallback onNext;
-  const _Page6Account({required this.onNext});
+  const _Page7Account({required this.onNext});
 
   @override
-  State<_Page6Account> createState() => _Page6AccountState();
+  State<_Page7Account> createState() => _Page7AccountState();
 }
 
-class _Page6AccountState extends State<_Page6Account> {
+class _Page7AccountState extends State<_Page7Account> {
   bool _termsAccepted = false;
   bool _passwordVisible = false;
 
@@ -1913,17 +2066,17 @@ class _SocialButton extends StatelessWidget {
 
 // ─── Page 7 — Paywall (13 · Invierte en tu transformación) ───────────────────
 
-class _Page7Paywall extends StatefulWidget {
+class _Page8Paywall extends StatefulWidget {
   final VoidCallback onNext;
   final VoidCallback onBack;
 
-  const _Page7Paywall({required this.onNext, required this.onBack});
+  const _Page8Paywall({required this.onNext, required this.onBack});
 
   @override
-  State<_Page7Paywall> createState() => _Page7PaywallState();
+  State<_Page8Paywall> createState() => _Page8PaywallState();
 }
 
-class _Page7PaywallState extends State<_Page7Paywall> {
+class _Page8PaywallState extends State<_Page8Paywall> {
   int _selectedPlan = 0; // 0=Anual, 1=Mensual, 2=Semanal
 
   static const _progressGray = Color(0x26FFFFFF);
@@ -2435,8 +2588,8 @@ class _PlanCard extends StatelessWidget {
 
 // ─── Page 8 — Final Welcome (14 · Bienvenida Final) ──────────────────────────
 
-class _Page8FinalWelcome extends StatelessWidget {
-  const _Page8FinalWelcome();
+class _Page9FinalWelcome extends StatelessWidget {
+  const _Page9FinalWelcome();
 
   @override
   Widget build(BuildContext context) {
