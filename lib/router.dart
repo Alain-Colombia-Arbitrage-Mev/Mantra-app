@@ -15,6 +15,11 @@ import 'screens/collections_screen.dart';
 import 'screens/sleep_screen.dart';
 import 'screens/library_screen.dart';
 import 'screens/healing_screen.dart';
+import 'screens/sessions_screen.dart';
+import 'screens/book_session_screen.dart';
+import 'screens/sound_library_screen.dart';
+import 'screens/more_collections_screen.dart';
+import 'screens/agenda_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
@@ -91,5 +96,10 @@ final GoRouter appRouter = GoRouter(
       path: '/healing',
       builder: (_, __) => const HealingScreen(),
     ),
+    GoRoute(path: '/sessions', builder: (_, __) => const SessionsScreen()),
+    GoRoute(path: '/book-session', builder: (_, __) => const BookSessionScreen()),
+    GoRoute(path: '/sound-library', builder: (_, __) => const SoundLibraryScreen()),
+    GoRoute(path: '/more-collections', builder: (_, __) => const MoreCollectionsScreen()),
+    GoRoute(path: '/agenda', builder: (_, __) => const AgendaScreen()),
   ],
 );
