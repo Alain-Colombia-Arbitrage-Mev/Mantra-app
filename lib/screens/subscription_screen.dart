@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import '../theme.dart';
+import '../services/revenuecat_service.dart';
 
 class SubscriptionScreen extends StatefulWidget {
   const SubscriptionScreen({super.key});
@@ -12,18 +14,162 @@ class SubscriptionScreen extends StatefulWidget {
 }
 
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
-  // 0 = monthly, 1 = annual
-  int _selectedPlan = 1;
-
   static const List<String> _benefits = [
-    '7 Days free trial',
-    'Experience our full library',
-    '300+ soundscapes',
-    '80+ meditations',
-    '20+ sleep sounds',
-    'Mix your own sleep sounds',
-    'No ads, stress free',
+    '7 días de prueba gratis',
+    'Acceso a la librería completa',
+    '300+ paisajes sonoros',
+    '80+ meditaciones guiadas',
+    '20+ sonidos para dormir',
+    'Mezcla tus propios sonidos',
+    'Sin anuncios, sin estrés',
   ];
+
+  Offerings? _offerings;
+  bool _loading = true;
+  String? _error;
+  Package? _selectedPackage;
+  bool _purchasing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadOfferings();
+  }
+
+  Future<void> _loadOfferings() async {
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
+    final offerings = await RevenueCatService.instance.getOfferings();
+    if (!mounted) return;
+    if (offerings == null) {
+      setState(() {
+        _loading = false;
+        _error = 'No se pudieron cargar los planes. Intenta de nuevo.';
+      });
+      return;
+    }
+    final packages = offerings.current?.availablePackages ?? [];
+    // Default selection: prefer annual, then monthly, then first available.
+    Package? defaultPkg;
+    for (final pkg in packages) {
+      if (pkg.packageType == PackageType.annual) {
+        defaultPkg = pkg;
+        break;
+      }
+    }
+    defaultPkg ??= packages.isNotEmpty ? packages.first : null;
+
+    setState(() {
+      _offerings = offerings;
+      _selectedPackage = defaultPkg;
+      _loading = false;
+    });
+  }
+
+  Future<void> _purchase() async {
+    if (_selectedPackage == null || _purchasing) return;
+    setState(() => _purchasing = true);
+    final success =
+        await RevenueCatService.instance.purchasePackage(_selectedPackage!);
+    if (!mounted) return;
+    setState(() => _purchasing = false);
+    if (success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '¡Bienvenido a Plan Pro!',
+            style: GoogleFonts.urbanist(fontWeight: FontWeight.w600),
+          ),
+          backgroundColor: AppColors.primary,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      );
+      if (mounted) context.pop();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Compra no completada.',
+            style: GoogleFonts.urbanist(fontWeight: FontWeight.w600),
+          ),
+          backgroundColor: AppColors.danger,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      );
+    }
+  }
+
+  Future<void> _restore() async {
+    setState(() => _purchasing = true);
+    final success = await RevenueCatService.instance.restorePurchases();
+    if (!mounted) return;
+    setState(() => _purchasing = false);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          success ? 'Compras restauradas exitosamente.' : 'No se encontraron compras anteriores.',
+          style: GoogleFonts.urbanist(fontWeight: FontWeight.w600),
+        ),
+        backgroundColor: success ? AppColors.primary : AppColors.textTertiary,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+    );
+    if (success && mounted) context.pop();
+  }
+
+  Future<void> _showNativePaywall() async {
+    await RevenueCatService.instance.presentPaywall();
+    if (mounted) setState(() {});
+  }
+
+  String _periodLabel(PackageType type) {
+    switch (type) {
+      case PackageType.weekly:
+        return 'Semanal';
+      case PackageType.monthly:
+        return 'Mensual';
+      case PackageType.twoMonth:
+        return '2 Meses';
+      case PackageType.threeMonth:
+        return '3 Meses';
+      case PackageType.sixMonth:
+        return '6 Meses';
+      case PackageType.annual:
+        return 'Anual';
+      case PackageType.lifetime:
+        return 'De por vida';
+      default:
+        return 'Plan';
+    }
+  }
+
+  String? _perWeekNote(Package pkg) {
+    final price = pkg.storeProduct.price;
+    switch (pkg.packageType) {
+      case PackageType.annual:
+        final perWeek = price / 52;
+        return '${pkg.storeProduct.currencyCode} ${perWeek.toStringAsFixed(2)}/sem';
+      case PackageType.monthly:
+        final perWeek = price / 4.33;
+        return '${pkg.storeProduct.currencyCode} ${perWeek.toStringAsFixed(2)}/sem';
+      case PackageType.weekly:
+        return null;
+      default:
+        return null;
+    }
+  }
+
+  bool _isRecommended(Package pkg) =>
+      pkg.packageType == PackageType.annual;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +207,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             SafeArea(
               child: Column(
                 children: [
-                  // ── Header ─────────────────────────────────────────────
+                  // ── Header ───────────────────────────────────────────────
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
                     child: Row(
@@ -122,12 +268,13 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       ],
                     ),
                   ),
+
                   Expanded(
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
                       child: Column(
                         children: [
-                          // ── PRO badge ──────────────────────────────────
+                          // ── PRO badge ────────────────────────────────────
                           Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 20,
@@ -158,7 +305,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                           ),
                           const SizedBox(height: 20),
 
-                          // ── Headline ───────────────────────────────────
+                          // ── Headline ──────────────────────────────────────
                           Text(
                             'Desbloquea la\nexperiencia completa',
                             textAlign: TextAlign.center,
@@ -171,7 +318,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                           ),
                           const SizedBox(height: 28),
 
-                          // ── Benefits list ──────────────────────────────
+                          // ── Benefits list ─────────────────────────────────
                           Container(
                             width: double.infinity,
                             padding: const EdgeInsets.all(20),
@@ -225,180 +372,107 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                           ),
                           const SizedBox(height: 24),
 
-                          // ── Plan cards ─────────────────────────────────
-                          Row(
-                            children: [
-                              // Monthly
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () =>
-                                      setState(() => _selectedPlan = 0),
-                                  child: AnimatedContainer(
-                                    duration: const Duration(milliseconds: 200),
-                                    padding: const EdgeInsets.all(16),
-                                    decoration: BoxDecoration(
-                                      color: _selectedPlan == 0
-                                          ? AppColors.primary.withValues(
-                                              alpha: 0.15,
-                                            )
-                                          : AppColors.white.withValues(
-                                              alpha: 0.05,
-                                            ),
-                                      borderRadius: BorderRadius.circular(16),
-                                      border: Border.all(
-                                        color: _selectedPlan == 0
-                                            ? AppColors.primary
-                                            : AppColors.surfaceBorderLight,
-                                        width: _selectedPlan == 0 ? 2 : 1,
-                                      ),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '\$9.99',
-                                          style: GoogleFonts.urbanist(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.w800,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          '/Monthly',
-                                          style: GoogleFonts.urbanist(
-                                            fontSize: 13,
-                                            color: AppColors.textTertiary,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              // Annual
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () =>
-                                      setState(() => _selectedPlan = 1),
-                                  child: AnimatedContainer(
-                                    duration: const Duration(milliseconds: 200),
-                                    padding: const EdgeInsets.all(16),
-                                    decoration: BoxDecoration(
-                                      color: _selectedPlan == 1
-                                          ? AppColors.primary.withValues(
-                                              alpha: 0.15,
-                                            )
-                                          : AppColors.white.withValues(
-                                              alpha: 0.05,
-                                            ),
-                                      borderRadius: BorderRadius.circular(16),
-                                      border: Border.all(
-                                        color: _selectedPlan == 1
-                                            ? AppColors.primary
-                                            : AppColors.surfaceBorderLight,
-                                        width: _selectedPlan == 1 ? 2 : 1,
-                                      ),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              '\$79.00',
-                                              style: GoogleFonts.urbanist(
-                                                fontSize: 22,
-                                                fontWeight: FontWeight.w800,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          '/Annual',
-                                          style: GoogleFonts.urbanist(
-                                            fontSize: 13,
-                                            color: AppColors.textTertiary,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 8,
-                                            vertical: 3,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            gradient: AppGradients.primaryButton,
-                                            borderRadius:
-                                                BorderRadius.circular(50),
-                                          ),
-                                          child: Text(
-                                            'Recomendado',
-                                            style: GoogleFonts.urbanist(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                          // ── Plan cards (loading / error / packages) ───────
+                          _buildPackagesSection(),
                           const SizedBox(height: 28),
 
-                          // ── CTA ────────────────────────────────────────
+                          // ── CTA ───────────────────────────────────────────
                           GestureDetector(
-                            onTap: () {},
-                            child: Container(
+                            onTap: _purchasing ? null : _purchase,
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 150),
                               width: double.infinity,
                               height: 58,
                               decoration: BoxDecoration(
-                                gradient: AppGradients.primaryButton,
+                                gradient: _purchasing || _selectedPackage == null
+                                    ? null
+                                    : AppGradients.primaryButton,
+                                color: _purchasing || _selectedPackage == null
+                                    ? AppColors.white.withValues(alpha: 0.12)
+                                    : null,
                                 borderRadius: BorderRadius.circular(16),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppColors.primary.withValues(
-                                      alpha: 0.45,
-                                    ),
-                                    blurRadius: 24,
-                                    offset: const Offset(0, 8),
-                                  ),
-                                ],
+                                boxShadow: _purchasing || _selectedPackage == null
+                                    ? null
+                                    : [
+                                        BoxShadow(
+                                          color: AppColors.primary.withValues(
+                                            alpha: 0.45,
+                                          ),
+                                          blurRadius: 24,
+                                          offset: const Offset(0, 8),
+                                        ),
+                                      ],
                               ),
                               child: Center(
-                                child: Text(
-                                  'Start with free trial',
-                                  style: GoogleFonts.urbanist(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                                child: _purchasing
+                                    ? const SizedBox(
+                                        width: 22,
+                                        height: 22,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2.5,
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                    : Text(
+                                        'Comenzar prueba gratis',
+                                        style: GoogleFonts.urbanist(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                               ),
                             ),
                           ),
                           const SizedBox(height: 16),
 
-                          // ── Legal ──────────────────────────────────────
+                          // ── Restore purchases ─────────────────────────────
                           GestureDetector(
-                            onTap: () => context.push('/terms'),
+                            onTap: _purchasing ? null : _restore,
                             child: Text(
-                              'Privacy Policy & Terms of use',
+                              'Restaurar compras',
                               style: GoogleFonts.urbanist(
-                                fontSize: 12,
-                                color: AppColors.white.withValues(alpha: 0.5),
+                                fontSize: 13,
+                                color: AppColors.white.withValues(alpha: 0.55),
                                 decoration: TextDecoration.underline,
                                 decorationColor: AppColors.white.withValues(
                                   alpha: 0.3,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+
+                          // ── Native paywall link ───────────────────────────
+                          GestureDetector(
+                            onTap: _showNativePaywall,
+                            child: Text(
+                              'Ver paywall nativo',
+                              style: GoogleFonts.urbanist(
+                                fontSize: 13,
+                                color: AppColors.primaryLight.withValues(
+                                  alpha: 0.7,
+                                ),
+                                decoration: TextDecoration.underline,
+                                decorationColor: AppColors.primaryLight.withValues(
+                                  alpha: 0.4,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+
+                          // ── Legal ─────────────────────────────────────────
+                          GestureDetector(
+                            onTap: () => context.push('/terms'),
+                            child: Text(
+                              'Política de privacidad y Términos de uso',
+                              style: GoogleFonts.urbanist(
+                                fontSize: 12,
+                                color: AppColors.white.withValues(alpha: 0.4),
+                                decoration: TextDecoration.underline,
+                                decorationColor: AppColors.white.withValues(
+                                  alpha: 0.25,
                                 ),
                               ),
                             ),
@@ -408,6 +482,209 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     ),
                   ),
                 ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPackagesSection() {
+    if (_loading) {
+      return Container(
+        height: 100,
+        alignment: Alignment.center,
+        child: const CircularProgressIndicator(
+          color: AppColors.primary,
+          strokeWidth: 2.5,
+        ),
+      );
+    }
+
+    if (_error != null) {
+      return Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: AppColors.danger.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColors.danger.withValues(alpha: 0.25)),
+        ),
+        child: Column(
+          children: [
+            Text(
+              _error!,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.urbanist(
+                fontSize: 14,
+                color: AppColors.danger,
+              ),
+            ),
+            const SizedBox(height: 12),
+            GestureDetector(
+              onTap: _loadOfferings,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 9),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(50),
+                  border: Border.all(
+                    color: AppColors.primary.withValues(alpha: 0.4),
+                  ),
+                ),
+                child: Text(
+                  'Reintentar',
+                  style: GoogleFonts.urbanist(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primaryLight,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    final packages = _offerings?.current?.availablePackages ?? [];
+    if (packages.isEmpty) {
+      return Text(
+        'No hay planes disponibles en este momento.',
+        textAlign: TextAlign.center,
+        style: GoogleFonts.urbanist(
+          fontSize: 14,
+          color: AppColors.textTertiary,
+        ),
+      );
+    }
+
+    return Column(
+      children: packages.map((pkg) => _PackageCard(
+        package: pkg,
+        isSelected: _selectedPackage?.identifier == pkg.identifier,
+        isRecommended: _isRecommended(pkg),
+        periodLabel: _periodLabel(pkg.packageType),
+        perWeekNote: _perWeekNote(pkg),
+        onTap: () => setState(() => _selectedPackage = pkg),
+      )).toList(),
+    );
+  }
+}
+
+class _PackageCard extends StatelessWidget {
+  final Package package;
+  final bool isSelected;
+  final bool isRecommended;
+  final String periodLabel;
+  final String? perWeekNote;
+  final VoidCallback onTap;
+
+  const _PackageCard({
+    required this.package,
+    required this.isSelected,
+    required this.isRecommended,
+    required this.periodLabel,
+    required this.perWeekNote,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? AppColors.primary.withValues(alpha: 0.15)
+              : AppColors.white.withValues(alpha: 0.05),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isSelected ? AppColors.primary : AppColors.surfaceBorderLight,
+            width: isSelected ? 2 : 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            // Selection indicator
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              width: 20,
+              height: 20,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isSelected ? AppColors.primary : Colors.transparent,
+                border: Border.all(
+                  color: isSelected
+                      ? AppColors.primary
+                      : AppColors.textTertiary,
+                  width: 2,
+                ),
+              ),
+              child: isSelected
+                  ? const Icon(Icons.check, color: Colors.white, size: 12)
+                  : null,
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        periodLabel,
+                        style: GoogleFonts.urbanist(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
+                      if (isRecommended) ...[
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            gradient: AppGradients.primaryButton,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Text(
+                            'Recomendado',
+                            style: GoogleFonts.urbanist(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                  if (perWeekNote != null) ...[
+                    const SizedBox(height: 2),
+                    Text(
+                      perWeekNote!,
+                      style: GoogleFonts.urbanist(
+                        fontSize: 12,
+                        color: AppColors.textTertiary,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            Text(
+              package.storeProduct.priceString,
+              style: GoogleFonts.urbanist(
+                fontSize: 20,
+                fontWeight: FontWeight.w800,
+                color: isSelected ? AppColors.primaryLight : Colors.white,
               ),
             ),
           ],

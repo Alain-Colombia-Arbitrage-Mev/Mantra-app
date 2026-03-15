@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
 import '../widgets/screen_bg.dart';
+import '../services/revenuecat_service.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({super.key});
@@ -50,7 +51,9 @@ class ProfileTab extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Text(
-                'Plan Pro · 🔥 47 días de racha',
+                RevenueCatService.instance.isPro
+                    ? 'Plan Pro · 🔥 47 días de racha'
+                    : 'Plan Gratuito · 🔥 47 días de racha',
                 style: GoogleFonts.urbanist(
                   fontSize: 14,
                   color: const Color(0xCCFFFFFF),
@@ -65,9 +68,13 @@ class ProfileTab extends StatelessWidget {
                   _SettingsRow(
                     icon: LucideIcons.crown,
                     iconColor: AppColors.gold,
-                    title: 'Plan Pro · Activo',
-                    subtitle: 'Renueva el 15 de Marzo 2026',
-                    onTap: () => context.push('/subscription'),
+                    title: RevenueCatService.instance.isPro
+                        ? 'Plan Pro · Activo'
+                        : 'Plan Gratuito',
+                    subtitle: RevenueCatService.instance.isPro
+                        ? 'Gestionar tu suscripción'
+                        : 'Actualizar a Pro',
+                    onTap: () => context.push('/customer-center'),
                     trailing: const Icon(
                       LucideIcons.chevronRight,
                       color: AppColors.textTertiary,
@@ -124,8 +131,10 @@ class ProfileTab extends StatelessWidget {
                     icon: LucideIcons.creditCard,
                     iconColor: AppColors.chakra,
                     title: 'Suscripción',
-                    subtitle: 'Gestionar tu plan Pro',
-                    onTap: () => context.push('/more-collections'),
+                    subtitle: RevenueCatService.instance.isPro
+                        ? 'Gestionar tu plan Pro'
+                        : 'Actualizar a Pro',
+                    onTap: () => context.push('/customer-center'),
                     trailing: const Icon(
                       LucideIcons.chevronRight,
                       color: AppColors.textTertiary,

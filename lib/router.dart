@@ -29,6 +29,7 @@ import 'screens/achievements_screen.dart';
 import 'screens/invite_friends_screen.dart';
 // Screens 43-49
 import 'screens/subscription_screen.dart';
+import 'screens/customer_center_screen.dart';
 import 'screens/player_enhanced_screen.dart';
 import 'screens/chakras_screen.dart';
 import 'screens/lunar_rituals_screen.dart';
@@ -148,6 +149,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/subscription',
       builder: (_, __) => const SubscriptionScreen(),
+    ),
+    GoRoute(
+      path: '/customer-center',
+      builder: (_, __) => const CustomerCenterScreen(),
     ),
     GoRoute(
       path: '/player-enhanced',

@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
 import '../widgets/screen_bg.dart';
+import '../services/revenuecat_service.dart';
 
 class MyProfileScreen extends StatelessWidget {
   const MyProfileScreen({super.key});
@@ -98,7 +99,9 @@ class MyProfileScreen extends StatelessWidget {
                     ],
                   ),
                   child: Text(
-                    'Plan Pro · Activo',
+                    RevenueCatService.instance.isPro
+                        ? 'Plan Pro · Activo'
+                        : 'Plan Gratuito',
                     style: GoogleFonts.urbanist(
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
@@ -148,26 +151,32 @@ class MyProfileScreen extends StatelessWidget {
                     _ProfileRow(
                       icon: LucideIcons.crown,
                       iconColor: AppColors.primary,
-                      title: 'Suscripción · Pro',
+                      title: RevenueCatService.instance.isPro
+                          ? 'Suscripción · Pro'
+                          : 'Suscripción · Gratis',
                       trailingExtra: Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8,
                           vertical: 3,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.mint.withValues(alpha: 0.2),
+                          color: RevenueCatService.instance.isPro
+                              ? AppColors.mint.withValues(alpha: 0.2)
+                              : AppColors.textMuted.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          'Activo',
+                          RevenueCatService.instance.isPro ? 'Activo' : 'Gratis',
                           style: GoogleFonts.urbanist(
                             fontSize: 11,
                             fontWeight: FontWeight.w700,
-                            color: AppColors.mint,
+                            color: RevenueCatService.instance.isPro
+                                ? AppColors.mint
+                                : AppColors.textTertiary,
                           ),
                         ),
                       ),
-                      onTap: () => context.push('/more-collections'),
+                      onTap: () => context.push('/customer-center'),
                     ),
                     const _RowDivider(),
                     _ProfileRow(
