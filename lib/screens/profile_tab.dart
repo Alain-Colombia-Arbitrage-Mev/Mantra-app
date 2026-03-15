@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
@@ -66,6 +67,7 @@ class ProfileTab extends StatelessWidget {
                     iconColor: AppColors.gold,
                     title: 'Plan Pro · Activo',
                     subtitle: 'Renueva el 15 de Marzo 2026',
+                    onTap: () => context.push('/more-collections'),
                     trailing: const Icon(
                       LucideIcons.chevronRight,
                       color: AppColors.textTertiary,
@@ -85,6 +87,19 @@ class ProfileTab extends StatelessWidget {
                     iconColor: AppColors.mint,
                     title: 'WhatsApp',
                     subtitle: 'Conectado · +52 555 123 4567',
+                    onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Próximamente',
+                          style: GoogleFonts.urbanist(),
+                        ),
+                        backgroundColor: AppColors.primary,
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
                     trailing: const Icon(
                       LucideIcons.chevronRight,
                       color: AppColors.textTertiary,
@@ -97,6 +112,7 @@ class ProfileTab extends StatelessWidget {
                     iconColor: AppColors.primary,
                     title: 'Mi Voz Clonada',
                     subtitle: 'Entrenando · 82% calidad',
+                    onTap: () => context.push('/alchemist'),
                     trailing: const Icon(
                       LucideIcons.chevronRight,
                       color: AppColors.textTertiary,
@@ -109,6 +125,7 @@ class ProfileTab extends StatelessWidget {
                     iconColor: AppColors.chakra,
                     title: 'Suscripción',
                     subtitle: 'Gestionar tu plan Pro',
+                    onTap: () => context.push('/more-collections'),
                     trailing: const Icon(
                       LucideIcons.chevronRight,
                       color: AppColors.textTertiary,
@@ -121,6 +138,19 @@ class ProfileTab extends StatelessWidget {
                     iconColor: AppColors.textTertiary,
                     title: 'Ajustes',
                     subtitle: 'Notificaciones, idioma y más',
+                    onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Próximamente',
+                          style: GoogleFonts.urbanist(),
+                        ),
+                        backgroundColor: AppColors.primary,
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
                     trailing: const Icon(
                       LucideIcons.chevronRight,
                       color: AppColors.textTertiary,
@@ -133,7 +163,7 @@ class ProfileTab extends StatelessWidget {
 
               // ── Sign out ─────────────────────────────────────────────
               GestureDetector(
-                onTap: () {},
+                onTap: () => context.go('/'),
                 child: Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -205,6 +235,7 @@ class _SettingsRow extends StatelessWidget {
   final String title;
   final String subtitle;
   final Widget trailing;
+  final VoidCallback? onTap;
 
   const _SettingsRow({
     required this.icon,
@@ -212,11 +243,14 @@ class _SettingsRow extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.trailing,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       child: Row(
         children: [
@@ -254,6 +288,7 @@ class _SettingsRow extends StatelessWidget {
           ),
           trailing,
         ],
+      ),
       ),
     );
   }

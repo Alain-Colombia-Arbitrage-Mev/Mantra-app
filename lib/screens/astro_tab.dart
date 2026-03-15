@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
@@ -170,7 +171,53 @@ class AstroTab extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 138), // y:278 - y:140 = 138
+              const SizedBox(height: 16),
+
+              // ── Mirror Hours quick link ──────────────────────────────
+              GestureDetector(
+                onTap: () => context.push('/mirror-hours'),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0x1AA29BFE),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: const Color(0x44A29BFE),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        LucideIcons.moon,
+                        color: Color(0xFFA29BFE),
+                        size: 18,
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          'Horas Espejo · Próxima: 11:11',
+                          style: GoogleFonts.urbanist(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      const Icon(
+                        LucideIcons.chevronRight,
+                        color: Color(0xFFA29BFE),
+                        size: 18,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 90),
 
               // ── Codes label ──────────────────────────────────────────
               Text(

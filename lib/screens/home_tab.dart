@@ -58,18 +58,21 @@ class HomeTab extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: AppColors.white.withValues(alpha: 0.08),
-                      shape: BoxShape.circle,
-                      border: Border.all(color: AppColors.surfaceBorderLight),
-                    ),
-                    child: const Icon(
-                      LucideIcons.timer,
-                      color: Colors.white,
-                      size: 18,
+                  GestureDetector(
+                    onTap: () => context.push('/mirror-hours'),
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: AppColors.white.withValues(alpha: 0.08),
+                        shape: BoxShape.circle,
+                        border: Border.all(color: AppColors.surfaceBorderLight),
+                      ),
+                      child: const Icon(
+                        LucideIcons.timer,
+                        color: Colors.white,
+                        size: 18,
+                      ),
                     ),
                   ),
                 ],
@@ -102,7 +105,7 @@ class HomeTab extends StatelessWidget {
 
               // ── Session Card ────────────────────────────────────────
               GestureDetector(
-              onTap: () => context.push('/mirror-hours'),
+              onTap: () => context.push('/player'),
               child: Container(
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
@@ -170,71 +173,77 @@ class HomeTab extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: GlassCard(
-                      padding: const EdgeInsets.all(14),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 36,
-                            height: 36,
-                            decoration: BoxDecoration(
-                              color: AppColors.lunar.withValues(alpha: 0.2),
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              LucideIcons.brain,
-                              color: AppColors.lunar,
-                              size: 18,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              '12.5h en\nondas Theta',
-                              style: GoogleFonts.urbanist(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                                height: 1.3,
+                    child: GestureDetector(
+                      onTap: () => context.push('/sleep'),
+                      child: GlassCard(
+                        padding: const EdgeInsets.all(14),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 36,
+                              height: 36,
+                              decoration: BoxDecoration(
+                                color: AppColors.lunar.withValues(alpha: 0.2),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                LucideIcons.brain,
+                                color: AppColors.lunar,
+                                size: 18,
                               ),
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                '12.5h en\nondas Theta',
+                                style: GoogleFonts.urbanist(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  height: 1.3,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: GlassCard(
-                      padding: const EdgeInsets.all(14),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 36,
-                            height: 36,
-                            decoration: BoxDecoration(
-                              color: AppColors.amber.withValues(alpha: 0.2),
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              LucideIcons.zap,
-                              color: AppColors.amber,
-                              size: 18,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              '47 días de\nracha activa',
-                              style: GoogleFonts.urbanist(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                                height: 1.3,
+                    child: GestureDetector(
+                      onTap: () => context.push('/agenda'),
+                      child: GlassCard(
+                        padding: const EdgeInsets.all(14),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 36,
+                              height: 36,
+                              decoration: BoxDecoration(
+                                color: AppColors.amber.withValues(alpha: 0.2),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                LucideIcons.zap,
+                                color: AppColors.amber,
+                                size: 18,
                               ),
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                '47 días de\nracha activa',
+                                style: GoogleFonts.urbanist(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  height: 1.3,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

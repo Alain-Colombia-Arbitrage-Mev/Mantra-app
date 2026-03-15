@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
@@ -242,7 +243,7 @@ class _FrequencyCard extends StatelessWidget {
           ),
           // Play button
           GestureDetector(
-            onTap: () {},
+            onTap: () => context.push('/player'),
             child: Container(
               width: 36,
               height: 36,
@@ -310,7 +311,7 @@ class _NatureCardWidget extends StatelessWidget {
           ),
           const SizedBox(width: 12),
           GestureDetector(
-            onTap: () {},
+            onTap: () => context.push('/player'),
             child: Container(
               width: 32,
               height: 32,

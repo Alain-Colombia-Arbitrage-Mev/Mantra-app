@@ -4,6 +4,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
 import '../widgets/screen_bg.dart';
 
+
 class AlchemistScreen extends StatefulWidget {
   const AlchemistScreen({super.key});
 
@@ -506,7 +507,19 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
 
                 // ── CTA ──────────────────────────────────────────────────
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Grabación próximamente',
+                        style: GoogleFonts.urbanist(),
+                      ),
+                      backgroundColor: AppColors.primary,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
                   child: Container(
                     width: double.infinity,
                     height: 54,
@@ -541,11 +554,18 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                 const SizedBox(height: 16),
                 // Save for later
                 Center(
-                  child: Text(
-                    'Guardar para después',
-                    style: GoogleFonts.urbanist(
-                      fontSize: 13,
-                      color: Colors.white.withValues(alpha: 0.66),
+                  child: GestureDetector(
+                    onTap: () {
+                      if (Navigator.of(context).canPop()) {
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    child: Text(
+                      'Guardar para después',
+                      style: GoogleFonts.urbanist(
+                        fontSize: 13,
+                        color: Colors.white.withValues(alpha: 0.66),
+                      ),
                     ),
                   ),
                 ),

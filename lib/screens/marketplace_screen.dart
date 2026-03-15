@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
@@ -56,7 +57,9 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                 const SizedBox(height: 24),
 
                 // ── Featured banner ────────────────────────────────────
-                Container(
+                GestureDetector(
+                onTap: () => context.push('/alchemist'),
+                child: Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -145,6 +148,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                     ],
                   ),
                 ),
+                ),
                 const SizedBox(height: 20),
 
                 // ── Category chips ─────────────────────────────────────
@@ -195,7 +199,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                 const SectionLabel('LO MÁS TRANSFORMADOR DEL MERCADO'),
                 const SizedBox(height: 14),
 
-                const _ProductCard(
+                _ProductCard(
                   title: 'Reprograma tu ADN · 528 Hz',
                   price: '\$4.99',
                   meta: '20 min · Solfeggio · ★4.9',
@@ -204,7 +208,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                   accentColor: AppColors.primary,
                 ),
                 const SizedBox(height: 12),
-                const _ProductCard(
+                _ProductCard(
                   title: 'Sana a tu niño interior',
                   price: '\$6.99',
                   meta: '45 min · Theta · ★4.7',
@@ -213,7 +217,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                   accentColor: AppColors.chakra,
                 ),
                 const SizedBox(height: 12),
-                const _ProductCard(
+                _ProductCard(
                   title: 'Activa tu Merkaba · 963 Hz',
                   price: '\$9.99',
                   meta: '20 min · Gamma · ★5.0',
@@ -249,7 +253,9 @@ class _ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      onTap: () => context.push('/player'),
+      child: Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.surfaceLight,
@@ -343,6 +349,7 @@ class _ProductCard extends StatelessWidget {
           ),
         ],
       ),
+    ),
     );
   }
 }

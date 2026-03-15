@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
@@ -364,7 +365,7 @@ class _BookSessionScreenState extends State<BookSessionScreen> {
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(16),
-                      onTap: () {},
+                      onTap: () => context.push('/agenda'),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

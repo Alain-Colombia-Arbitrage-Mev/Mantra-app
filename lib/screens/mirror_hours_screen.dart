@@ -4,6 +4,17 @@ import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
 import '../widgets/screen_bg.dart';
 
+void _showProximamente(BuildContext context) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text('Próximamente', style: GoogleFonts.urbanist()),
+      backgroundColor: AppColors.primary,
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    ),
+  );
+}
+
 class MirrorHoursScreen extends StatefulWidget {
   const MirrorHoursScreen({super.key});
 
@@ -163,7 +174,7 @@ class _MirrorHoursScreenState extends State<MirrorHoursScreen> {
 
                 // ── CTA ───────────────────────────────────────────────
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () => _showProximamente(context),
                   child: Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 16),

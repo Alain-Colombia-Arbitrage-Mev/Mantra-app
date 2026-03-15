@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
@@ -133,17 +134,20 @@ class _AlarmsTabState extends State<AlarmsTab> {
                           ),
                         ),
                         const SizedBox(height: 6),
-                        Container(
-                          width: 32,
-                          height: 32,
-                          decoration: BoxDecoration(
-                            color: AppColors.white.withValues(alpha: 0.1),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            LucideIcons.play,
-                            color: Colors.white,
-                            size: 14,
+                        GestureDetector(
+                          onTap: () => context.push('/player'),
+                          child: Container(
+                            width: 32,
+                            height: 32,
+                            decoration: BoxDecoration(
+                              color: AppColors.white.withValues(alpha: 0.1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              LucideIcons.play,
+                              color: Colors.white,
+                              size: 14,
+                            ),
                           ),
                         ),
                       ],
@@ -229,7 +233,7 @@ class _AlarmsTabState extends State<AlarmsTab> {
 
               // ── CTA ─────────────────────────────────────────────────
               GestureDetector(
-                onTap: () {},
+                onTap: () => context.push('/sound-library'),
                 child: Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(vertical: 16),

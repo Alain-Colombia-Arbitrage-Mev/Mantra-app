@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
@@ -48,7 +49,10 @@ class CollectionsScreen extends StatelessWidget {
                 const SizedBox(height: 14),
 
                 // ── Featured card ────────────────────────────────────────
-                _FeaturedCard(),
+                GestureDetector(
+                  onTap: () => context.push('/player'),
+                  child: _FeaturedCard(),
+                ),
                 const SizedBox(height: 24),
 
                 // ── Track list ───────────────────────────────────────────
@@ -199,7 +203,9 @@ class _TrackItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      onTap: () => context.push('/player'),
+      child: Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: isPlaying
@@ -253,6 +259,7 @@ class _TrackItem extends StatelessWidget {
           Icon(actionIcon, color: actionColor, size: 30),
         ],
       ),
+    ),
     );
   }
 }

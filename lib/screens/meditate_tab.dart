@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../widgets/screen_bg.dart';
@@ -60,7 +61,9 @@ class MeditateTab extends StatelessWidget {
               const SizedBox(height: 22), // y:140 - y:118 = 22
 
               // ── Featured card ────────────────────────────────────────
-              Container(
+              GestureDetector(
+              onTap: () => context.push('/player'),
+              child: Container(
                 height: 96,
                 decoration: BoxDecoration(
                   color: const Color(0xCC6C5CE7),
@@ -125,6 +128,7 @@ class MeditateTab extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
               ),
 
               const SizedBox(height: 114), // y:254 - y:140 = 114
@@ -254,7 +258,9 @@ class _MeditateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      onTap: () => context.push('/player'),
+      child: Container(
       height: 120,
       decoration: BoxDecoration(
         color: fill,
@@ -315,6 +321,7 @@ class _MeditateCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
       ),
     );
   }

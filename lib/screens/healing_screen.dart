@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
@@ -159,6 +160,8 @@ class _HealingScreenState extends State<HealingScreen> {
 
                 // ── Green CTA ────────────────────────────────────────────
                 Center(
+                  child: GestureDetector(
+                  onTap: () => context.push('/player'),
                   child: Container(
                     width: 280,
                     height: 56,
@@ -192,6 +195,7 @@ class _HealingScreenState extends State<HealingScreen> {
                         ),
                       ],
                     ),
+                  ),
                   ),
                 ),
                 const SizedBox(height: 24),
