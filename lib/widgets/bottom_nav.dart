@@ -25,7 +25,7 @@ class BottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Responsive.h(70),
+      height: Responsive.isCompact ? Responsive.h(58) : Responsive.h(70),
       decoration: BoxDecoration(
         color: const Color(0xE60A0A1A),
         border: Border(

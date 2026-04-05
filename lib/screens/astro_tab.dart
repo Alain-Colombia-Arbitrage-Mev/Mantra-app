@@ -258,7 +258,7 @@ class AstroTab extends StatelessWidget {
                 ],
               ),
 
-              SizedBox(height: Responsive.h(98)),
+              SizedBox(height: Responsive.h(28)),
 
               // ── Schedule label ───────────────────────────────────────
               Text(
