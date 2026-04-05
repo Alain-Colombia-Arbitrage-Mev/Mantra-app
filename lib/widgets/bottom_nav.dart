@@ -24,8 +24,11 @@ class BottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final systemBottomPadding = MediaQuery.viewPaddingOf(context).bottom;
+    final navContentHeight = Responsive.isCompact ? Responsive.h(58) : Responsive.h(70);
+
     return Container(
-      height: Responsive.isCompact ? Responsive.h(58) : Responsive.h(70),
+      height: navContentHeight + systemBottomPadding,
       decoration: BoxDecoration(
         color: const Color(0xE60A0A1A),
         border: Border(
@@ -34,47 +37,50 @@ class BottomNav extends StatelessWidget {
           ),
         ),
       ),
-      child: Row(
-        children: List.generate(_tabs.length, (i) {
-          final isActive = i == currentIndex;
-          final tab = _tabs[i];
-          return Expanded(
-            child: GestureDetector(
-              onTap: () => onTap(i),
-              behavior: HitTestBehavior.opaque,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    tab.$1,
-                    color: isActive
-                        ? AppColors.primary
-                        : AppColors.white.withValues(alpha: 0.5),
-                    size: Responsive.w(22),
-                  ),
-                  SizedBox(height: Responsive.h(4)),
-                  if (isActive)
-                    Container(
-                      width: Responsive.w(6),
-                      height: Responsive.w(6),
-                      decoration: const BoxDecoration(
-                        color: AppColors.primary,
-                        shape: BoxShape.circle,
-                      ),
-                    )
-                  else
-                    Text(
-                      tab.$2,
-                      style: GoogleFonts.urbanist(
-                        fontSize: Responsive.sp(10),
-                        color: AppColors.white.withValues(alpha: 0.4),
-                      ),
+      child: Padding(
+        padding: EdgeInsets.only(bottom: systemBottomPadding),
+        child: Row(
+          children: List.generate(_tabs.length, (i) {
+            final isActive = i == currentIndex;
+            final tab = _tabs[i];
+            return Expanded(
+              child: GestureDetector(
+                onTap: () => onTap(i),
+                behavior: HitTestBehavior.opaque,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      tab.$1,
+                      color: isActive
+                          ? AppColors.primary
+                          : AppColors.white.withValues(alpha: 0.5),
+                      size: Responsive.w(22),
                     ),
-                ],
+                    SizedBox(height: Responsive.h(4)),
+                    if (isActive)
+                      Container(
+                        width: Responsive.w(6),
+                        height: Responsive.w(6),
+                        decoration: const BoxDecoration(
+                          color: AppColors.primary,
+                          shape: BoxShape.circle,
+                        ),
+                      )
+                    else
+                      Text(
+                        tab.$2,
+                        style: GoogleFonts.urbanist(
+                          fontSize: Responsive.sp(10),
+                          color: AppColors.white.withValues(alpha: 0.4),
+                        ),
+                      ),
+                  ],
+                ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       ),
     );
   }

@@ -19,6 +19,7 @@ class Responsive {
   static late double _scaleFactor;
   static late double _verticalScale;
   static late double _textScale;
+  static late double _systemBottomPadding;
   static late _DeviceBucket _bucket;
   static bool _initialized = false;
 
@@ -29,6 +30,7 @@ class Responsive {
     final size = MediaQuery.sizeOf(context);
     _screenWidth = size.width;
     _screenHeight = size.height;
+    _systemBottomPadding = MediaQuery.viewPaddingOf(context).bottom;
     _bucket = _classifyDevice(_screenWidth, _screenHeight);
 
     final rawW = _screenWidth / _designWidth;
@@ -105,17 +107,22 @@ class Responsive {
   /// Horizontal padding that adapts to screen width.
   static double get pagePadding => w(20);
 
-  /// Bottom padding to clear the BottomNav.
+  /// System navigation bar height (gesture bar, soft keys, etc.).
+  static double get systemBottomInset => _systemBottomPadding;
+
+  /// Bottom padding to clear the BottomNav + system navigation bar.
   static double get bottomNavPadding {
+    double navHeight;
     switch (_bucket) {
       case _DeviceBucket.compact:
-        return h(65);
+        navHeight = h(58);
       case _DeviceBucket.standard:
-        return h(75);
+        navHeight = h(70);
       case _DeviceBucket.large:
       case _DeviceBucket.extraLarge:
-        return h(80);
+        navHeight = h(70);
     }
+    return navHeight + _systemBottomPadding + h(8);
   }
 
   /// Scale factor itself for rare manual use.
