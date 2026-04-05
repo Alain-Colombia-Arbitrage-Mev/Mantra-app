@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
+import '../utils/responsive.dart';
 
 class PlaylistDetailScreen extends StatelessWidget {
   const PlaylistDetailScreen({super.key});
@@ -18,6 +19,7 @@ class PlaylistDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: const Color(0xFF0C0A20),
       body: Container(
@@ -33,7 +35,7 @@ class PlaylistDetailScreen extends StatelessWidget {
             children: [
               // ── Back header ──────────────────────────────────────────
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                padding: EdgeInsets.fromLTRB(Responsive.w(20), Responsive.h(16), Responsive.w(20), 0),
                 child: Row(
                   children: [
                     GestureDetector(
@@ -43,8 +45,8 @@ class PlaylistDetailScreen extends StatelessWidget {
                         }
                       },
                       child: Container(
-                        width: 36,
-                        height: 36,
+                        width: Responsive.w(36),
+                        height: Responsive.w(36),
                         decoration: BoxDecoration(
                           color: AppColors.white.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
@@ -52,10 +54,10 @@ class PlaylistDetailScreen extends StatelessWidget {
                             color: AppColors.surfaceBorderLight,
                           ),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           LucideIcons.chevronLeft,
                           color: Colors.white,
-                          size: 18,
+                          size: Responsive.w(18),
                         ),
                       ),
                     ),
@@ -64,24 +66,24 @@ class PlaylistDetailScreen extends StatelessWidget {
                         'Colección',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.urbanist(
-                          fontSize: 17,
+                          fontSize: Responsive.sp(17),
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                         ),
                       ),
                     ),
                     Container(
-                      width: 36,
-                      height: 36,
+                      width: Responsive.w(36),
+                      height: Responsive.w(36),
                       decoration: BoxDecoration(
                         color: AppColors.white.withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                         border: Border.all(color: AppColors.surfaceBorderLight),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         LucideIcons.moreHorizontal,
                         color: Colors.white,
-                        size: 18,
+                        size: Responsive.w(18),
                       ),
                     ),
                   ],
@@ -89,20 +91,20 @@ class PlaylistDetailScreen extends StatelessWidget {
               ),
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
+                  padding: EdgeInsets.fromLTRB(Responsive.w(20), Responsive.h(24), Responsive.w(20), Responsive.h(32)),
                   child: Column(
                     children: [
                       // ── Cover image ────────────────────────────────────
                       Container(
-                        width: 280,
-                        height: 280,
+                        width: Responsive.w(280),
+                        height: Responsive.w(280),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
                               color: AppColors.primary.withValues(alpha: 0.35),
-                              blurRadius: 40,
-                              offset: const Offset(0, 16),
+                              blurRadius: Responsive.w(40),
+                              offset: Offset(0, Responsive.h(16)),
                             ),
                           ],
                         ),
@@ -133,66 +135,66 @@ class PlaylistDetailScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: Responsive.h(20)),
 
                       // ── Playlist info ──────────────────────────────────
                       Text(
                         'Activaciones Theta',
                         style: GoogleFonts.urbanist(
-                          fontSize: 24,
+                          fontSize: Responsive.sp(24),
                           fontWeight: FontWeight.w800,
                           color: Colors.white,
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: Responsive.h(8)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
                             LucideIcons.music,
                             color: AppColors.textMuted,
-                            size: 14,
+                            size: Responsive.w(14),
                           ),
-                          const SizedBox(width: 6),
+                          SizedBox(width: Responsive.w(6)),
                           Text(
                             '6 pistas',
                             style: GoogleFonts.urbanist(
-                              fontSize: 13,
+                              fontSize: Responsive.sp(13),
                               color: AppColors.textTertiary,
                             ),
                           ),
-                          const SizedBox(width: 16),
+                          SizedBox(width: Responsive.w(16)),
                           Icon(
                             LucideIcons.clock,
                             color: AppColors.textMuted,
-                            size: 14,
+                            size: Responsive.w(14),
                           ),
-                          const SizedBox(width: 6),
+                          SizedBox(width: Responsive.w(6)),
                           Text(
                             '1h 26min',
                             style: GoogleFonts.urbanist(
-                              fontSize: 13,
+                              fontSize: Responsive.sp(13),
                               color: AppColors.textTertiary,
                             ),
                           ),
-                          const SizedBox(width: 16),
+                          SizedBox(width: Responsive.w(16)),
                           Icon(
                             LucideIcons.user,
                             color: AppColors.textMuted,
-                            size: 14,
+                            size: Responsive.w(14),
                           ),
-                          const SizedBox(width: 6),
+                          SizedBox(width: Responsive.w(6)),
                           Text(
                             'Mantras App',
                             style: GoogleFonts.urbanist(
-                              fontSize: 13,
+                              fontSize: Responsive.sp(13),
                               color: AppColors.textTertiary,
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: Responsive.h(20)),
 
                       // ── Action buttons ─────────────────────────────────
                       Row(
@@ -201,7 +203,7 @@ class PlaylistDetailScreen extends StatelessWidget {
                             child: GestureDetector(
                               onTap: () => context.push('/player-enhanced'),
                               child: Container(
-                                height: 48,
+                                height: Responsive.h(48),
                                 decoration: BoxDecoration(
                                   gradient: AppGradients.primaryButton,
                                   borderRadius: BorderRadius.circular(12),
@@ -210,24 +212,24 @@ class PlaylistDetailScreen extends StatelessWidget {
                                       color: AppColors.primary.withValues(
                                         alpha: 0.4,
                                       ),
-                                      blurRadius: 16,
-                                      offset: const Offset(0, 6),
+                                      blurRadius: Responsive.w(16),
+                                      offset: Offset(0, Responsive.h(6)),
                                     ),
                                   ],
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       LucideIcons.play,
                                       color: Colors.white,
-                                      size: 18,
+                                      size: Responsive.w(18),
                                     ),
-                                    const SizedBox(width: 8),
+                                    SizedBox(width: Responsive.w(8)),
                                     Text(
                                       'Reproducir todo',
                                       style: GoogleFonts.urbanist(
-                                        fontSize: 14,
+                                        fontSize: Responsive.sp(14),
                                         fontWeight: FontWeight.w700,
                                         color: Colors.white,
                                       ),
@@ -237,10 +239,10 @@ class PlaylistDetailScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: Responsive.w(12)),
                           Container(
-                            width: 48,
-                            height: 48,
+                            width: Responsive.w(48),
+                            height: Responsive.h(48),
                             decoration: BoxDecoration(
                               color: AppColors.white.withValues(alpha: 0.08),
                               borderRadius: BorderRadius.circular(12),
@@ -248,15 +250,15 @@ class PlaylistDetailScreen extends StatelessWidget {
                                 color: AppColors.surfaceBorderLight,
                               ),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               LucideIcons.shuffle,
                               color: Colors.white,
-                              size: 18,
+                              size: Responsive.w(18),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 24),
+                      SizedBox(height: Responsive.h(24)),
 
                       // ── Track list ─────────────────────────────────────
                       ...List.generate(_tracks.length, (i) {
@@ -264,11 +266,11 @@ class PlaylistDetailScreen extends StatelessWidget {
                         return GestureDetector(
                           onTap: () => context.push('/player-enhanced'),
                           child: Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
+                            padding: EdgeInsets.only(bottom: Responsive.h(8)),
                             child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 14,
-                                vertical: 12,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: Responsive.w(14),
+                                vertical: Responsive.h(12),
                               ),
                               decoration: BoxDecoration(
                                 color: AppColors.white.withValues(alpha: 0.05),
@@ -280,20 +282,20 @@ class PlaylistDetailScreen extends StatelessWidget {
                               child: Row(
                                 children: [
                                   SizedBox(
-                                    width: 24,
+                                    width: Responsive.w(24),
                                     child: Text(
                                       '${t.number}',
                                       style: GoogleFonts.urbanist(
-                                        fontSize: 13,
+                                        fontSize: Responsive.sp(13),
                                         color: AppColors.textMuted,
                                       ),
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
-                                  const SizedBox(width: 10),
+                                  SizedBox(width: Responsive.w(10)),
                                   Container(
-                                    width: 38,
-                                    height: 38,
+                                    width: Responsive.w(38),
+                                    height: Responsive.w(38),
                                     decoration: BoxDecoration(
                                       color: t.color.withValues(alpha: 0.2),
                                       borderRadius: BorderRadius.circular(10),
@@ -301,10 +303,10 @@ class PlaylistDetailScreen extends StatelessWidget {
                                     child: Icon(
                                       LucideIcons.music,
                                       color: t.color,
-                                      size: 16,
+                                      size: Responsive.w(16),
                                     ),
                                   ),
-                                  const SizedBox(width: 12),
+                                  SizedBox(width: Responsive.w(12)),
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
@@ -313,7 +315,7 @@ class PlaylistDetailScreen extends StatelessWidget {
                                         Text(
                                           t.title,
                                           style: GoogleFonts.urbanist(
-                                            fontSize: 13,
+                                            fontSize: Responsive.sp(13),
                                             fontWeight: FontWeight.w600,
                                             color: Colors.white,
                                           ),
@@ -321,7 +323,7 @@ class PlaylistDetailScreen extends StatelessWidget {
                                         Text(
                                           t.meta,
                                           style: GoogleFonts.urbanist(
-                                            fontSize: 11,
+                                            fontSize: Responsive.sp(11),
                                             color: AppColors.textTertiary,
                                           ),
                                         ),
@@ -331,7 +333,7 @@ class PlaylistDetailScreen extends StatelessWidget {
                                   Icon(
                                     LucideIcons.moreHorizontal,
                                     color: AppColors.textMuted,
-                                    size: 16,
+                                    size: Responsive.w(16),
                                   ),
                                 ],
                               ),

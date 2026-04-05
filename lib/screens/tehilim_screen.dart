@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
 import '../widgets/screen_bg.dart';
+import '../utils/responsive.dart';
 
 class TehilimScreen extends StatefulWidget {
   const TehilimScreen({super.key});
@@ -54,15 +55,17 @@ class _TehilimScreenState extends State<TehilimScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundEnd,
       body: ScreenBg(
         child: SafeArea(
           child: Column(
             children: [
-              // ── Header ──────────────────────────────────────────────
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                padding: EdgeInsets.fromLTRB(
+                  Responsive.w(20), Responsive.h(20), Responsive.w(20), 0,
+                ),
                 child: Row(
                   children: [
                     GestureDetector(
@@ -72,8 +75,8 @@ class _TehilimScreenState extends State<TehilimScreen> {
                         }
                       },
                       child: Container(
-                        width: 36,
-                        height: 36,
+                        width: Responsive.w(36),
+                        height: Responsive.w(36),
                         decoration: BoxDecoration(
                           color: AppColors.white.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
@@ -81,10 +84,10 @@ class _TehilimScreenState extends State<TehilimScreen> {
                             color: AppColors.surfaceBorderLight,
                           ),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           LucideIcons.chevronLeft,
                           color: Colors.white,
-                          size: 18,
+                          size: Responsive.w(18),
                         ),
                       ),
                     ),
@@ -93,7 +96,7 @@ class _TehilimScreenState extends State<TehilimScreen> {
                         'Tehilim 27',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.urbanist(
-                          fontSize: 17,
+                          fontSize: Responsive.sp(17),
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                         ),
@@ -102,8 +105,8 @@ class _TehilimScreenState extends State<TehilimScreen> {
                     GestureDetector(
                       onTap: () {},
                       child: Container(
-                        width: 36,
-                        height: 36,
+                        width: Responsive.w(36),
+                        height: Responsive.w(36),
                         decoration: BoxDecoration(
                           color: AppColors.white.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
@@ -111,10 +114,10 @@ class _TehilimScreenState extends State<TehilimScreen> {
                             color: AppColors.surfaceBorderLight,
                           ),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           LucideIcons.bookmark,
                           color: Colors.white,
-                          size: 17,
+                          size: Responsive.w(17),
                         ),
                       ),
                     ),
@@ -123,13 +126,14 @@ class _TehilimScreenState extends State<TehilimScreen> {
               ),
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
+                  padding: EdgeInsets.fromLTRB(
+                    Responsive.w(20), Responsive.h(24), Responsive.w(20), Responsive.h(32),
+                  ),
                   child: Column(
                     children: [
-                      // ── Daily verse highlight ─────────────────────────
                       Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.all(20),
+                        padding: EdgeInsets.all(Responsive.w(20)),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topLeft,
@@ -139,7 +143,7 @@ class _TehilimScreenState extends State<TehilimScreen> {
                               AppColors.primary.withValues(alpha: 0.08),
                             ],
                           ),
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(Responsive.w(20)),
                           border: Border.all(
                             color: AppColors.gold.withValues(alpha: 0.3),
                           ),
@@ -152,13 +156,13 @@ class _TehilimScreenState extends State<TehilimScreen> {
                                 Icon(
                                   LucideIcons.star,
                                   color: AppColors.gold,
-                                  size: 14,
+                                  size: Responsive.w(14),
                                 ),
-                                const SizedBox(width: 8),
+                                SizedBox(width: Responsive.w(8)),
                                 Text(
                                   'VERSO DEL DÍA',
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 10,
+                                    fontSize: Responsive.sp(10),
                                     fontWeight: FontWeight.w700,
                                     letterSpacing: 2.0,
                                     color: AppColors.gold,
@@ -166,12 +170,11 @@ class _TehilimScreenState extends State<TehilimScreen> {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 14),
-                            // Hebrew
+                            SizedBox(height: Responsive.h(14)),
                             Text(
                               _hebrewText,
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: Responsive.sp(18),
                                 color: Colors.white,
                                 height: 2.0,
                                 fontFamily: 'serif',
@@ -179,17 +182,16 @@ class _TehilimScreenState extends State<TehilimScreen> {
                               textAlign: TextAlign.center,
                               textDirection: TextDirection.rtl,
                             ),
-                            const SizedBox(height: 12),
+                            SizedBox(height: Responsive.h(12)),
                             Container(
                               height: 1,
                               color: AppColors.white.withValues(alpha: 0.1),
                             ),
-                            const SizedBox(height: 12),
-                            // Spanish
+                            SizedBox(height: Responsive.h(12)),
                             Text(
                               _spanishText,
                               style: GoogleFonts.urbanist(
-                                fontSize: 14,
+                                fontSize: Responsive.sp(14),
                                 color: AppColors.textTertiary,
                                 height: 1.6,
                                 fontStyle: FontStyle.italic,
@@ -199,14 +201,12 @@ class _TehilimScreenState extends State<TehilimScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 20),
-
-                      // ── Audio player ──────────────────────────────────
+                      SizedBox(height: Responsive.h(20)),
                       Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: EdgeInsets.all(Responsive.w(16)),
                         decoration: BoxDecoration(
                           color: AppColors.white.withValues(alpha: 0.05),
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(Responsive.w(16)),
                           border: Border.all(color: AppColors.surfaceBorderLight),
                         ),
                         child: Row(
@@ -215,8 +215,8 @@ class _TehilimScreenState extends State<TehilimScreen> {
                               onTap: () =>
                                   setState(() => _isPlaying = !_isPlaying),
                               child: Container(
-                                width: 50,
-                                height: 50,
+                                width: Responsive.w(50),
+                                height: Responsive.w(50),
                                 decoration: BoxDecoration(
                                   gradient: AppGradients.goldButton,
                                   shape: BoxShape.circle,
@@ -225,8 +225,8 @@ class _TehilimScreenState extends State<TehilimScreen> {
                                       color: AppColors.gold.withValues(
                                         alpha: 0.4,
                                       ),
-                                      blurRadius: 16,
-                                      offset: const Offset(0, 4),
+                                      blurRadius: Responsive.w(16),
+                                      offset: Offset(0, Responsive.h(4)),
                                     ),
                                   ],
                                 ),
@@ -235,11 +235,11 @@ class _TehilimScreenState extends State<TehilimScreen> {
                                       ? LucideIcons.pause
                                       : LucideIcons.play,
                                   color: const Color(0xFF1A0A00),
-                                  size: 22,
+                                  size: Responsive.w(22),
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 14),
+                            SizedBox(width: Responsive.w(14)),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,20 +247,20 @@ class _TehilimScreenState extends State<TehilimScreen> {
                                   Text(
                                     'Recitación de Tehilim 27',
                                     style: GoogleFonts.urbanist(
-                                      fontSize: 13,
+                                      fontSize: Responsive.sp(13),
                                       fontWeight: FontWeight.w600,
                                       color: Colors.white,
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
+                                  SizedBox(height: Responsive.h(4)),
                                   Text(
                                     'Maestro David · 4:32',
                                     style: GoogleFonts.urbanist(
-                                      fontSize: 12,
+                                      fontSize: Responsive.sp(12),
                                       color: AppColors.textTertiary,
                                     ),
                                   ),
-                                  const SizedBox(height: 8),
+                                  SizedBox(height: Responsive.h(8)),
                                   LinearProgressIndicator(
                                     value: 0.3,
                                     backgroundColor: AppColors.white.withValues(
@@ -269,7 +269,7 @@ class _TehilimScreenState extends State<TehilimScreen> {
                                     valueColor: AlwaysStoppedAnimation<Color>(
                                       AppColors.gold,
                                     ),
-                                    borderRadius: BorderRadius.circular(2),
+                                    borderRadius: BorderRadius.circular(Responsive.w(2)),
                                   ),
                                 ],
                               ),
@@ -277,35 +277,31 @@ class _TehilimScreenState extends State<TehilimScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 20),
-
-                      // ── Verse list ────────────────────────────────────
+                      SizedBox(height: Responsive.h(20)),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
                           'VERSOS',
                           style: GoogleFonts.urbanist(
-                            fontSize: 11,
+                            fontSize: Responsive.sp(11),
                             fontWeight: FontWeight.w700,
                             letterSpacing: 2.0,
                             color: AppColors.textTertiary,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: Responsive.h(12)),
                       ..._verses.map((v) => _VerseCard(verse: v)),
-                      const SizedBox(height: 20),
-
-                      // ── Expandable meaning ────────────────────────────
+                      SizedBox(height: Responsive.h(20)),
                       GestureDetector(
                         onTap: () => setState(
                           () => _isMeaningExpanded = !_isMeaningExpanded,
                         ),
                         child: Container(
-                          padding: const EdgeInsets.all(16),
+                          padding: EdgeInsets.all(Responsive.w(16)),
                           decoration: BoxDecoration(
                             color: AppColors.primary.withValues(alpha: 0.08),
-                            borderRadius: BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(Responsive.w(14)),
                             border: Border.all(
                               color: AppColors.primary.withValues(alpha: 0.25),
                             ),
@@ -317,14 +313,14 @@ class _TehilimScreenState extends State<TehilimScreen> {
                                   Icon(
                                     LucideIcons.bookOpen,
                                     color: AppColors.primaryLight,
-                                    size: 18,
+                                    size: Responsive.w(18),
                                   ),
-                                  const SizedBox(width: 10),
+                                  SizedBox(width: Responsive.w(10)),
                                   Expanded(
                                     child: Text(
                                       'Significado espiritual',
                                       style: GoogleFonts.urbanist(
-                                        fontSize: 14,
+                                        fontSize: Responsive.sp(14),
                                         fontWeight: FontWeight.w700,
                                         color: Colors.white,
                                       ),
@@ -337,7 +333,7 @@ class _TehilimScreenState extends State<TehilimScreen> {
                                     child: Icon(
                                       LucideIcons.chevronDown,
                                       color: AppColors.textMuted,
-                                      size: 18,
+                                      size: Responsive.w(18),
                                     ),
                                   ),
                                 ],
@@ -347,11 +343,11 @@ class _TehilimScreenState extends State<TehilimScreen> {
                                 curve: Curves.easeInOut,
                                 child: _isMeaningExpanded
                                     ? Padding(
-                                        padding: const EdgeInsets.only(top: 12),
+                                        padding: EdgeInsets.only(top: Responsive.h(12)),
                                         child: Text(
                                           _meaning,
                                           style: GoogleFonts.urbanist(
-                                            fontSize: 13,
+                                            fontSize: Responsive.sp(13),
                                             color: AppColors.textTertiary,
                                             height: 1.6,
                                           ),
@@ -363,22 +359,20 @@ class _TehilimScreenState extends State<TehilimScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
-
-                      // ── CTA ──────────────────────────────────────────
+                      SizedBox(height: Responsive.h(20)),
                       GestureDetector(
                         onTap: () => context.push('/sessions'),
                         child: Container(
                           width: double.infinity,
-                          height: 54,
+                          height: Responsive.h(54),
                           decoration: BoxDecoration(
                             gradient: AppGradients.primaryButton,
-                            borderRadius: BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(Responsive.w(14)),
                             boxShadow: [
                               BoxShadow(
                                 color: AppColors.primary.withValues(alpha: 0.4),
-                                blurRadius: 18,
-                                offset: const Offset(0, 6),
+                                blurRadius: Responsive.w(18),
+                                offset: Offset(0, Responsive.h(6)),
                               ),
                             ],
                           ),
@@ -386,7 +380,7 @@ class _TehilimScreenState extends State<TehilimScreen> {
                             child: Text(
                               'Reservar sesión de Tehilim',
                               style: GoogleFonts.urbanist(
-                                fontSize: 15,
+                                fontSize: Responsive.sp(15),
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white,
                               ),
@@ -422,12 +416,12 @@ class _VerseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.only(bottom: Responsive.h(8)),
       child: Container(
-        padding: const EdgeInsets.all(14),
+        padding: EdgeInsets.all(Responsive.w(14)),
         decoration: BoxDecoration(
           color: AppColors.white.withValues(alpha: 0.04),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(Responsive.w(12)),
           border: Border.all(color: AppColors.surfaceBorderLight),
         ),
         child: Column(
@@ -436,26 +430,26 @@ class _VerseCard extends StatelessWidget {
             Text(
               verse.ref,
               style: GoogleFonts.urbanist(
-                fontSize: 11,
+                fontSize: Responsive.sp(11),
                 fontWeight: FontWeight.w700,
                 color: AppColors.gold,
               ),
             ),
-            const SizedBox(height: 6),
+            SizedBox(height: Responsive.h(6)),
             Text(
               verse.hebrew,
-              style: const TextStyle(
-                fontSize: 15,
+              style: TextStyle(
+                fontSize: Responsive.sp(15),
                 color: Colors.white,
                 height: 1.8,
               ),
               textDirection: TextDirection.rtl,
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: Responsive.h(4)),
             Text(
               verse.spanish,
               style: GoogleFonts.urbanist(
-                fontSize: 13,
+                fontSize: Responsive.sp(13),
                 color: AppColors.textTertiary,
                 fontStyle: FontStyle.italic,
               ),

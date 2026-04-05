@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 import '../theme.dart';
+import '../utils/responsive.dart';
 
 // ─── Entry point ──────────────────────────────────────────────────────────────
 
@@ -45,6 +46,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundStart,
       body: PageView(
@@ -69,7 +71,6 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
 
 // ─── Shared helper widgets ─────────────────────────────────────────────────────
 
-/// A row of N progress bar segments with per-segment color configuration.
 class _ProgressBar extends StatelessWidget {
   final List<Color> segmentColors;
 
@@ -81,8 +82,8 @@ class _ProgressBar extends StatelessWidget {
       children: List.generate(segmentColors.length, (i) {
         return Expanded(
           child: Container(
-            margin: EdgeInsets.only(right: i < segmentColors.length - 1 ? 6 : 0),
-            height: 4,
+            margin: EdgeInsets.only(right: i < segmentColors.length - 1 ? Responsive.w(6) : 0),
+            height: Responsive.h(4),
             decoration: BoxDecoration(
               color: segmentColors[i],
               borderRadius: BorderRadius.circular(2),
@@ -94,13 +95,10 @@ class _ProgressBar extends StatelessWidget {
   }
 }
 
-/// Animated page-indicator dots with per-dot color configuration.
 class _ProgressDots extends StatelessWidget {
-  final int activeDot; // 0-based index
+  final int activeDot;
   final int total;
   final Color activeColor;
-
-  /// Optional override colors indexed by position (null → use default inactive color)
   final Map<int, Color>? dotColors;
 
   const _ProgressDots({
@@ -119,9 +117,9 @@ class _ProgressDots extends StatelessWidget {
         final color = dotColors?[i] ?? AppColors.white.withValues(alpha: 0.18);
         return AnimatedContainer(
           duration: const Duration(milliseconds: 250),
-          margin: const EdgeInsets.symmetric(horizontal: 4),
-          width: isActive ? 24 : 8,
-          height: 8,
+          margin: EdgeInsets.symmetric(horizontal: Responsive.w(4)),
+          width: isActive ? Responsive.w(24) : Responsive.w(8),
+          height: Responsive.h(8),
           decoration: BoxDecoration(
             color: isActive ? activeColor : color,
             borderRadius: BorderRadius.circular(4),
@@ -132,23 +130,30 @@ class _ProgressDots extends StatelessWidget {
   }
 }
 
-/// Hero image with a gradient overlay fading to the background color.
 class _HeroImage extends StatelessWidget {
   final String assetPath;
   final double height;
+  /// Fraction of screen height to cap the hero (0.0–1.0). Defaults to 0.30.
+  final double maxFraction;
 
-  const _HeroImage({required this.assetPath, required this.height});
+  const _HeroImage({
+    required this.assetPath,
+    required this.height,
+    this.maxFraction = 0.30,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final screenH = MediaQuery.sizeOf(context).height;
+    final effectiveH = height.clamp(0.0, screenH * maxFraction);
+
     return SizedBox(
-      height: height,
+      height: effectiveH,
       width: double.infinity,
       child: Stack(
         fit: StackFit.expand,
         children: [
           Image.asset(assetPath, fit: BoxFit.cover),
-          // Gradient overlay: transparent at top, solid background at 85%
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -165,7 +170,6 @@ class _HeroImage extends StatelessWidget {
   }
 }
 
-/// Standard "Continuar" CTA with purple gradient + arrow.
 class _PurpleCta extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
@@ -187,14 +191,13 @@ class _PurpleCta extends StatelessWidget {
       textColor: AppColors.white,
       shadowColor: AppColors.primary.withValues(alpha: 0.45),
       icon: LucideIcons.arrowRight,
-      height: height,
+      height: Responsive.h(height),
       cornerRadius: cornerRadius,
       onTap: onTap,
     );
   }
 }
 
-/// Reusable gradient button with haptic + press animation.
 class _GradientButton extends StatefulWidget {
   final String label;
   final LinearGradient gradient;
@@ -259,14 +262,14 @@ class _GradientButtonState extends State<_GradientButton> {
               Text(
                 widget.label,
                 style: GoogleFonts.urbanist(
-                  fontSize: 18,
+                  fontSize: Responsive.sp(18),
                   fontWeight: FontWeight.w700,
                   color: widget.textColor,
                 ),
               ),
               if (widget.icon != null) ...[
-                const SizedBox(width: 10),
-                Icon(widget.icon, color: widget.textColor, size: 20),
+                SizedBox(width: Responsive.w(10)),
+                Icon(widget.icon, color: widget.textColor, size: Responsive.w(20)),
               ],
             ],
           ),
@@ -276,7 +279,6 @@ class _GradientButtonState extends State<_GradientButton> {
   }
 }
 
-/// "Omitir por ahora" skip link.
 class _SkipLink extends StatelessWidget {
   final VoidCallback onTap;
   final String label;
@@ -291,7 +293,7 @@ class _SkipLink extends StatelessWidget {
         label,
         textAlign: TextAlign.center,
         style: GoogleFonts.urbanist(
-          fontSize: 12,
+          fontSize: Responsive.sp(12),
           color: AppColors.white.withValues(alpha: 0.40),
         ),
       ),
@@ -307,7 +309,8 @@ class _Page1Welcome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.sizeOf(context).height;
+    final screenH = MediaQuery.sizeOf(context).height;
+    final heroH = screenH * 0.38;
 
     return Container(
       decoration: const BoxDecoration(
@@ -317,180 +320,163 @@ class _Page1Welcome extends StatelessWidget {
           colors: [AppColors.backgroundStart, AppColors.backgroundEnd],
         ),
       ),
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          // ── Hero image (top 42%) ──
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            height: h * 0.42,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Positioned.fill(
-                  child: Image.asset('assets/images/onboarding_hero.png', fit: BoxFit.cover),
-                ),
-                Positioned.fill(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        stops: [0.0, 0.7, 1.0],
-                        colors: [Color(0x000F0A2A), Color(0x800F0A2A), Color(0xFF0F0A2A)],
-                      ),
-                    ),
-                  ),
-                ),
-                // Purple glow behind logo
-                Container(
-                  width: 300,
-                  height: 300,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: RadialGradient(
-                      colors: [AppColors.primary.withValues(alpha: 0.30), Colors.transparent],
-                    ),
-                  ),
-                ),
-                // Rings
-                _WelcomeRing(diameter: 260, color: const Color(0x15A29BFE), strokeWidth: 1.5),
-                _WelcomeRing(diameter: 200, color: const Color(0x20A29BFE), strokeWidth: 1.0),
-                _WelcomeRing(diameter: 150, color: const Color(0x30A29BFE), strokeWidth: 1.0),
-                // Logo
-                Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.primary.withValues(alpha: 0.50),
-                        blurRadius: 40,
-                        spreadRadius: 3,
-                      ),
-                    ],
-                  ),
-                  child: ClipOval(
-                    child: Image.asset('assets/images/logomantra.png', fit: BoxFit.cover),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // ── Content (bottom area) ──
-          Positioned(
-            left: 24,
-            right: 24,
-            bottom: 0,
-            top: h * 0.36,
-            child: Column(
-              children: [
-                // MANTRAS tagline
-                Text(
-                  'MANTRAS',
-                  style: GoogleFonts.urbanist(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.white,
-                    letterSpacing: 6,
-                  ),
-                ),
-                const SizedBox(height: 10),
-
-                // Title
-                Text(
-                  'Personas como tú\nya están aquí',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.urbanist(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.white,
-                    height: 1.15,
-                  ),
-                ),
-                const SizedBox(height: 8),
-
-                // Subtitle
-                Text(
-                  'No es una app más. Es un movimiento.\nÚnete a quienes eligieron transformarse.',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.urbanist(
-                    fontSize: 14,
-                    color: const Color(0xA0FFFFFF),
-                    height: 1.5,
-                  ),
-                ),
-                const SizedBox(height: 12),
-
-                // Rating badge
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+      child: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: heroH,
+                child: Stack(
+                  alignment: Alignment.center,
                   children: [
-                    Text(
-                      '4.9 stars  ',
-                      style: GoogleFonts.urbanist(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.white,
+                    Positioned.fill(
+                      child: Image.asset('assets/images/onboarding_hero.png', fit: BoxFit.cover),
+                    ),
+                    Positioned.fill(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            stops: [0.0, 0.7, 1.0],
+                            colors: [Color(0x000F0A2A), Color(0x800F0A2A), Color(0xFF0F0A2A)],
+                          ),
+                        ),
                       ),
                     ),
-                    ...List.generate(5, (_) => const Text('★', style: TextStyle(color: AppColors.gold, fontSize: 14))),
-                    Text(
-                      '  1,000+ reviews',
-                      style: GoogleFonts.urbanist(
-                        fontSize: 12,
-                        color: AppColors.white.withValues(alpha: 0.55),
+                    Container(
+                      width: Responsive.w(300),
+                      height: Responsive.w(300),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: RadialGradient(
+                          colors: [AppColors.primary.withValues(alpha: 0.30), Colors.transparent],
+                        ),
+                      ),
+                    ),
+                    _WelcomeRing(diameter: Responsive.w(260), color: const Color(0x15A29BFE), strokeWidth: 1.5),
+                    _WelcomeRing(diameter: Responsive.w(200), color: const Color(0x20A29BFE), strokeWidth: 1.0),
+                    _WelcomeRing(diameter: Responsive.w(150), color: const Color(0x30A29BFE), strokeWidth: 1.0),
+                    Container(
+                      width: Responsive.w(80),
+                      height: Responsive.w(80),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.primary.withValues(alpha: 0.50),
+                            blurRadius: 40,
+                            spreadRadius: 3,
+                          ),
+                        ],
+                      ),
+                      child: ClipOval(
+                        child: Image.asset('assets/images/logomantra.png', fit: BoxFit.cover),
                       ),
                     ),
                   ],
                 ),
-
-                const Spacer(),
-
-                // CTA
-                _GradientButton(
-                  label: 'Comenzar mi viaje →',
-                  gradient: AppGradients.primaryButton,
-                  textColor: AppColors.white,
-                  shadowColor: AppColors.primary.withValues(alpha: 0.50),
-                  height: 56,
-                  cornerRadius: 18,
-                  onTap: onNext,
-                ),
-                const SizedBox(height: 14),
-
-                // Login link
-                GestureDetector(
-                  onTap: () => context.go('/home'),
-                  child: Text.rich(
-                    TextSpan(
-                      text: '¿Ya tienes cuenta? ',
+              ),
+            ),
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: Responsive.w(24)),
+                child: Column(
+                  children: [
+                    SizedBox(height: Responsive.h(4)),
+                    Text(
+                      'MANTRAS',
                       style: GoogleFonts.urbanist(
-                        fontSize: 13,
-                        color: AppColors.textSecondary,
+                        fontSize: Responsive.sp(13),
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.white,
+                        letterSpacing: 6,
                       ),
+                    ),
+                    SizedBox(height: Responsive.h(10)),
+                    Text(
+                      'Personas como tú\nya están aquí',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.urbanist(
+                        fontSize: Responsive.sp(32),
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.white,
+                        height: 1.15,
+                      ),
+                    ),
+                    SizedBox(height: Responsive.h(8)),
+                    Text(
+                      'No es una app más. Es un movimiento.\nÚnete a quienes eligieron transformarse.',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.urbanist(
+                        fontSize: Responsive.sp(14),
+                        color: const Color(0xA0FFFFFF),
+                        height: 1.5,
+                      ),
+                    ),
+                    SizedBox(height: Responsive.h(12)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        TextSpan(
-                          text: 'Iniciar sesión',
+                        Text(
+                          '4.9 stars  ',
                           style: GoogleFonts.urbanist(
-                            fontSize: 13,
+                            fontSize: Responsive.sp(13),
                             fontWeight: FontWeight.w600,
-                            color: AppColors.primaryLight,
+                            color: AppColors.white,
+                          ),
+                        ),
+                        ...List.generate(5, (_) => Text('★', style: TextStyle(color: AppColors.gold, fontSize: Responsive.sp(14)))),
+                        Text(
+                          '  1,000+ reviews',
+                          style: GoogleFonts.urbanist(
+                            fontSize: Responsive.sp(12),
+                            color: AppColors.white.withValues(alpha: 0.55),
                           ),
                         ),
                       ],
                     ),
-                  ),
+                    const Spacer(),
+                    _GradientButton(
+                      label: 'Comenzar mi viaje →',
+                      gradient: AppGradients.primaryButton,
+                      textColor: AppColors.white,
+                      shadowColor: AppColors.primary.withValues(alpha: 0.50),
+                      height: Responsive.h(56),
+                      cornerRadius: 18,
+                      onTap: onNext,
+                    ),
+                    SizedBox(height: Responsive.h(14)),
+                    GestureDetector(
+                      onTap: () => context.go('/home'),
+                      child: Text.rich(
+                        TextSpan(
+                          text: '¿Ya tienes cuenta? ',
+                          style: GoogleFonts.urbanist(
+                            fontSize: Responsive.sp(13),
+                            color: AppColors.textSecondary,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: 'Iniciar sesión',
+                              style: GoogleFonts.urbanist(
+                                fontSize: Responsive.sp(13),
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.primaryLight,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: Responsive.h(16)),
+                  ],
                 ),
-                const SizedBox(height: 16),
-              ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -532,7 +518,6 @@ const List<(String, String)> _objectiveItems = [
   ('✨', 'Busco despertar espiritual'),
 ];
 
-// Which pills start pre-selected and their accent color + badge text
 const Map<int, (Color, Color, String)> _objectiveDefaults = {
   1: (Color(0x1555EFC4), AppColors.mint, '#1'),
   4: (Color(0x15F9A826), AppColors.amber, 'Nuevo'),
@@ -570,17 +555,14 @@ class _Page2ObjectivesState extends State<_Page2Objectives> {
       child: SafeArea(
         child: Column(
           children: [
-            // Hero
-            _HeroImage(assetPath: 'assets/images/quiz_hero.png', height: 240),
+            _HeroImage(assetPath: 'assets/images/quiz_hero.png', height: Responsive.h(240)),
 
-            // Scrollable content
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(14, 20, 14, 16),
+                padding: EdgeInsets.fromLTRB(Responsive.w(14), Responsive.h(20), Responsive.w(14), Responsive.h(16)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Progress bar: 2 colored, 5 gray
                     _ProgressBar(
                       segmentColors: [
                         AppColors.primary,
@@ -592,41 +574,39 @@ class _Page2ObjectivesState extends State<_Page2Objectives> {
                         AppColors.white.withValues(alpha: 0.15),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: Responsive.h(10)),
 
-                    // Step label — gold
                     Text(
                       'TU HISTORIA',
                       style: GoogleFonts.urbanist(
-                        fontSize: 12,
+                        fontSize: Responsive.sp(12),
                         fontWeight: FontWeight.w700,
                         color: AppColors.amber,
                         letterSpacing: 2,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: Responsive.h(10)),
 
                     Text(
                       '¿Qué quieres\ntransformar en tu vida?',
                       style: GoogleFonts.urbanist(
-                        fontSize: 28,
+                        fontSize: Responsive.sp(28),
                         fontWeight: FontWeight.w700,
                         color: AppColors.white,
                         height: 1.15,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    SizedBox(height: Responsive.h(6)),
 
                     Text(
                       'Personas como tú eligen estas intenciones',
                       style: GoogleFonts.urbanist(
-                        fontSize: 14,
+                        fontSize: Responsive.sp(14),
                         color: AppColors.white.withValues(alpha: 0.50),
                       ),
                     ),
-                    const SizedBox(height: 14),
+                    SizedBox(height: Responsive.h(14)),
 
-                    // Pills
                     ...List.generate(_objectiveItems.length, (i) {
                       final isSelected = _selected.contains(i);
                       final accent = _objectiveDefaults[i];
@@ -640,13 +620,13 @@ class _Page2ObjectivesState extends State<_Page2Objectives> {
                       final badgeText = isSelected ? accent?.$3 : null;
 
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 7),
+                        padding: EdgeInsets.only(bottom: Responsive.h(7)),
                         child: GestureDetector(
                           onTap: () => _toggle(i),
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 180),
-                            height: 44,
-                            padding: const EdgeInsets.symmetric(horizontal: 18),
+                            height: Responsive.h(44),
+                            padding: EdgeInsets.symmetric(horizontal: Responsive.w(18)),
                             decoration: BoxDecoration(
                               color: fillColor,
                               borderRadius: BorderRadius.circular(16),
@@ -656,14 +636,14 @@ class _Page2ObjectivesState extends State<_Page2Objectives> {
                               children: [
                                 Text(
                                   _objectiveItems[i].$1,
-                                  style: const TextStyle(fontSize: 20),
+                                  style: TextStyle(fontSize: Responsive.sp(20)),
                                 ),
-                                const SizedBox(width: 12),
+                                SizedBox(width: Responsive.w(12)),
                                 Expanded(
                                   child: Text(
                                     _objectiveItems[i].$2,
                                     style: GoogleFonts.urbanist(
-                                      fontSize: 14,
+                                      fontSize: Responsive.sp(14),
                                       fontWeight: isSelected
                                           ? FontWeight.w600
                                           : FontWeight.w400,
@@ -675,8 +655,8 @@ class _Page2ObjectivesState extends State<_Page2Objectives> {
                                 ),
                                 if (badgeText != null)
                                   Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 2),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: Responsive.w(8), vertical: Responsive.h(2)),
                                     decoration: BoxDecoration(
                                       color: (accent?.$2 ?? AppColors.primary)
                                           .withValues(alpha: 0.20),
@@ -685,7 +665,7 @@ class _Page2ObjectivesState extends State<_Page2Objectives> {
                                     child: Text(
                                       badgeText,
                                       style: GoogleFonts.urbanist(
-                                        fontSize: 11,
+                                        fontSize: Responsive.sp(11),
                                         fontWeight: FontWeight.w700,
                                         color: accent?.$2 ?? AppColors.primary,
                                       ),
@@ -698,21 +678,20 @@ class _Page2ObjectivesState extends State<_Page2Objectives> {
                       );
                     }),
 
-                    const SizedBox(height: 12),
+                    SizedBox(height: Responsive.h(12)),
 
-                    // CTA
                     _PurpleCta(
                       label: 'Continuar →',
                       onTap: widget.onNext,
                       height: 56,
                       cornerRadius: 16,
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: Responsive.h(12)),
 
                     Center(
                       child: _SkipLink(onTap: widget.onNext),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.h(16)),
 
                     Center(
                       child: _ProgressDots(
@@ -722,7 +701,7 @@ class _Page2ObjectivesState extends State<_Page2Objectives> {
                         dotColors: {0: AppColors.primary},
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: Responsive.h(8)),
                   ],
                 ),
               ),
@@ -753,20 +732,17 @@ class _Page3FuturoYo extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
-            // Hero image
             _HeroImage(
               assetPath: 'assets/images/quiz_hero.png',
-              height: 240,
+              height: Responsive.h(240),
             ),
 
-            // Scrollable content
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+                padding: EdgeInsets.fromLTRB(Responsive.pagePadding, Responsive.h(16), Responsive.pagePadding, Responsive.h(16)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Progress bar: 3 colored, 4 gray
                     _ProgressBar(
                       segmentColors: [
                         AppColors.primary,
@@ -778,45 +754,43 @@ class _Page3FuturoYo extends StatelessWidget {
                         AppColors.white.withValues(alpha: 0.15),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: Responsive.h(10)),
 
-                    // Step label — gold
                     Text(
                       'TU VISIÓN',
                       style: GoogleFonts.urbanist(
-                        fontSize: 11,
+                        fontSize: Responsive.sp(11),
                         fontWeight: FontWeight.w700,
                         color: const Color(0xFFF9A826),
                         letterSpacing: 2,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: Responsive.h(8)),
 
                     Text(
                       'Describe tu\nfuturo yo',
                       style: GoogleFonts.urbanist(
-                        fontSize: 28,
+                        fontSize: Responsive.sp(28),
                         fontWeight: FontWeight.w700,
                         color: AppColors.white,
                         height: 1.15,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    SizedBox(height: Responsive.h(6)),
 
                     Text(
                       'Cierra los ojos un momento. ¿Cómo te ves\ncuando logres tu transformación?',
                       style: GoogleFonts.urbanist(
-                        fontSize: 14,
+                        fontSize: Responsive.sp(14),
                         color: AppColors.white.withValues(alpha: 0.55),
                         height: 1.5,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.h(16)),
 
-                    // Text area
                     Container(
-                      height: 120,
-                      padding: const EdgeInsets.all(16),
+                      height: Responsive.h(120),
+                      padding: EdgeInsets.all(Responsive.w(16)),
                       decoration: BoxDecoration(
                         color: const Color(0x0AFFFFFF),
                         borderRadius: BorderRadius.circular(16),
@@ -828,7 +802,7 @@ class _Page3FuturoYo extends StatelessWidget {
                       child: TextField(
                         maxLines: 4,
                         style: GoogleFonts.urbanist(
-                          fontSize: 14,
+                          fontSize: Responsive.sp(14),
                           color: AppColors.white,
                           height: 1.5,
                         ),
@@ -837,7 +811,7 @@ class _Page3FuturoYo extends StatelessWidget {
                           hintText:
                               'Me veo en paz, con abundancia, rodeado/a de amor y con un propósito claro cada mañana...',
                           hintStyle: GoogleFonts.urbanist(
-                            fontSize: 13,
+                            fontSize: Responsive.sp(13),
                             fontStyle: FontStyle.italic,
                             color: AppColors.white.withValues(alpha: 0.30),
                             height: 1.5,
@@ -847,34 +821,32 @@ class _Page3FuturoYo extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: Responsive.h(10)),
 
-                    // Hint
                     Center(
                       child: Text(
                         'Esto queda entre tú y el universo — nadie más lo verá',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.urbanist(
-                          fontSize: 11,
+                          fontSize: Responsive.sp(11),
                           color: AppColors.white.withValues(alpha: 0.40),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: Responsive.h(20)),
 
-                    // CTA
                     _PurpleCta(
                       label: 'Continuar',
                       onTap: onNext,
                       height: 56,
                       cornerRadius: 16,
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: Responsive.h(12)),
 
                     Center(
                       child: _SkipLink(onTap: onNext),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: Responsive.h(8)),
                   ],
                 ),
               ),
@@ -928,7 +900,7 @@ class _Page4ExperienceState extends State<_Page4Experience> {
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.sizeOf(context).height;
+    final screenH = MediaQuery.sizeOf(context).height;
 
     return Container(
       decoration: const BoxDecoration(
@@ -941,20 +913,18 @@ class _Page4ExperienceState extends State<_Page4Experience> {
       child: SafeArea(
         child: Column(
           children: [
-            // Hero
             _HeroImage(
               assetPath: 'assets/images/experience_hero.png',
-              height: h * 0.26,
+              height: screenH * 0.26,
+              maxFraction: 0.26,
             ),
 
-            // Content
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
+                padding: EdgeInsets.fromLTRB(Responsive.pagePadding, Responsive.h(12), Responsive.pagePadding, Responsive.h(8)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Progress bar
                     _ProgressBar(segmentColors: [
                       AppColors.primary,
                       AppColors.primary,
@@ -964,52 +934,50 @@ class _Page4ExperienceState extends State<_Page4Experience> {
                       AppColors.white.withValues(alpha: 0.15),
                       AppColors.white.withValues(alpha: 0.15),
                     ]),
-                    const SizedBox(height: 8),
+                    SizedBox(height: Responsive.h(8)),
 
-                    // Step label — gold
                     Text(
                       'TU CAMINO',
                       style: GoogleFonts.urbanist(
-                        fontSize: 11,
+                        fontSize: Responsive.sp(11),
                         fontWeight: FontWeight.w700,
                         color: AppColors.amber,
                         letterSpacing: 2,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: Responsive.h(8)),
 
                     Text(
                       '¿Dónde estás\nen tu viaje?',
                       style: GoogleFonts.urbanist(
-                        fontSize: 28,
+                        fontSize: Responsive.sp(28),
                         fontWeight: FontWeight.w700,
                         color: AppColors.white,
                         height: 1.2,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: Responsive.h(4)),
 
                     Text(
                       'No hay respuesta incorrecta · Todos empezamos igual',
                       style: GoogleFonts.urbanist(
-                        fontSize: 13,
+                        fontSize: Responsive.sp(13),
                         color: AppColors.white.withValues(alpha: 0.55),
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: Responsive.h(12)),
 
-                    // Level cards
                     ...List.generate(_levels.length, (i) {
                       final isSelected = _selectedLevel == i;
                       final item = _levels[i];
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
+                        padding: EdgeInsets.only(bottom: Responsive.h(8)),
                         child: GestureDetector(
                           onTap: () => setState(() => _selectedLevel = i),
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 180),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 12),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: Responsive.w(16), vertical: Responsive.h(12)),
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? const Color(0x1555EFC4)
@@ -1026,9 +994,9 @@ class _Page4ExperienceState extends State<_Page4Experience> {
                               children: [
                                 Text(
                                   item.emoji,
-                                  style: const TextStyle(fontSize: 24),
+                                  style: TextStyle(fontSize: Responsive.sp(24)),
                                 ),
-                                const SizedBox(width: 12),
+                                SizedBox(width: Responsive.w(12)),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1036,16 +1004,16 @@ class _Page4ExperienceState extends State<_Page4Experience> {
                                       Text(
                                         item.title,
                                         style: GoogleFonts.urbanist(
-                                          fontSize: 14,
+                                          fontSize: Responsive.sp(14),
                                           fontWeight: FontWeight.w700,
                                           color: AppColors.white,
                                         ),
                                       ),
-                                      const SizedBox(height: 1),
+                                      SizedBox(height: Responsive.h(1)),
                                       Text(
                                         item.subtitle,
                                         style: GoogleFonts.urbanist(
-                                          fontSize: 11,
+                                          fontSize: Responsive.sp(11),
                                           color: AppColors.white
                                               .withValues(alpha: 0.50),
                                         ),
@@ -1055,8 +1023,8 @@ class _Page4ExperienceState extends State<_Page4Experience> {
                                 ),
                                 if (item.badge != null)
                                   Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 3),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: Responsive.w(8), vertical: Responsive.h(3)),
                                     decoration: BoxDecoration(
                                       color: item.badgeColor
                                           .withValues(alpha: 0.20),
@@ -1065,7 +1033,7 @@ class _Page4ExperienceState extends State<_Page4Experience> {
                                     child: Text(
                                       item.badge!,
                                       style: GoogleFonts.urbanist(
-                                        fontSize: 10,
+                                        fontSize: Responsive.sp(10),
                                         fontWeight: FontWeight.w700,
                                         color: item.badgeColor,
                                       ),
@@ -1078,34 +1046,32 @@ class _Page4ExperienceState extends State<_Page4Experience> {
                       );
                     }),
 
-                    const SizedBox(height: 12),
+                    SizedBox(height: Responsive.h(12)),
 
-                    // Time question
                     Text(
                       '¿Cuánto tiempo puedes regalarte?',
                       style: GoogleFonts.urbanist(
-                        fontSize: 14,
+                        fontSize: Responsive.sp(14),
                         fontWeight: FontWeight.w700,
                         color: AppColors.white,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: Responsive.h(8)),
 
-                    // Time chips
                     Row(
                       children: List.generate(_times.length, (i) {
                         final isSelected = _selectedTime == i;
                         return Expanded(
                           child: Padding(
                             padding:
-                                EdgeInsets.only(right: i < 3 ? 8 : 0),
+                                EdgeInsets.only(right: i < 3 ? Responsive.w(8) : 0),
                             child: GestureDetector(
                               onTap: () =>
                                   setState(() => _selectedTime = i),
                               child: AnimatedContainer(
                                 duration:
                                     const Duration(milliseconds: 180),
-                                height: 56,
+                                height: Responsive.h(56),
                                 decoration: BoxDecoration(
                                   color: isSelected
                                       ? const Color(0x1555EFC4)
@@ -1126,7 +1092,7 @@ class _Page4ExperienceState extends State<_Page4Experience> {
                                     Text(
                                       _times[i],
                                       style: GoogleFonts.urbanist(
-                                        fontSize: 18,
+                                        fontSize: Responsive.sp(18),
                                         fontWeight: FontWeight.w700,
                                         color: isSelected
                                             ? AppColors.mint
@@ -1136,7 +1102,7 @@ class _Page4ExperienceState extends State<_Page4Experience> {
                                     Text(
                                       'min',
                                       style: GoogleFonts.urbanist(
-                                        fontSize: 9,
+                                        fontSize: Responsive.sp(9),
                                         color: AppColors.white
                                             .withValues(alpha: 0.45),
                                       ),
@@ -1150,13 +1116,12 @@ class _Page4ExperienceState extends State<_Page4Experience> {
                       }),
                     ),
 
-                    const SizedBox(height: 14),
+                    SizedBox(height: Responsive.h(14)),
 
-                    // Trophy callout
                     Center(
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 14, vertical: 5),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: Responsive.w(14), vertical: Responsive.h(5)),
                         decoration: BoxDecoration(
                           color: AppColors.gold.withValues(alpha: 0.10),
                           borderRadius: BorderRadius.circular(20),
@@ -1164,13 +1129,13 @@ class _Page4ExperienceState extends State<_Page4Experience> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(LucideIcons.trophy,
-                                color: AppColors.gold, size: 14),
-                            const SizedBox(width: 6),
+                            Icon(LucideIcons.trophy,
+                                color: AppColors.gold, size: Responsive.w(14)),
+                            SizedBox(width: Responsive.w(6)),
                             Text(
                               '¡Vas increíble! Un paso más y listo',
                               style: GoogleFonts.urbanist(
-                                fontSize: 11,
+                                fontSize: Responsive.sp(11),
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.gold
                                     .withValues(alpha: 0.85),
@@ -1180,19 +1145,18 @@ class _Page4ExperienceState extends State<_Page4Experience> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: Responsive.h(10)),
 
-                    // CTA
                     _PurpleCta(
                       label: 'Continuar →',
                       onTap: widget.onNext,
                       height: 54,
                       cornerRadius: 16,
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: Responsive.h(8)),
 
                     Center(child: _SkipLink(onTap: widget.onNext)),
-                    const SizedBox(height: 10),
+                    SizedBox(height: Responsive.h(10)),
 
                     Center(
                       child: _ProgressDots(
@@ -1205,7 +1169,7 @@ class _Page4ExperienceState extends State<_Page4Experience> {
                         },
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: Responsive.h(8)),
                   ],
                 ),
               ),
@@ -1264,20 +1228,17 @@ class _Page5WhatsAppState extends State<_Page5WhatsApp> {
       child: SafeArea(
         child: Column(
           children: [
-            // Hero
             _HeroImage(
               assetPath: 'assets/images/whatsapp_hero.png',
-              height: 260,
+              height: Responsive.h(260),
             ),
 
-            // Content
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
+                padding: EdgeInsets.fromLTRB(Responsive.w(16), Responsive.h(20), Responsive.w(16), Responsive.h(16)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Progress bar
                     _ProgressBar(
                       segmentColors: [
                         AppColors.primary,
@@ -1289,43 +1250,41 @@ class _Page5WhatsAppState extends State<_Page5WhatsApp> {
                         AppColors.white.withValues(alpha: 0.15),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: Responsive.h(10)),
 
-                    // Step label — WhatsApp green
                     Text(
                       'TU TRIBU',
                       style: GoogleFonts.urbanist(
-                        fontSize: 12,
+                        fontSize: Responsive.sp(12),
                         fontWeight: FontWeight.w700,
                         color: whatsappGreen,
                         letterSpacing: 2,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: Responsive.h(10)),
 
                     Text(
                       'Conecta con tu\ncírculo sagrado',
                       style: GoogleFonts.urbanist(
-                        fontSize: 28,
+                        fontSize: Responsive.sp(28),
                         fontWeight: FontWeight.w700,
                         color: AppColors.white,
                         height: 1.15,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    SizedBox(height: Responsive.h(6)),
 
                     Text(
                       '52,000+ personas reciben mantras cada mañana',
                       style: GoogleFonts.urbanist(
-                        fontSize: 14,
+                        fontSize: Responsive.sp(14),
                         color: AppColors.white.withValues(alpha: 0.44),
                       ),
                     ),
-                    const SizedBox(height: 18),
+                    SizedBox(height: Responsive.h(18)),
 
-                    // Phone input row
                     Container(
-                      height: 52,
+                      height: Responsive.h(52),
                       decoration: BoxDecoration(
                         color: const Color(0x08FFFFFF),
                         borderRadius: BorderRadius.circular(16),
@@ -1334,11 +1293,11 @@ class _Page5WhatsAppState extends State<_Page5WhatsApp> {
                       child: Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 14),
+                            padding: EdgeInsets.symmetric(horizontal: Responsive.w(14)),
                             child: Text(
                               '🇲🇽 +52',
                               style: GoogleFonts.urbanist(
-                                fontSize: 15,
+                                fontSize: Responsive.sp(15),
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.white,
                               ),
@@ -1346,7 +1305,7 @@ class _Page5WhatsAppState extends State<_Page5WhatsApp> {
                           ),
                           Container(
                             width: 1,
-                            height: 28,
+                            height: Responsive.h(28),
                             color: const Color(0x20FFFFFF),
                           ),
                           Expanded(
@@ -1354,27 +1313,26 @@ class _Page5WhatsAppState extends State<_Page5WhatsApp> {
                               controller: _phoneController,
                               keyboardType: TextInputType.phone,
                               style: GoogleFonts.urbanist(
-                                fontSize: 15,
+                                fontSize: Responsive.sp(15),
                                 color: AppColors.white,
                               ),
                               decoration: InputDecoration(
                                 hintText: 'Tu número de celular',
                                 hintStyle: GoogleFonts.urbanist(
-                                  fontSize: 15,
+                                  fontSize: Responsive.sp(15),
                                   color: AppColors.white.withValues(alpha: 0.35),
                                 ),
                                 border: InputBorder.none,
                                 contentPadding:
-                                    const EdgeInsets.symmetric(horizontal: 14),
+                                    EdgeInsets.symmetric(horizontal: Responsive.w(14)),
                               ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: Responsive.h(12)),
 
-                    // Method tabs
                     Row(
                       children: [
                         Expanded(
@@ -1382,7 +1340,7 @@ class _Page5WhatsAppState extends State<_Page5WhatsApp> {
                             onTap: () => setState(() => _useWhatsapp = true),
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 180),
-                              height: 40,
+                              height: Responsive.h(40),
                               decoration: BoxDecoration(
                                 color: _useWhatsapp
                                     ? const Color(0x2025D366)
@@ -1398,7 +1356,7 @@ class _Page5WhatsAppState extends State<_Page5WhatsApp> {
                               child: Text(
                                 'WhatsApp',
                                 style: GoogleFonts.urbanist(
-                                  fontSize: 14,
+                                  fontSize: Responsive.sp(14),
                                   fontWeight: FontWeight.w600,
                                   color: _useWhatsapp
                                       ? whatsappGreen
@@ -1408,13 +1366,13 @@ class _Page5WhatsAppState extends State<_Page5WhatsApp> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 10),
+                        SizedBox(width: Responsive.w(10)),
                         Expanded(
                           child: GestureDetector(
                             onTap: () => setState(() => _useWhatsapp = false),
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 180),
-                              height: 40,
+                              height: Responsive.h(40),
                               decoration: BoxDecoration(
                                 color: !_useWhatsapp
                                     ? const Color(0x2025D366)
@@ -1430,7 +1388,7 @@ class _Page5WhatsAppState extends State<_Page5WhatsApp> {
                               child: Text(
                                 'SMS',
                                 style: GoogleFonts.urbanist(
-                                  fontSize: 14,
+                                  fontSize: Responsive.sp(14),
                                   fontWeight: FontWeight.w600,
                                   color: !_useWhatsapp
                                       ? whatsappGreen
@@ -1442,26 +1400,25 @@ class _Page5WhatsAppState extends State<_Page5WhatsApp> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 18),
+                    SizedBox(height: Responsive.h(18)),
 
-                    // Benefit items
                     ...benefits.map(
                       (b) => Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
+                        padding: EdgeInsets.only(bottom: Responsive.h(10)),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(
+                            Icon(
                               LucideIcons.checkCircle2,
                               color: whatsappGreen,
-                              size: 18,
+                              size: Responsive.w(18),
                             ),
-                            const SizedBox(width: 10),
+                            SizedBox(width: Responsive.w(10)),
                             Expanded(
                               child: Text(
                                 b,
                                 style: GoogleFonts.urbanist(
-                                  fontSize: 13,
+                                  fontSize: Responsive.sp(13),
                                   color: AppColors.white.withValues(alpha: 0.80),
                                 ),
                               ),
@@ -1471,34 +1428,33 @@ class _Page5WhatsAppState extends State<_Page5WhatsApp> {
                       ),
                     ),
 
-                    const SizedBox(height: 18),
+                    SizedBox(height: Responsive.h(18)),
 
-                    // Green CTA
                     _GradientButton(
                       label: 'Unirme a la comunidad →',
                       gradient: whatsappGradient,
                       textColor: AppColors.white,
                       shadowColor: whatsappGreen.withValues(alpha: 0.40),
-                      height: 56,
+                      height: Responsive.h(56),
                       cornerRadius: 16,
                       onTap: widget.onNext,
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: Responsive.h(10)),
 
                     Center(
                       child: Text(
                         'Tu información es sagrada para nosotros. Cancela cuando quieras.',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.urbanist(
-                          fontSize: 11,
+                          fontSize: Responsive.sp(11),
                           color: AppColors.white.withValues(alpha: 0.30),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    SizedBox(height: Responsive.h(6)),
 
                     Center(child: _SkipLink(onTap: widget.onNext)),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.h(16)),
 
                     Center(
                       child: _ProgressDots(
@@ -1512,7 +1468,7 @@ class _Page5WhatsAppState extends State<_Page5WhatsApp> {
                         },
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: Responsive.h(8)),
                   ],
                 ),
               ),
@@ -1535,7 +1491,7 @@ class _Page6Intentions extends StatefulWidget {
 }
 
 class _Page6IntentionsState extends State<_Page6Intentions> {
-  int _selected = 2; // "Salud" pre-selected
+  int _selected = 2;
 
   static const _intentions = [
     (
@@ -1585,19 +1541,17 @@ class _Page6IntentionsState extends State<_Page6Intentions> {
       child: SafeArea(
         child: Column(
           children: [
-            // Hero
             _HeroImage(
               assetPath: 'assets/images/paywall_hero.png',
-              height: 220,
+              height: Responsive.h(220),
             ),
 
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(20, 18, 20, 16),
+                padding: EdgeInsets.fromLTRB(Responsive.pagePadding, Responsive.h(18), Responsive.pagePadding, Responsive.h(16)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Progress bar
                     _ProgressBar(
                       segmentColors: [
                         AppColors.primary,
@@ -1609,48 +1563,46 @@ class _Page6IntentionsState extends State<_Page6Intentions> {
                         AppColors.white.withValues(alpha: 0.15),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: Responsive.h(10)),
 
-                    // Step label — gold
                     Text(
                       'TU INTENCIÓN',
                       style: GoogleFonts.urbanist(
-                        fontSize: 12,
+                        fontSize: Responsive.sp(12),
                         fontWeight: FontWeight.w700,
                         color: AppColors.amber,
                         letterSpacing: 2,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: Responsive.h(10)),
 
                     Text(
                       'Elige tu intención\npara cada día',
                       style: GoogleFonts.urbanist(
-                        fontSize: 28,
+                        fontSize: Responsive.sp(28),
                         fontWeight: FontWeight.w700,
                         color: AppColors.white,
                         height: 1.15,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    SizedBox(height: Responsive.h(6)),
 
                     Text(
                       'Cada mañana recibirás un mantra alineado\ncon lo que más necesitas',
                       style: GoogleFonts.urbanist(
-                        fontSize: 14,
+                        fontSize: Responsive.sp(14),
                         color: AppColors.white.withValues(alpha: 0.55),
                         height: 1.5,
                       ),
                     ),
-                    const SizedBox(height: 18),
+                    SizedBox(height: Responsive.h(18)),
 
-                    // 2x2 intention grid
                     GridView.count(
                       crossAxisCount: 2,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
+                      crossAxisSpacing: Responsive.w(12),
+                      mainAxisSpacing: Responsive.h(12),
                       childAspectRatio: 1.4,
                       children: List.generate(_intentions.length, (i) {
                         final item = _intentions[i];
@@ -1659,7 +1611,7 @@ class _Page6IntentionsState extends State<_Page6Intentions> {
                           onTap: () => setState(() => _selected = i),
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 180),
-                            padding: const EdgeInsets.all(14),
+                            padding: EdgeInsets.all(Responsive.w(14)),
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? item.fillColor
@@ -1677,21 +1629,21 @@ class _Page6IntentionsState extends State<_Page6Intentions> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(item.icon,
-                                    color: item.color, size: 22),
-                                const SizedBox(height: 6),
+                                    color: item.color, size: Responsive.w(22)),
+                                SizedBox(height: Responsive.h(6)),
                                 Text(
                                   item.title,
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 14,
+                                    fontSize: Responsive.sp(14),
                                     fontWeight: FontWeight.w700,
                                     color: AppColors.white,
                                   ),
                                 ),
-                                const SizedBox(height: 2),
+                                SizedBox(height: Responsive.h(2)),
                                 Text(
                                   item.subtitle,
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 11,
+                                    fontSize: Responsive.sp(11),
                                     color: AppColors.white
                                         .withValues(alpha: 0.50),
                                   ),
@@ -1702,26 +1654,25 @@ class _Page6IntentionsState extends State<_Page6Intentions> {
                         );
                       }),
                     ),
-                    const SizedBox(height: 14),
+                    SizedBox(height: Responsive.h(14)),
 
                     Text(
                       'Tu intención puede cambiar — y eso es parte del viaje',
                       textAlign: TextAlign.center,
                       style: GoogleFonts.urbanist(
-                        fontSize: 12,
+                        fontSize: Responsive.sp(12),
                         color: AppColors.white.withValues(alpha: 0.40),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.h(16)),
 
-                    // CTA
                     _PurpleCta(
                       label: 'Continuar',
                       onTap: widget.onNext,
                       height: 56,
                       cornerRadius: 16,
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.h(16)),
                   ],
                 ),
               ),
@@ -1752,11 +1703,11 @@ class _Page7AccountState extends State<_Page7Account> {
   static const _labelColor = Color(0xB3FFFFFF);
 
   Widget _fieldLabel(String text) => Padding(
-        padding: const EdgeInsets.only(bottom: 6),
+        padding: EdgeInsets.only(bottom: Responsive.h(6)),
         child: Text(
           text,
           style: GoogleFonts.urbanist(
-            fontSize: 13,
+            fontSize: Responsive.sp(13),
             fontWeight: FontWeight.w600,
             color: _labelColor,
             letterSpacing: 0.5,
@@ -1771,7 +1722,7 @@ class _Page7AccountState extends State<_Page7Account> {
     TextInputType keyboardType = TextInputType.text,
   }) {
     return Container(
-      height: 56,
+      height: Responsive.h(56),
       decoration: BoxDecoration(
         color: _gray,
         borderRadius: BorderRadius.circular(16),
@@ -1780,21 +1731,21 @@ class _Page7AccountState extends State<_Page7Account> {
       child: Row(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Icon(leadingIcon, color: AppColors.primaryLight, size: 20),
+            padding: EdgeInsets.symmetric(horizontal: Responsive.w(16)),
+            child: Icon(leadingIcon, color: AppColors.primaryLight, size: Responsive.w(20)),
           ),
           Expanded(
             child: TextField(
               keyboardType: keyboardType,
               obscureText: isPassword && !_passwordVisible,
               style: GoogleFonts.urbanist(
-                fontSize: 15,
+                fontSize: Responsive.sp(15),
                 color: AppColors.white,
               ),
               decoration: InputDecoration(
                 hintText: hint,
                 hintStyle: GoogleFonts.urbanist(
-                  fontSize: 15,
+                  fontSize: Responsive.sp(15),
                   color: AppColors.white.withValues(alpha: 0.35),
                 ),
                 border: InputBorder.none,
@@ -1806,11 +1757,11 @@ class _Page7AccountState extends State<_Page7Account> {
             GestureDetector(
               onTap: () => setState(() => _passwordVisible = !_passwordVisible),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.symmetric(horizontal: Responsive.w(16)),
                 child: Icon(
                   _passwordVisible ? LucideIcons.eye : LucideIcons.eyeOff,
                   color: AppColors.white.withValues(alpha: 0.40),
-                  size: 20,
+                  size: Responsive.w(20),
                 ),
               ),
             ),
@@ -1831,20 +1782,19 @@ class _Page7AccountState extends State<_Page7Account> {
       ),
       child: Stack(
         children: [
-          Positioned(top: -60, left: -30, child: _glow(280, const Color(0x356C5CE7))),
-          Positioned(top: -20, right: -60, child: _glow(200, const Color(0x20A29BFE))),
+          Positioned(top: Responsive.h(-60), left: Responsive.w(-30), child: _glow(Responsive.w(280), const Color(0x356C5CE7))),
+          Positioned(top: Responsive.h(-20), right: Responsive.w(-60), child: _glow(Responsive.w(200), const Color(0x20A29BFE))),
           SafeArea(
             child: LayoutBuilder(
               builder: (context, constraints) {
                 return SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(24, 8, 24, 16),
+                  padding: EdgeInsets.fromLTRB(Responsive.w(24), Responsive.h(8), Responsive.w(24), Responsive.h(16)),
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
-                        minHeight: constraints.maxHeight - 24),
+                        minHeight: constraints.maxHeight - Responsive.h(24)),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        // Progress bar: 5 purple, 1 amber, 1 gray
                         _ProgressBar(segmentColors: [
                           AppColors.primary,
                           AppColors.primary,
@@ -1855,38 +1805,36 @@ class _Page7AccountState extends State<_Page7Account> {
                           AppColors.white.withValues(alpha: 0.15),
                         ]),
 
-                        // Header block
                         Column(children: [
-                          const SizedBox(height: 8),
+                          SizedBox(height: Responsive.h(8)),
                           Text(
                             'TU ESPACIO',
                             style: GoogleFonts.urbanist(
-                              fontSize: 12,
+                              fontSize: Responsive.sp(12),
                               fontWeight: FontWeight.w700,
                               color: AppColors.amber,
                               letterSpacing: 2,
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: Responsive.h(8)),
                           Text(
                             'Reclama tu santuario',
                             style: GoogleFonts.urbanist(
-                              fontSize: 32,
+                              fontSize: Responsive.sp(32),
                               fontWeight: FontWeight.w700,
                               color: AppColors.white,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          SizedBox(height: Responsive.h(4)),
                           Text(
                             'Un espacio sagrado, solo para ti',
                             style: GoogleFonts.urbanist(
-                              fontSize: 13,
+                              fontSize: Responsive.sp(13),
                               color: AppColors.white.withValues(alpha: 0.50),
                             ),
                           ),
                         ]),
 
-                        // Form block
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -1894,29 +1842,29 @@ class _Page7AccountState extends State<_Page7Account> {
                             _inputField(
                                 leadingIcon: LucideIcons.user,
                                 hint: 'Tu nombre'),
-                            const SizedBox(height: 10),
+                            SizedBox(height: Responsive.h(10)),
                             _fieldLabel('Email'),
                             _inputField(
                               leadingIcon: LucideIcons.mail,
                               hint: 'tu@email.com',
                               keyboardType: TextInputType.emailAddress,
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: Responsive.h(10)),
                             _fieldLabel('Contraseña'),
                             _inputField(
                               leadingIcon: LucideIcons.lock,
                               hint: '••••••••',
                               isPassword: true,
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: Responsive.h(10)),
                             GestureDetector(
                               onTap: () => setState(
                                   () => _termsAccepted = !_termsAccepted),
                               child: Row(children: [
                                 AnimatedContainer(
                                   duration: const Duration(milliseconds: 150),
-                                  width: 20,
-                                  height: 20,
+                                  width: Responsive.w(20),
+                                  height: Responsive.w(20),
                                   decoration: BoxDecoration(
                                     color: _termsAccepted
                                         ? AppColors.primary
@@ -1930,16 +1878,16 @@ class _Page7AccountState extends State<_Page7Account> {
                                     ),
                                   ),
                                   child: _termsAccepted
-                                      ? const Icon(LucideIcons.check,
-                                          color: AppColors.white, size: 12)
+                                      ? Icon(LucideIcons.check,
+                                          color: AppColors.white, size: Responsive.w(12))
                                       : null,
                                 ),
-                                const SizedBox(width: 8),
+                                SizedBox(width: Responsive.w(8)),
                                 Expanded(
                                   child: Text(
                                     'Acepto los términos y política de privacidad',
                                     style: GoogleFonts.urbanist(
-                                      fontSize: 12,
+                                      fontSize: Responsive.sp(12),
                                       color: AppColors.white
                                           .withValues(alpha: 0.50),
                                     ),
@@ -1950,7 +1898,6 @@ class _Page7AccountState extends State<_Page7Account> {
                           ],
                         ),
 
-                        // Actions block
                         Column(children: [
                           _PurpleCta(
                             label: 'Continuar →',
@@ -1958,17 +1905,17 @@ class _Page7AccountState extends State<_Page7Account> {
                             height: 52,
                             cornerRadius: 16,
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: Responsive.h(12)),
                           Row(children: [
                             Expanded(
                                 child: Container(height: 1, color: _border)),
                             Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: Responsive.w(10)),
                               child: Text(
                                 'o continúa con',
                                 style: GoogleFonts.urbanist(
-                                  fontSize: 12,
+                                  fontSize: Responsive.sp(12),
                                   color: AppColors.white
                                       .withValues(alpha: 0.35),
                                 ),
@@ -1977,32 +1924,32 @@ class _Page7AccountState extends State<_Page7Account> {
                             Expanded(
                                 child: Container(height: 1, color: _border)),
                           ]),
-                          const SizedBox(height: 10),
+                          SizedBox(height: Responsive.h(10)),
                           Row(children: [
                             Expanded(
                               child: _SocialButton(
                                   label: 'G  Google', onTap: widget.onNext),
                             ),
-                            const SizedBox(width: 10),
+                            SizedBox(width: Responsive.w(10)),
                             Expanded(
                               child: _SocialButton(
                                   label: 'Apple', onTap: widget.onNext),
                             ),
                           ]),
-                          const SizedBox(height: 12),
+                          SizedBox(height: Responsive.h(12)),
                           GestureDetector(
                             onTap: widget.onNext,
                             child: Text.rich(TextSpan(
                               text: '¿Ya eres parte de la tribu? ',
                               style: GoogleFonts.urbanist(
-                                fontSize: 13,
+                                fontSize: Responsive.sp(13),
                                 color: AppColors.white.withValues(alpha: 0.50),
                               ),
                               children: [
                                 TextSpan(
                                   text: 'Iniciar sesión',
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 13,
+                                    fontSize: Responsive.sp(13),
                                     fontWeight: FontWeight.w600,
                                     color: AppColors.primaryLight,
                                   ),
@@ -2044,7 +1991,7 @@ class _SocialButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 52,
+        height: Responsive.h(52),
         decoration: BoxDecoration(
           color: const Color(0x14FFFFFF),
           borderRadius: BorderRadius.circular(14),
@@ -2054,7 +2001,7 @@ class _SocialButton extends StatelessWidget {
         child: Text(
           label,
           style: GoogleFonts.urbanist(
-            fontSize: 15,
+            fontSize: Responsive.sp(15),
             fontWeight: FontWeight.w600,
             color: AppColors.white,
           ),
@@ -2077,7 +2024,7 @@ class _Page8Paywall extends StatefulWidget {
 }
 
 class _Page8PaywallState extends State<_Page8Paywall> {
-  int _selectedPlan = 0; // 0=Anual, 1=Mensual, 2=Semanal
+  int _selectedPlan = 0;
 
   static const _progressGray = Color(0x26FFFFFF);
 
@@ -2094,13 +2041,12 @@ class _Page8PaywallState extends State<_Page8Paywall> {
       child: SafeArea(
         child: Stack(
           children: [
-            // Amber glow top-right
             Positioned(
-              top: -40,
-              right: -40,
+              top: Responsive.h(-40),
+              right: Responsive.w(-40),
               child: Container(
-                width: 260,
-                height: 260,
+                width: Responsive.w(260),
+                height: Responsive.w(260),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
@@ -2116,14 +2062,13 @@ class _Page8PaywallState extends State<_Page8Paywall> {
             LayoutBuilder(
               builder: (context, constraints) {
                 return SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
+                  padding: EdgeInsets.fromLTRB(Responsive.pagePadding, Responsive.h(8), Responsive.pagePadding, Responsive.h(16)),
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
-                        minHeight: constraints.maxHeight - 24),
+                        minHeight: constraints.maxHeight - Responsive.h(24)),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        // Progress bar — all 7 colored
                         _ProgressBar(segmentColors: [
                           AppColors.primary,
                           AppColors.primary,
@@ -2133,15 +2078,14 @@ class _Page8PaywallState extends State<_Page8Paywall> {
                           AppColors.amber,
                           _progressGray,
                         ]),
-                        const SizedBox(height: 8),
+                        SizedBox(height: Responsive.h(8)),
 
-                        // Hero with close button
                         Stack(
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(16),
                               child: SizedBox(
-                                height: 180,
+                                height: Responsive.h(180),
                                 width: double.infinity,
                                 child: Stack(
                                   fit: StackFit.expand,
@@ -2167,34 +2111,33 @@ class _Page8PaywallState extends State<_Page8Paywall> {
                               ),
                             ),
                             Positioned(
-                              top: 10,
-                              right: 10,
+                              top: Responsive.h(10),
+                              right: Responsive.w(10),
                               child: GestureDetector(
                                 onTap: widget.onNext,
                                 child: Container(
-                                  width: 32,
-                                  height: 32,
+                                  width: Responsive.w(32),
+                                  height: Responsive.w(32),
                                   decoration: const BoxDecoration(
                                     color: Color(0x40000000),
                                     shape: BoxShape.circle,
                                   ),
-                                  child: const Icon(
+                                  child: Icon(
                                     LucideIcons.x,
                                     color: AppColors.white,
-                                    size: 16,
+                                    size: Responsive.w(16),
                                   ),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 12),
+                        SizedBox(height: Responsive.h(12)),
 
-                        // Gold badge
                         Center(
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 14, vertical: 5),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: Responsive.w(14), vertical: Responsive.h(5)),
                             decoration: BoxDecoration(
                               color: AppColors.goldBg,
                               borderRadius: BorderRadius.circular(50),
@@ -2203,7 +2146,7 @@ class _Page8PaywallState extends State<_Page8Paywall> {
                             child: Text(
                               'ACCESO PARA NUEVOS MIEMBROS',
                               style: GoogleFonts.urbanist(
-                                fontSize: 11,
+                                fontSize: Responsive.sp(11),
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.gold,
                                 letterSpacing: 1,
@@ -2211,38 +2154,34 @@ class _Page8PaywallState extends State<_Page8Paywall> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: Responsive.h(10)),
 
-                        // Title
                         Center(
                           child: Text(
                             'Invierte en tu\ntransformación',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.urbanist(
-                              fontSize: 30,
+                              fontSize: Responsive.sp(30),
                               fontWeight: FontWeight.w800,
                               color: AppColors.white,
                               height: 1.15,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 6),
+                        SizedBox(height: Responsive.h(6)),
 
-                        // Social proof
                         Center(
                           child: Text(
                             '★★★★★  4.9 · +52,000 vidas transformadas',
                             style: GoogleFonts.urbanist(
-                              fontSize: 12,
+                              fontSize: Responsive.sp(12),
                               color: AppColors.white.withValues(alpha: 0.60),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 14),
+                        SizedBox(height: Responsive.h(14)),
 
-                        // Plan cards
                         Column(children: [
-                          // Card 0 — Anual (most popular, selected by default)
                           Stack(
                             clipBehavior: Clip.none,
                             children: [
@@ -2260,16 +2199,15 @@ class _Page8PaywallState extends State<_Page8Paywall> {
                                       Text(
                                         'Anual',
                                         style: GoogleFonts.urbanist(
-                                          fontSize: 17,
+                                          fontSize: Responsive.sp(17),
                                           fontWeight: FontWeight.w700,
                                           color: AppColors.primaryLight,
                                         ),
                                       ),
                                       const Spacer(),
-                                      // AHORRA badge
                                       Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8, vertical: 2),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: Responsive.w(8), vertical: Responsive.h(2)),
                                         decoration: BoxDecoration(
                                           color: AppColors.mint
                                               .withValues(alpha: 0.20),
@@ -2279,36 +2217,36 @@ class _Page8PaywallState extends State<_Page8Paywall> {
                                         child: Text(
                                           'AHORRA 85%',
                                           style: GoogleFonts.urbanist(
-                                            fontSize: 10,
+                                            fontSize: Responsive.sp(10),
                                             fontWeight: FontWeight.w700,
                                             color: AppColors.mint,
                                           ),
                                         ),
                                       ),
                                     ]),
-                                    const SizedBox(height: 4),
+                                    SizedBox(height: Responsive.h(4)),
                                     Text(
                                       r'$29.99/año',
                                       style: GoogleFonts.urbanist(
-                                        fontSize: 22,
+                                        fontSize: Responsive.sp(22),
                                         fontWeight: FontWeight.w700,
                                         color: AppColors.white,
                                       ),
                                     ),
-                                    const SizedBox(height: 2),
+                                    SizedBox(height: Responsive.h(2)),
                                     Text(
                                       'Todo ilimitado · 7 días gratis',
                                       style: GoogleFonts.urbanist(
-                                        fontSize: 12,
+                                        fontSize: Responsive.sp(12),
                                         color: AppColors.primaryLight
                                             .withValues(alpha: 0.80),
                                       ),
                                     ),
-                                    const SizedBox(height: 2),
+                                    SizedBox(height: Responsive.h(2)),
                                     Text(
                                       r'$2.49/Premium · Descuento $17.90/año',
                                       style: GoogleFonts.urbanist(
-                                        fontSize: 11,
+                                        fontSize: Responsive.sp(11),
                                         color: AppColors.white
                                             .withValues(alpha: 0.40),
                                       ),
@@ -2316,13 +2254,12 @@ class _Page8PaywallState extends State<_Page8Paywall> {
                                   ],
                                 ),
                               ),
-                              // MÁS POPULAR badge
                               Positioned(
                                 top: -12,
-                                left: 16,
+                                left: Responsive.w(16),
                                 child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 3),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: Responsive.w(10), vertical: Responsive.h(3)),
                                   decoration: BoxDecoration(
                                     gradient: AppGradients.primaryButton,
                                     borderRadius: BorderRadius.circular(20),
@@ -2330,7 +2267,7 @@ class _Page8PaywallState extends State<_Page8Paywall> {
                                   child: Text(
                                     'MÁS POPULAR',
                                     style: GoogleFonts.urbanist(
-                                      fontSize: 9,
+                                      fontSize: Responsive.sp(9),
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.white,
                                       letterSpacing: 0.5,
@@ -2340,9 +2277,8 @@ class _Page8PaywallState extends State<_Page8Paywall> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: Responsive.h(10)),
 
-                          // Card 1 — Mensual
                           _PlanCard(
                             isSelected: _selectedPlan == 1,
                             onTap: () => setState(() => _selectedPlan = 1),
@@ -2357,50 +2293,20 @@ class _Page8PaywallState extends State<_Page8Paywall> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        'Mensual',
-                                        style: GoogleFonts.urbanist(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w700,
-                                          color: AppColors.white,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 2),
-                                      Text(
-                                        'Todo ilimitado · 7 días gratis',
-                                        style: GoogleFonts.urbanist(
-                                          fontSize: 12,
-                                          color: AppColors.white
-                                              .withValues(alpha: 0.45),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 2),
-                                      Text(
-                                        r'$1.92/Semana',
-                                        style: GoogleFonts.urbanist(
-                                          fontSize: 11,
-                                          color: AppColors.white
-                                              .withValues(alpha: 0.35),
-                                        ),
-                                      ),
+                                      Text('Mensual', style: GoogleFonts.urbanist(fontSize: Responsive.sp(17), fontWeight: FontWeight.w700, color: AppColors.white)),
+                                      SizedBox(height: Responsive.h(2)),
+                                      Text('Todo ilimitado · 7 días gratis', style: GoogleFonts.urbanist(fontSize: Responsive.sp(12), color: AppColors.white.withValues(alpha: 0.45))),
+                                      SizedBox(height: Responsive.h(2)),
+                                      Text(r'$1.92/Semana', style: GoogleFonts.urbanist(fontSize: Responsive.sp(11), color: AppColors.white.withValues(alpha: 0.35))),
                                     ],
                                   ),
                                 ),
-                                Text(
-                                  r'$7.99/mes',
-                                  style: GoogleFonts.urbanist(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.white
-                                        .withValues(alpha: 0.60),
-                                  ),
-                                ),
+                                Text(r'$7.99/mes', style: GoogleFonts.urbanist(fontSize: Responsive.sp(16), fontWeight: FontWeight.w600, color: AppColors.white.withValues(alpha: 0.60))),
                               ],
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: Responsive.h(10)),
 
-                          // Card 2 — Semanal
                           _PlanCard(
                             isSelected: _selectedPlan == 2,
                             onTap: () => setState(() => _selectedPlan = 2),
@@ -2415,62 +2321,32 @@ class _Page8PaywallState extends State<_Page8Paywall> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        'Semanal',
-                                        style: GoogleFonts.urbanist(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w700,
-                                          color: AppColors.white,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 2),
-                                      Text(
-                                        'Ideal para probar · Sin compromiso',
-                                        style: GoogleFonts.urbanist(
-                                          fontSize: 12,
-                                          color: AppColors.white
-                                              .withValues(alpha: 0.45),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 2),
-                                      Text(
-                                        'Facturado cada semana',
-                                        style: GoogleFonts.urbanist(
-                                          fontSize: 11,
-                                          color: AppColors.white
-                                              .withValues(alpha: 0.35),
-                                        ),
-                                      ),
+                                      Text('Semanal', style: GoogleFonts.urbanist(fontSize: Responsive.sp(17), fontWeight: FontWeight.w700, color: AppColors.white)),
+                                      SizedBox(height: Responsive.h(2)),
+                                      Text('Ideal para probar · Sin compromiso', style: GoogleFonts.urbanist(fontSize: Responsive.sp(12), color: AppColors.white.withValues(alpha: 0.45))),
+                                      SizedBox(height: Responsive.h(2)),
+                                      Text('Facturado cada semana', style: GoogleFonts.urbanist(fontSize: Responsive.sp(11), color: AppColors.white.withValues(alpha: 0.35))),
                                     ],
                                   ),
                                 ),
-                                Text(
-                                  r'$3.99/sem',
-                                  style: GoogleFonts.urbanist(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.white
-                                        .withValues(alpha: 0.60),
-                                  ),
-                                ),
+                                Text(r'$3.99/sem', style: GoogleFonts.urbanist(fontSize: Responsive.sp(16), fontWeight: FontWeight.w600, color: AppColors.white.withValues(alpha: 0.60))),
                               ],
                             ),
                           ),
                         ]),
-                        const SizedBox(height: 14),
+                        SizedBox(height: Responsive.h(14)),
 
-                        // Trial guarantee note
                         Center(
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Icon(LucideIcons.shieldCheck,
-                                  color: AppColors.mint, size: 14),
-                              const SizedBox(width: 6),
+                              Icon(LucideIcons.shieldCheck,
+                                  color: AppColors.mint, size: Responsive.w(14)),
+                              SizedBox(width: Responsive.w(6)),
                               Text(
                                 '7 días gratis · Prueba sin riesgo, cancela cuando quieras',
                                 style: GoogleFonts.urbanist(
-                                  fontSize: 11,
+                                  fontSize: Responsive.sp(11),
                                   color: AppColors.white
                                       .withValues(alpha: 0.55),
                                 ),
@@ -2478,9 +2354,8 @@ class _Page8PaywallState extends State<_Page8Paywall> {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 12),
+                        SizedBox(height: Responsive.h(12)),
 
-                        // CTA
                         _GradientButton(
                           label: 'Comenzar mi transformación',
                           gradient: AppGradients.primaryButton,
@@ -2488,35 +2363,34 @@ class _Page8PaywallState extends State<_Page8Paywall> {
                           shadowColor:
                               AppColors.primary.withValues(alpha: 0.45),
                           icon: LucideIcons.sparkles,
-                          height: 56,
+                          height: Responsive.h(56),
                           cornerRadius: 16,
                           onTap: widget.onNext,
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: Responsive.h(8)),
 
                         Center(
                           child: Text(
                             'Esta invitación es solo para nuevos miembros',
                             style: GoogleFonts.urbanist(
-                              fontSize: 12,
+                              fontSize: Responsive.sp(12),
                               color: AppColors.white.withValues(alpha: 0.40),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: Responsive.h(4)),
 
                         Center(
                           child: Text(
                             'Garantía de satisfacción · Comenzará 2 hrs en...',
                             style: GoogleFonts.urbanist(
-                              fontSize: 11,
+                              fontSize: Responsive.sp(11),
                               color: AppColors.white.withValues(alpha: 0.30),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: Responsive.h(8)),
 
-                        // Skip
                         Center(
                           child: _SkipLink(
                             onTap: widget.onNext,
@@ -2524,19 +2398,19 @@ class _Page8PaywallState extends State<_Page8Paywall> {
                                 'Ahora no, quiero explorar primero',
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: Responsive.h(8)),
 
                         Center(
                           child: Text(
                             'Al continuar aceptas los Términos y Política de Privacidad',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.urbanist(
-                              fontSize: 10,
+                              fontSize: Responsive.sp(10),
                               color: AppColors.white.withValues(alpha: 0.25),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: Responsive.h(8)),
                       ],
                     ),
                   ),
@@ -2572,7 +2446,7 @@ class _PlanCard extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        padding: EdgeInsets.symmetric(horizontal: Responsive.w(20), vertical: Responsive.h(16)),
         decoration: BoxDecoration(
           color: isSelected
               ? AppColors.primary.withValues(alpha: 0.06)
@@ -2604,15 +2478,14 @@ class _Page9FinalWelcome extends StatelessWidget {
       child: SafeArea(
         child: Stack(
           children: [
-            // Purple glow top-center
             Positioned(
-              top: -30,
+              top: Responsive.h(-30),
               left: 0,
               right: 0,
               child: Center(
                 child: Container(
-                  width: 360,
-                  height: 360,
+                  width: Responsive.w(360),
+                  height: Responsive.w(360),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: RadialGradient(
@@ -2625,14 +2498,12 @@ class _Page9FinalWelcome extends StatelessWidget {
                 ),
               ),
             ),
-
-            // Amber glow bottom-right
             Positioned(
-              bottom: 40,
-              right: -30,
+              bottom: Responsive.h(40),
+              right: Responsive.w(-30),
               child: Container(
-                width: 240,
-                height: 240,
+                width: Responsive.w(240),
+                height: Responsive.w(240),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
@@ -2644,137 +2515,132 @@ class _Page9FinalWelcome extends StatelessWidget {
                 ),
               ),
             ),
-
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-              child: Column(
-                children: [
-                  const SizedBox(height: 12),
-
-                  // Progress bar: all 7 colored
-                  _ProgressBar(
-                    segmentColors: [
-                      AppColors.primary,
-                      AppColors.primary,
-                      AppColors.primary,
-                      AppColors.primary,
-                      AppColors.primary,
-                      AppColors.amber,
-                      AppColors.mint,
-                    ],
-                  ),
-
-                  const Spacer(),
-
-                  // Logo 120x120
-                  Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.primary.withValues(alpha: 0.50),
-                          blurRadius: 40,
-                          spreadRadius: 4,
-                        ),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  padding: EdgeInsets.fromLTRB(Responsive.w(24), 0, Responsive.w(24), Responsive.h(24)),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: constraints.maxHeight - Responsive.h(24)),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(children: [
+                          SizedBox(height: Responsive.h(12)),
+                          _ProgressBar(
+                            segmentColors: [
+                              AppColors.primary,
+                              AppColors.primary,
+                              AppColors.primary,
+                              AppColors.primary,
+                              AppColors.primary,
+                              AppColors.amber,
+                              AppColors.mint,
+                            ],
+                          ),
+                        ]),
+                        Column(children: [
+                          SizedBox(height: Responsive.h(24)),
+                          Container(
+                            width: Responsive.w(120),
+                            height: Responsive.w(120),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.primary.withValues(alpha: 0.50),
+                                  blurRadius: 40,
+                                  spreadRadius: 4,
+                                ),
+                              ],
+                            ),
+                            child: ClipOval(
+                              child: Image.asset('assets/images/logomantra.png', fit: BoxFit.cover),
+                            ),
+                          ),
+                          SizedBox(height: Responsive.h(20)),
+                          Text(
+                            'TU TRIBU TE DA LA BIENVENIDA',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.urbanist(
+                              fontSize: Responsive.sp(13),
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.primaryLight,
+                              letterSpacing: 3,
+                            ),
+                          ),
+                          SizedBox(height: Responsive.h(12)),
+                          Text(
+                            'Ahora eres parte\nde algo más grande',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.urbanist(
+                              fontSize: Responsive.sp(34),
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.white,
+                              height: 1.1,
+                            ),
+                          ),
+                          SizedBox(height: Responsive.h(14)),
+                          Text(
+                            '52,000+ almas despiertas te acompañan.\nTu transformación comienza con el primer paso.',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.urbanist(
+                              fontSize: Responsive.sp(14),
+                              color: AppColors.white.withValues(alpha: 0.50),
+                              height: 1.5,
+                            ),
+                          ),
+                          SizedBox(height: Responsive.h(28)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              _FeatureChip(
+                                icon: LucideIcons.sparkles,
+                                iconColor: AppColors.primaryLight,
+                                label: 'Mantras',
+                              ),
+                              SizedBox(width: Responsive.w(12)),
+                              _FeatureChip(
+                                icon: LucideIcons.users,
+                                iconColor: AppColors.mint,
+                                label: 'Comunidad',
+                              ),
+                              SizedBox(width: Responsive.w(12)),
+                              _FeatureChip(
+                                icon: LucideIcons.star,
+                                iconColor: AppColors.amber,
+                                label: 'Rituales',
+                              ),
+                            ],
+                          ),
+                        ]),
+                        Column(children: [
+                          SizedBox(height: Responsive.h(24)),
+                          _GradientButton(
+                            label: 'Entrar a mi santuario',
+                            gradient: AppGradients.primaryButton,
+                            textColor: AppColors.white,
+                            shadowColor: AppColors.primary.withValues(alpha: 0.45),
+                            icon: LucideIcons.home,
+                            height: Responsive.h(64),
+                            cornerRadius: 20,
+                            onTap: () => context.go('/home'),
+                          ),
+                          SizedBox(height: Responsive.h(12)),
+                          Text(
+                            'Tu tribu te espera — cada día es una nueva oportunidad',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.urbanist(
+                              fontSize: Responsive.sp(12),
+                              color: AppColors.white.withValues(alpha: 0.25),
+                            ),
+                          ),
+                          SizedBox(height: Responsive.h(8)),
+                        ]),
                       ],
                     ),
-                    child: ClipOval(
-                      child: Image.asset('assets/images/logomantra.png',
-                          fit: BoxFit.cover),
-                    ),
                   ),
-                  const SizedBox(height: 20),
-
-                  // Tagline
-                  Text(
-                    'TU TRIBU TE DA LA BIENVENIDA',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.urbanist(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.primaryLight,
-                      letterSpacing: 3,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-
-                  // Title
-                  Text(
-                    'Ahora eres parte\nde algo más grande',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.urbanist(
-                      fontSize: 34,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.white,
-                      height: 1.1,
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-
-                  // Subtitle
-                  Text(
-                    '52,000+ almas despiertas te acompañan.\nTu transformación comienza con el primer paso.',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.urbanist(
-                      fontSize: 14,
-                      color: AppColors.white.withValues(alpha: 0.50),
-                      height: 1.5,
-                    ),
-                  ),
-                  const SizedBox(height: 28),
-
-                  // 3 feature chips
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _FeatureChip(
-                        icon: LucideIcons.sparkles,
-                        iconColor: AppColors.primaryLight,
-                        label: 'Mantras',
-                      ),
-                      const SizedBox(width: 12),
-                      _FeatureChip(
-                        icon: LucideIcons.users,
-                        iconColor: AppColors.mint,
-                        label: 'Comunidad',
-                      ),
-                      const SizedBox(width: 12),
-                      _FeatureChip(
-                        icon: LucideIcons.star,
-                        iconColor: AppColors.amber,
-                        label: 'Rituales',
-                      ),
-                    ],
-                  ),
-
-                  const Spacer(),
-
-                  // CTA
-                  _GradientButton(
-                    label: 'Entrar a mi santuario',
-                    gradient: AppGradients.primaryButton,
-                    textColor: AppColors.white,
-                    shadowColor: AppColors.primary.withValues(alpha: 0.45),
-                    icon: LucideIcons.home,
-                    height: 64,
-                    cornerRadius: 20,
-                    onTap: () => context.go('/home'),
-                  ),
-                  const SizedBox(height: 12),
-
-                  Text(
-                    'Tu tribu te espera — cada día es una nueva oportunidad',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.urbanist(
-                      fontSize: 12,
-                      color: AppColors.white.withValues(alpha: 0.25),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                ],
-              ),
+                );
+              },
             ),
           ],
         ),
@@ -2797,8 +2663,8 @@ class _FeatureChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 72,
-      width: 90,
+      height: Responsive.h(72),
+      width: Responsive.w(90),
       decoration: BoxDecoration(
         color: const Color(0x14FFFFFF),
         borderRadius: BorderRadius.circular(16),
@@ -2806,12 +2672,12 @@ class _FeatureChip extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: iconColor, size: 22),
-          const SizedBox(height: 6),
+          Icon(icon, color: iconColor, size: Responsive.w(22)),
+          SizedBox(height: Responsive.h(6)),
           Text(
             label,
             style: GoogleFonts.urbanist(
-              fontSize: 12,
+              fontSize: Responsive.sp(12),
               fontWeight: FontWeight.w600,
               color: AppColors.white,
             ),

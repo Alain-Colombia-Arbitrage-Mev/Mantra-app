@@ -5,19 +5,21 @@ import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
 import '../widgets/screen_bg.dart';
 import '../services/revenuecat_service.dart';
+import '../utils/responsive.dart';
 
 class MyProfileScreen extends StatelessWidget {
   const MyProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundEnd,
       body: ScreenBg(
         child: SafeArea(
           bottom: false,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
+            padding: EdgeInsets.fromLTRB(Responsive.w(20), Responsive.h(20), Responsive.w(20), Responsive.h(40)),
             child: Column(
               children: [
                 // ── Header ──────────────────────────────────────────────
@@ -25,26 +27,26 @@ class MyProfileScreen extends StatelessWidget {
                   title: 'Mi Perfil',
                   showBack: true,
                   trailing: Container(
-                    width: 36,
-                    height: 36,
+                    width: Responsive.w(36),
+                    height: Responsive.w(36),
                     decoration: BoxDecoration(
                       color: AppColors.white.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                       border: Border.all(color: AppColors.surfaceBorderLight),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       LucideIcons.pencil,
                       color: Colors.white,
-                      size: 16,
+                      size: Responsive.w(16),
                     ),
                   ),
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: Responsive.h(32)),
 
                 // ── Avatar ───────────────────────────────────────────────
                 Container(
-                  width: 94,
-                  height: 94,
+                  width: Responsive.w(94),
+                  height: Responsive.w(94),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: const LinearGradient(
@@ -55,37 +57,37 @@ class MyProfileScreen extends StatelessWidget {
                     boxShadow: [
                       BoxShadow(
                         color: AppColors.primary.withValues(alpha: 0.4),
-                        blurRadius: 24,
-                        offset: const Offset(0, 8),
+                        blurRadius: Responsive.w(24),
+                        offset: Offset(0, Responsive.h(8)),
                       ),
                     ],
                   ),
-                  child: const Icon(LucideIcons.user, color: Colors.white, size: 42),
+                  child: Icon(LucideIcons.user, color: Colors.white, size: Responsive.w(42)),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: Responsive.h(16)),
                 Text(
                   'Tu Nombre',
                   style: GoogleFonts.urbanist(
-                    fontSize: 24,
+                    fontSize: Responsive.sp(24),
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: Responsive.h(4)),
                 Text(
                   'Exploradora de frecuencias · MANTRAS Pro',
                   style: GoogleFonts.urbanist(
-                    fontSize: 13,
+                    fontSize: Responsive.sp(13),
                     color: const Color(0xCCFFFFFF),
                   ),
                 ),
-                const SizedBox(height: 14),
+                SizedBox(height: Responsive.h(14)),
 
                 // ── Plan badge ───────────────────────────────────────────
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 8,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: Responsive.w(20),
+                    vertical: Responsive.h(8),
                   ),
                   decoration: BoxDecoration(
                     gradient: AppGradients.primaryButton,
@@ -93,8 +95,8 @@ class MyProfileScreen extends StatelessWidget {
                     boxShadow: [
                       BoxShadow(
                         color: AppColors.primary.withValues(alpha: 0.35),
-                        blurRadius: 12,
-                        offset: const Offset(0, 4),
+                        blurRadius: Responsive.w(12),
+                        offset: Offset(0, Responsive.h(4)),
                       ),
                     ],
                   ),
@@ -103,25 +105,25 @@ class MyProfileScreen extends StatelessWidget {
                         ? 'Plan Pro · Activo'
                         : 'Plan Gratuito',
                     style: GoogleFonts.urbanist(
-                      fontSize: 13,
+                      fontSize: Responsive.sp(13),
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
                   ),
                 ),
-                const SizedBox(height: 28),
+                SizedBox(height: Responsive.h(28)),
 
                 // ── Stats ────────────────────────────────────────────────
                 Row(
                   children: [
                     _StatCard(value: '47', label: 'Sesiones'),
-                    const SizedBox(width: 10),
+                    SizedBox(width: Responsive.w(10)),
                     _StatCard(value: '128h', label: 'Meditadas'),
-                    const SizedBox(width: 10),
+                    SizedBox(width: Responsive.w(10)),
                     _StatCard(value: '21', label: 'Días streak'),
                   ],
                 ),
-                const SizedBox(height: 28),
+                SizedBox(height: Responsive.h(28)),
 
                 // ── Settings ─────────────────────────────────────────────
                 _SectionBlock(
@@ -155,9 +157,9 @@ class MyProfileScreen extends StatelessWidget {
                           ? 'Suscripción · Pro'
                           : 'Suscripción · Gratis',
                       trailingExtra: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 3,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: Responsive.w(8),
+                          vertical: Responsive.h(3),
                         ),
                         decoration: BoxDecoration(
                           color: RevenueCatService.instance.isPro
@@ -168,7 +170,7 @@ class MyProfileScreen extends StatelessWidget {
                         child: Text(
                           RevenueCatService.instance.isPro ? 'Activo' : 'Gratis',
                           style: GoogleFonts.urbanist(
-                            fontSize: 11,
+                            fontSize: Responsive.sp(11),
                             fontWeight: FontWeight.w700,
                             color: RevenueCatService.instance.isPro
                                 ? AppColors.mint
@@ -187,14 +189,14 @@ class MyProfileScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 28),
+                SizedBox(height: Responsive.h(28)),
 
                 // ── Sign out ─────────────────────────────────────────────
                 GestureDetector(
                   onTap: () => context.go('/'),
                   child: Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    padding: EdgeInsets.symmetric(vertical: Responsive.h(16)),
                     decoration: BoxDecoration(
                       color: AppColors.danger.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(50),
@@ -205,16 +207,16 @@ class MyProfileScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
+                        Icon(
                           LucideIcons.logOut,
                           color: AppColors.danger,
-                          size: 18,
+                          size: Responsive.w(18),
                         ),
-                        const SizedBox(width: 10),
+                        SizedBox(width: Responsive.w(10)),
                         Text(
                           'Cerrar Sesión',
                           style: GoogleFonts.urbanist(
-                            fontSize: 16,
+                            fontSize: Responsive.sp(16),
                             fontWeight: FontWeight.w700,
                             color: AppColors.danger,
                           ),
@@ -242,7 +244,7 @@ class _StatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 14),
+        padding: EdgeInsets.symmetric(vertical: Responsive.h(14)),
         decoration: BoxDecoration(
           color: AppColors.surfaceLight,
           borderRadius: BorderRadius.circular(14),
@@ -253,16 +255,16 @@ class _StatCard extends StatelessWidget {
             Text(
               value,
               style: GoogleFonts.urbanist(
-                fontSize: 22,
+                fontSize: Responsive.sp(22),
                 fontWeight: FontWeight.w800,
                 color: Colors.white,
               ),
             ),
-            const SizedBox(height: 2),
+            SizedBox(height: Responsive.h(2)),
             Text(
               label,
               style: GoogleFonts.urbanist(
-                fontSize: 11,
+                fontSize: Responsive.sp(11),
                 color: const Color(0x60FFFFFF),
               ),
             ),
@@ -285,7 +287,7 @@ class _SectionBlock extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SectionLabel(label),
-        const SizedBox(height: 10),
+        SizedBox(height: Responsive.h(10)),
         Container(
           decoration: BoxDecoration(
             color: AppColors.surfaceLight,
@@ -319,24 +321,24 @@ class _ProfileRow extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        padding: EdgeInsets.symmetric(horizontal: Responsive.w(16), vertical: Responsive.h(14)),
         child: Row(
           children: [
             Container(
-              width: 36,
-              height: 36,
+              width: Responsive.w(36),
+              height: Responsive.w(36),
               decoration: BoxDecoration(
                 color: iconColor.withValues(alpha: 0.18),
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, color: iconColor, size: 17),
+              child: Icon(icon, color: iconColor, size: Responsive.w(17)),
             ),
-            const SizedBox(width: 14),
+            SizedBox(width: Responsive.w(14)),
             Expanded(
               child: Text(
                 title,
                 style: GoogleFonts.urbanist(
-                  fontSize: 15,
+                  fontSize: Responsive.sp(15),
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
                 ),
@@ -344,12 +346,12 @@ class _ProfileRow extends StatelessWidget {
             ),
             if (trailingExtra != null) ...[
               trailingExtra!,
-              const SizedBox(width: 8),
+              SizedBox(width: Responsive.w(8)),
             ],
-            const Icon(
+            Icon(
               LucideIcons.chevronRight,
               color: AppColors.textTertiary,
-              size: 18,
+              size: Responsive.w(18),
             ),
           ],
         ),
@@ -365,7 +367,7 @@ class _RowDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 1,
-      margin: const EdgeInsets.only(left: 66),
+      margin: EdgeInsets.only(left: Responsive.w(66)),
       color: AppColors.white.withValues(alpha: 0.07),
     );
   }

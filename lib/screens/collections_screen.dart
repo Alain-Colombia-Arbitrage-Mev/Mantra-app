@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
+import '../utils/responsive.dart';
 import '../widgets/screen_bg.dart';
 
 class CollectionsScreen extends StatelessWidget {
@@ -10,6 +11,7 @@ class CollectionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundEnd,
       extendBody: true,
@@ -17,7 +19,7 @@ class CollectionsScreen extends StatelessWidget {
         child: SafeArea(
           bottom: false,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 48),
+            padding: EdgeInsets.fromLTRB(Responsive.pagePadding, Responsive.h(20), Responsive.pagePadding, Responsive.h(48)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -26,8 +28,8 @@ class CollectionsScreen extends StatelessWidget {
                   title: 'Mis Colecciones',
                   showBack: true,
                   trailing: Container(
-                    width: 36,
-                    height: 36,
+                    width: Responsive.w(36),
+                    height: Responsive.w(36),
                     decoration: BoxDecoration(
                       color: AppColors.primary.withValues(alpha: 0.15),
                       shape: BoxShape.circle,
@@ -35,25 +37,25 @@ class CollectionsScreen extends StatelessWidget {
                         color: AppColors.primary.withValues(alpha: 0.4),
                       ),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       LucideIcons.plus,
                       color: AppColors.primary,
-                      size: 18,
+                      size: Responsive.w(18),
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: Responsive.h(24)),
 
                 // ── Section label ────────────────────────────────────────
                 const SectionLabel('PROGRAMAS DE BIO-HACKING'),
-                const SizedBox(height: 14),
+                SizedBox(height: Responsive.h(14)),
 
                 // ── Featured card ────────────────────────────────────────
                 GestureDetector(
                   onTap: () => context.push('/playlist-detail'),
                   child: _FeaturedCard(),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: Responsive.h(24)),
 
                 // ── Track list ───────────────────────────────────────────
                 _TrackItem(
@@ -66,7 +68,7 @@ class CollectionsScreen extends StatelessWidget {
                   actionColor: AppColors.primary,
                   isPlaying: false,
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: Responsive.h(10)),
                 _TrackItem(
                   thumbColor: const Color(0x666C5CE7),
                   icon: LucideIcons.brain,
@@ -77,7 +79,7 @@ class CollectionsScreen extends StatelessWidget {
                   actionColor: AppColors.primaryLight,
                   isPlaying: true,
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: Responsive.h(10)),
                 _TrackItem(
                   thumbColor: const Color(0x3355EFC4),
                   icon: LucideIcons.zap,
@@ -103,7 +105,7 @@ class _FeaturedCard extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: SizedBox(
-        height: 156,
+        height: Responsive.h(156),
         width: double.infinity,
         child: Stack(
           fit: StackFit.expand,
@@ -124,7 +126,7 @@ class _FeaturedCard extends StatelessWidget {
             ),
             // Content
             Padding(
-              padding: const EdgeInsets.all(18),
+              padding: EdgeInsets.all(Responsive.w(18)),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -136,27 +138,27 @@ class _FeaturedCard extends StatelessWidget {
                         Text(
                           'Activación de Ondas Theta',
                           style: GoogleFonts.urbanist(
-                            fontSize: 16,
+                            fontSize: Responsive.sp(16),
                             fontWeight: FontWeight.w700,
                             color: Colors.white,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: Responsive.h(4)),
                         Text(
                           'Bio-Hacking · 3 sesiones · 95 min',
                           style: GoogleFonts.urbanist(
-                            fontSize: 12,
+                            fontSize: Responsive.sp(12),
                             color: AppColors.textTertiary,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: Responsive.w(12)),
                   // Glass play button
                   Container(
-                    width: 40,
-                    height: 40,
+                    width: Responsive.w(40),
+                    height: Responsive.w(40),
                     decoration: BoxDecoration(
                       color: AppColors.white.withValues(alpha: 0.15),
                       shape: BoxShape.circle,
@@ -164,10 +166,10 @@ class _FeaturedCard extends StatelessWidget {
                         color: AppColors.white.withValues(alpha: 0.3),
                       ),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       LucideIcons.play,
                       color: Colors.white,
-                      size: 18,
+                      size: Responsive.w(18),
                     ),
                   ),
                 ],
@@ -206,7 +208,7 @@ class _TrackItem extends StatelessWidget {
     return GestureDetector(
       onTap: () => context.push('/player'),
       child: Container(
-      padding: const EdgeInsets.all(14),
+      padding: EdgeInsets.all(Responsive.w(14)),
       decoration: BoxDecoration(
         color: isPlaying
             ? AppColors.primary.withValues(alpha: 0.12)
@@ -222,15 +224,15 @@ class _TrackItem extends StatelessWidget {
         children: [
           // Thumbnail
           Container(
-            width: 52,
-            height: 52,
+            width: Responsive.w(52),
+            height: Responsive.w(52),
             decoration: BoxDecoration(
               color: thumbColor,
               borderRadius: BorderRadius.circular(14),
             ),
-            child: Icon(icon, color: iconColor, size: 22),
+            child: Icon(icon, color: iconColor, size: Responsive.w(22)),
           ),
-          const SizedBox(width: 14),
+          SizedBox(width: Responsive.w(14)),
           // Text
           Expanded(
             child: Column(
@@ -239,24 +241,24 @@ class _TrackItem extends StatelessWidget {
                 Text(
                   title,
                   style: GoogleFonts.urbanist(
-                    fontSize: 14,
+                    fontSize: Responsive.sp(14),
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 3),
+                SizedBox(height: Responsive.h(3)),
                 Text(
                   subtitle,
                   style: GoogleFonts.urbanist(
-                    fontSize: 12,
+                    fontSize: Responsive.sp(12),
                     color: AppColors.textTertiary,
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 10),
-          Icon(actionIcon, color: actionColor, size: 30),
+          SizedBox(width: Responsive.w(10)),
+          Icon(actionIcon, color: actionColor, size: Responsive.w(30)),
         ],
       ),
     ),

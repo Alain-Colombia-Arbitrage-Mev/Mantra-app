@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/responsive.dart';
 import '../widgets/bottom_nav.dart';
 import 'home_tab.dart';
 import 'meditate_tab.dart';
@@ -29,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       // backgroundColor is transparent so each tab's ScreenBg shows through.
       backgroundColor: Colors.black,

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../widgets/screen_bg.dart';
+import '../utils/responsive.dart';
 
 class MeditateTab extends StatelessWidget {
   const MeditateTab({super.key});
@@ -13,25 +14,25 @@ class MeditateTab extends StatelessWidget {
       child: SafeArea(
         bottom: false,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
+          padding: EdgeInsets.fromLTRB(Responsive.w(16), 0, Responsive.w(16), Responsive.bottomNavPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 54),
+              SizedBox(height: Responsive.h(16)),
 
               // ── Header ───────────────────────────────────────────────
               Row(
                 children: [
-                  const Icon(
+                  Icon(
                     LucideIcons.chevronLeft,
                     color: Colors.white,
-                    size: 24,
+                    size: Responsive.w(24),
                   ),
-                  const SizedBox(width: 52),
+                  SizedBox(width: Responsive.w(52)),
                   Text(
                     'Meditar',
                     style: GoogleFonts.urbanist(
-                      fontSize: 24,
+                      fontSize: Responsive.sp(24),
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
@@ -39,85 +40,85 @@ class MeditateTab extends StatelessWidget {
                   const Spacer(),
                   GestureDetector(
                     onTap: () => context.push('/search'),
-                    child: const Icon(
+                    child: Icon(
                       LucideIcons.slidersHorizontal,
-                      color: Color(0xCCFFFFFF),
-                      size: 24,
+                      color: const Color(0xCCFFFFFF),
+                      size: Responsive.w(24),
                     ),
                   ),
                 ],
               ),
 
-              const SizedBox(height: 64), // y:118 - y:54 = 64
+              SizedBox(height: Responsive.h(24)),
 
               // ── Recommended label ────────────────────────────────────
               Text(
                 '⚡ RECOMENDADO POR TU PERFIL CEREBRAL',
                 style: GoogleFonts.urbanist(
-                  fontSize: 12,
+                  fontSize: Responsive.sp(12),
                   fontWeight: FontWeight.w600,
                   letterSpacing: 1.5,
                   color: const Color(0x99FFFFFF),
                 ),
               ),
 
-              const SizedBox(height: 22), // y:140 - y:118 = 22
+              SizedBox(height: Responsive.h(22)),
 
               // ── Featured card ────────────────────────────────────────
               GestureDetector(
                 onTap: () => context.push('/player'),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                  padding: EdgeInsets.symmetric(horizontal: Responsive.w(16), vertical: Responsive.h(20)),
                   decoration: BoxDecoration(
                     color: const Color(0xCC6C5CE7),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(Responsive.w(20)),
                   ),
                   child: Row(
                     children: [
-                      const Icon(LucideIcons.sparkles, color: Color(0xFFFFEAA7), size: 28),
-                      const SizedBox(width: 14),
+                      Icon(LucideIcons.sparkles, color: const Color(0xFFFFEAA7), size: Responsive.w(28)),
+                      SizedBox(width: Responsive.w(14)),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Activa la Abundancia · Ondas Theta',
-                              style: GoogleFonts.urbanist(fontSize: 15, fontWeight: FontWeight.w700, color: Colors.white),
+                              style: GoogleFonts.urbanist(fontSize: Responsive.sp(15), fontWeight: FontWeight.w700, color: Colors.white),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: Responsive.h(4)),
                             Text(
                               '12 min · Theta 4-7Hz · ★4.8 · 2.3k bio-hackers',
-                              style: GoogleFonts.urbanist(fontSize: 13, color: const Color(0xCCFFEAA7)),
+                              style: GoogleFonts.urbanist(fontSize: Responsive.sp(13), color: const Color(0xCCFFEAA7)),
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: Responsive.w(10)),
                       Container(
-                        width: 36,
-                        height: 36,
+                        width: Responsive.w(36),
+                        height: Responsive.w(36),
                         decoration: const BoxDecoration(color: Color(0x33FFFFFF), shape: BoxShape.circle),
-                        child: const Icon(LucideIcons.play, color: Colors.white, size: 18),
+                        child: Icon(LucideIcons.play, color: Colors.white, size: Responsive.w(18)),
                       ),
                     ],
                   ),
                 ),
               ),
 
-              const SizedBox(height: 114), // y:254 - y:140 = 114
+              SizedBox(height: Responsive.h(28)),
 
               // ── Grid label ───────────────────────────────────────────
               Text(
                 '¿QUÉ DESEAS REPROGRAMAR HOY?',
                 style: GoogleFonts.urbanist(
-                  fontSize: 12,
+                  fontSize: Responsive.sp(12),
                   fontWeight: FontWeight.w600,
                   letterSpacing: 1.5,
                   color: const Color(0x99FFFFFF),
                 ),
               ),
 
-              const SizedBox(height: 24), // y:278 - y:254 = 24
+              SizedBox(height: Responsive.h(24)),
 
               // ── Grid Row 1 ───────────────────────────────────────────
               Row(
@@ -133,7 +134,7 @@ class MeditateTab extends StatelessWidget {
                       stateColor: const Color(0xCCF9A826),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: Responsive.w(12)),
                   Expanded(
                     child: _MeditateCard(
                       icon: LucideIcons.crosshair,
@@ -145,7 +146,7 @@ class MeditateTab extends StatelessWidget {
                       stateColor: const Color(0xCC00CEC9),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: Responsive.w(12)),
                   Expanded(
                     child: _MeditateCard(
                       icon: LucideIcons.heart,
@@ -160,7 +161,7 @@ class MeditateTab extends StatelessWidget {
                 ],
               ),
 
-              const SizedBox(height: 12),
+              SizedBox(height: Responsive.h(12)),
 
               // ── Grid Row 2 ────────────────────────────────────────────
               Row(
@@ -176,7 +177,7 @@ class MeditateTab extends StatelessWidget {
                       stateColor: const Color(0xCCA29BFE),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: Responsive.w(12)),
                   Expanded(
                     child: _MeditateCard(
                       icon: LucideIcons.infinity,
@@ -188,7 +189,7 @@ class MeditateTab extends StatelessWidget {
                       stateColor: const Color(0xCC6C5CE7),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: Responsive.w(12)),
                   Expanded(
                     child: _MeditateCard(
                       icon: LucideIcons.zap,
@@ -202,31 +203,31 @@ class MeditateTab extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: Responsive.h(24)),
 
               // ── Método Silva banner ───────────────────────────────────
               GestureDetector(
                 onTap: () => context.push('/silva'),
                 child: Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 14),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: Responsive.w(16), vertical: Responsive.h(14)),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                       colors: [Color(0xCC008180), Color(0xCC6C5CE7)],
                     ),
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(Responsive.w(16)),
                   ),
                   child: Row(
                     children: [
-                      const Icon(
+                      Icon(
                         LucideIcons.brain,
-                        color: Color(0xFF55EFC4),
-                        size: 24,
+                        color: const Color(0xFF55EFC4),
+                        size: Responsive.w(24),
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: Responsive.w(12)),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -234,7 +235,7 @@ class MeditateTab extends StatelessWidget {
                             Text(
                               'Método Silva',
                               style: GoogleFonts.urbanist(
-                                fontSize: 15,
+                                fontSize: Responsive.sp(15),
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white,
                               ),
@@ -242,17 +243,17 @@ class MeditateTab extends StatelessWidget {
                             Text(
                               '6 técnicas de control mental',
                               style: GoogleFonts.urbanist(
-                                fontSize: 12,
+                                fontSize: Responsive.sp(12),
                                 color: const Color(0xCCFFFFFF),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      const Icon(
+                      Icon(
                         LucideIcons.chevronRight,
                         color: Colors.white,
-                        size: 18,
+                        size: Responsive.w(18),
                       ),
                     ],
                   ),
@@ -290,28 +291,26 @@ class _MeditateCard extends StatelessWidget {
     return GestureDetector(
       onTap: () => context.push('/player'),
       child: Container(
-      height: 120,
+      height: Responsive.h(120),
       decoration: BoxDecoration(
         color: fill,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(Responsive.w(20)),
       ),
       child: Stack(
         children: [
-          // Icon at (16, 16)
           Positioned(
-            left: 16,
-            top: 16,
-            child: Icon(icon, color: iconColor, size: 28),
+            left: Responsive.w(16),
+            top: Responsive.h(16),
+            child: Icon(icon, color: iconColor, size: Responsive.w(28)),
           ),
-          // Title at (12, 56)
           Positioned(
-            left: 12,
-            top: 56,
-            right: 4,
+            left: Responsive.w(12),
+            top: Responsive.h(56),
+            right: Responsive.w(4),
             child: Text(
               title,
               style: GoogleFonts.urbanist(
-                fontSize: 14,
+                fontSize: Responsive.sp(14),
                 fontWeight: FontWeight.w700,
                 color: Colors.white,
               ),
@@ -319,30 +318,28 @@ class _MeditateCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          // Subtitle at (12, 76)
           Positioned(
-            left: 12,
-            top: 76,
-            right: 4,
+            left: Responsive.w(12),
+            top: Responsive.h(76),
+            right: Responsive.w(4),
             child: Text(
               subtitle,
               style: GoogleFonts.urbanist(
-                fontSize: 11,
+                fontSize: Responsive.sp(11),
                 color: const Color(0xAAFFFFFF),
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          // State text at (12, 96)
           Positioned(
-            left: 12,
-            top: 96,
-            right: 4,
+            left: Responsive.w(12),
+            top: Responsive.h(96),
+            right: Responsive.w(4),
             child: Text(
               stateText,
               style: GoogleFonts.urbanist(
-                fontSize: 10,
+                fontSize: Responsive.sp(10),
                 color: stateColor,
               ),
               maxLines: 1,

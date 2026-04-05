@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import '../utils/responsive.dart';
 
 class SilvaMirrorScreen extends StatelessWidget {
   const SilvaMirrorScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
@@ -25,13 +27,13 @@ class SilvaMirrorScreen extends StatelessWidget {
 
           // ── Purple glow ─────────────────────────────────────────────
           Positioned(
-            top: -60,
+            top: Responsive.h(-60),
             left: 0,
             right: 0,
             child: Center(
               child: Container(
-                width: 340,
-                height: 340,
+                width: Responsive.w(340),
+                height: Responsive.w(340),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
@@ -48,7 +50,8 @@ class SilvaMirrorScreen extends StatelessWidget {
           // ── Content ─────────────────────────────────────────────────
           SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+              padding: EdgeInsets.fromLTRB(
+                  Responsive.w(20), 0, Responsive.w(20), Responsive.h(32)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -58,60 +61,61 @@ class SilvaMirrorScreen extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () => Navigator.pop(context),
                       child: Container(
-                        width: 36,
-                        height: 36,
-                        margin: const EdgeInsets.only(top: 12),
+                        width: Responsive.w(36),
+                        height: Responsive.w(36),
+                        margin: EdgeInsets.only(top: Responsive.h(12)),
                         decoration: BoxDecoration(
                           color: const Color(0x15FFFFFF),
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius:
+                              BorderRadius.circular(Responsive.w(10)),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           LucideIcons.x,
                           color: Colors.white,
-                          size: 18,
+                          size: Responsive.w(18),
                         ),
                       ),
                     ),
                   ),
 
-                  const SizedBox(height: 8),
+                  SizedBox(height: Responsive.h(8)),
 
                   // Label
                   Text(
                     'ESPEJO DE LA MENTE',
                     style: GoogleFonts.urbanist(
-                      fontSize: 11,
+                      fontSize: Responsive.sp(11),
                       fontWeight: FontWeight.w700,
                       letterSpacing: 2,
                       color: const Color(0xCCA29BFE),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: Responsive.h(10)),
 
                   // Title
                   Text(
                     'Visualiza tu\ntransformación',
                     textAlign: TextAlign.center,
                     style: GoogleFonts.urbanist(
-                      fontSize: 28,
+                      fontSize: Responsive.sp(28),
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                       height: 1.15,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: Responsive.h(8)),
 
                   // Subtitle
                   Text(
                     'Imagina el problema a la izquierda.\nAhora desliza y visualiza la solución.',
                     style: GoogleFonts.urbanist(
-                      fontSize: 14,
+                      fontSize: Responsive.sp(14),
                       color: const Color(0x80FFFFFF),
                       height: 1.5,
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: Responsive.h(24)),
 
                   // ── Two cards ─────────────────────────────────────────
                   Row(
@@ -120,11 +124,12 @@ class SilvaMirrorScreen extends StatelessWidget {
                       // ANTES card
                       Expanded(
                         child: Container(
-                          height: 280,
-                          padding: const EdgeInsets.all(16),
+                          height: Responsive.h(280),
+                          padding: EdgeInsets.all(Responsive.w(16)),
                           decoration: BoxDecoration(
                             color: const Color(0x0AFFFFFF),
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius:
+                                BorderRadius.circular(Responsive.w(16)),
                             border: Border.all(
                               color: const Color(0x40FF6B6B),
                               width: 1.5,
@@ -136,41 +141,42 @@ class SilvaMirrorScreen extends StatelessWidget {
                               Text(
                                 'ANTES',
                                 style: GoogleFonts.urbanist(
-                                  fontSize: 10,
+                                  fontSize: Responsive.sp(10),
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: 1.5,
                                   color: const Color(0xFFFF6B6B),
                                 ),
                               ),
-                              const SizedBox(height: 12),
-                              const Icon(
+                              SizedBox(height: Responsive.h(12)),
+                              Icon(
                                 LucideIcons.cloudRain,
-                                color: Color(0xFFFF6B6B),
-                                size: 32,
+                                color: const Color(0xFFFF6B6B),
+                                size: Responsive.w(32),
                               ),
                               const Spacer(),
                               Text(
                                 'El problema que quieres resolver',
                                 style: GoogleFonts.urbanist(
-                                  fontSize: 12,
+                                  fontSize: Responsive.sp(12),
                                   color: const Color(0x80FFFFFF),
                                   height: 1.4,
                                 ),
                               ),
-                              const SizedBox(height: 8),
+                              SizedBox(height: Responsive.h(8)),
                               Container(
                                 width: double.infinity,
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 8),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: Responsive.h(8)),
                                 decoration: BoxDecoration(
                                   color: const Color(0x15FF6B6B),
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(
+                                      Responsive.w(8)),
                                 ),
                                 child: Center(
                                   child: Text(
                                     'Toca para describir',
                                     style: GoogleFonts.urbanist(
-                                      fontSize: 11,
+                                      fontSize: Responsive.sp(11),
                                       color: const Color(0xCCFF6B6B),
                                     ),
                                   ),
@@ -183,18 +189,19 @@ class SilvaMirrorScreen extends StatelessWidget {
 
                       // Arrow
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: Responsive.w(8)),
                         child: Container(
-                          width: 32,
-                          height: 32,
-                          decoration: BoxDecoration(
-                            color: const Color(0x20FFFFFF),
+                          width: Responsive.w(32),
+                          height: Responsive.w(32),
+                          decoration: const BoxDecoration(
+                            color: Color(0x20FFFFFF),
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(
+                          child: Icon(
                             LucideIcons.arrowRight,
                             color: Colors.white,
-                            size: 16,
+                            size: Responsive.w(16),
                           ),
                         ),
                       ),
@@ -202,11 +209,12 @@ class SilvaMirrorScreen extends StatelessWidget {
                       // DESPUÉS card
                       Expanded(
                         child: Container(
-                          height: 280,
-                          padding: const EdgeInsets.all(16),
+                          height: Responsive.h(280),
+                          padding: EdgeInsets.all(Responsive.w(16)),
                           decoration: BoxDecoration(
                             color: const Color(0x0AFFFFFF),
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius:
+                                BorderRadius.circular(Responsive.w(16)),
                             border: Border.all(
                               color: const Color(0x4055EFC4),
                               width: 1.5,
@@ -218,41 +226,42 @@ class SilvaMirrorScreen extends StatelessWidget {
                               Text(
                                 'DESPUÉS',
                                 style: GoogleFonts.urbanist(
-                                  fontSize: 10,
+                                  fontSize: Responsive.sp(10),
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: 1.5,
                                   color: const Color(0xFF55EFC4),
                                 ),
                               ),
-                              const SizedBox(height: 12),
-                              const Icon(
+                              SizedBox(height: Responsive.h(12)),
+                              Icon(
                                 LucideIcons.checkCircle,
-                                color: Color(0xFF55EFC4),
-                                size: 32,
+                                color: const Color(0xFF55EFC4),
+                                size: Responsive.w(32),
                               ),
                               const Spacer(),
                               Text(
                                 'La solución ya resuelta en tu mente',
                                 style: GoogleFonts.urbanist(
-                                  fontSize: 12,
+                                  fontSize: Responsive.sp(12),
                                   color: const Color(0x80FFFFFF),
                                   height: 1.4,
                                 ),
                               ),
-                              const SizedBox(height: 8),
+                              SizedBox(height: Responsive.h(8)),
                               Container(
                                 width: double.infinity,
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 8),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: Responsive.h(8)),
                                 decoration: BoxDecoration(
                                   color: const Color(0x1555EFC4),
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(
+                                      Responsive.w(8)),
                                 ),
                                 child: Center(
                                   child: Text(
                                     'Toca para visualizar',
                                     style: GoogleFonts.urbanist(
-                                      fontSize: 11,
+                                      fontSize: Responsive.sp(11),
                                       color: const Color(0xCC55EFC4),
                                     ),
                                   ),
@@ -265,46 +274,48 @@ class SilvaMirrorScreen extends StatelessWidget {
                     ],
                   ),
 
-                  const SizedBox(height: 20),
+                  SizedBox(height: Responsive.h(20)),
 
                   // Step label
                   Text(
                     'PASO 1 DE 3',
                     style: GoogleFonts.urbanist(
-                      fontSize: 11,
+                      fontSize: Responsive.sp(11),
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.5,
                       color: const Color(0x80FFFFFF),
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  SizedBox(height: Responsive.h(6)),
                   Text(
                     'Visualiza con claridad el estado actual.\nDéjate sentir las emociones sin resistencia.',
                     style: GoogleFonts.urbanist(
-                      fontSize: 13,
+                      fontSize: Responsive.sp(13),
                       color: const Color(0x80FFFFFF),
                       height: 1.5,
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: Responsive.h(24)),
 
                   // CTA
                   Container(
                     width: double.infinity,
-                    height: 56,
+                    height: Responsive.h(56),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                         colors: [Color(0xFF6C5CE7), Color(0xFFA29BFE)],
                       ),
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius:
+                          BorderRadius.circular(Responsive.w(16)),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFF6C5CE7).withValues(alpha: 0.45),
-                          blurRadius: 20,
-                          offset: const Offset(0, 6),
+                          color: const Color(0xFF6C5CE7)
+                              .withValues(alpha: 0.45),
+                          blurRadius: Responsive.w(20),
+                          offset: Offset(0, Responsive.h(6)),
                         ),
                       ],
                     ),
@@ -312,7 +323,7 @@ class SilvaMirrorScreen extends StatelessWidget {
                       child: Text(
                         'Comenzar visualización',
                         style: GoogleFonts.urbanist(
-                          fontSize: 18,
+                          fontSize: Responsive.sp(18),
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                         ),
@@ -320,13 +331,13 @@ class SilvaMirrorScreen extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 16),
+                  SizedBox(height: Responsive.h(16)),
 
                   Center(
                     child: Text(
                       'Técnica del Espejo de la Mente · José Silva',
                       style: GoogleFonts.urbanist(
-                        fontSize: 11,
+                        fontSize: Responsive.sp(11),
                         color: const Color(0x40FFFFFF),
                       ),
                     ),

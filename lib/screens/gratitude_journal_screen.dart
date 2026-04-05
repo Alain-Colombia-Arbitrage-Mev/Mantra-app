@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
 import '../widgets/screen_bg.dart';
+import '../utils/responsive.dart';
 
 class GratitudeJournalScreen extends StatefulWidget {
   const GratitudeJournalScreen({super.key});
@@ -41,15 +42,17 @@ class _GratitudeJournalScreenState extends State<GratitudeJournalScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundEnd,
       body: ScreenBg(
         child: SafeArea(
           child: Column(
             children: [
-              // ── Header ──────────────────────────────────────────────
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                padding: EdgeInsets.fromLTRB(
+                  Responsive.w(20), Responsive.h(20), Responsive.w(20), 0,
+                ),
                 child: Row(
                   children: [
                     GestureDetector(
@@ -59,8 +62,8 @@ class _GratitudeJournalScreenState extends State<GratitudeJournalScreen> {
                         }
                       },
                       child: Container(
-                        width: 36,
-                        height: 36,
+                        width: Responsive.w(36),
+                        height: Responsive.w(36),
                         decoration: BoxDecoration(
                           color: AppColors.white.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
@@ -68,10 +71,10 @@ class _GratitudeJournalScreenState extends State<GratitudeJournalScreen> {
                             color: AppColors.surfaceBorderLight,
                           ),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           LucideIcons.chevronLeft,
                           color: Colors.white,
-                          size: 18,
+                          size: Responsive.w(18),
                         ),
                       ),
                     ),
@@ -80,7 +83,7 @@ class _GratitudeJournalScreenState extends State<GratitudeJournalScreen> {
                         'Diario de Gratitud',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.urbanist(
-                          fontSize: 17,
+                          fontSize: Responsive.sp(17),
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                         ),
@@ -89,8 +92,8 @@ class _GratitudeJournalScreenState extends State<GratitudeJournalScreen> {
                     GestureDetector(
                       onTap: () {},
                       child: Container(
-                        width: 36,
-                        height: 36,
+                        width: Responsive.w(36),
+                        height: Responsive.w(36),
                         decoration: BoxDecoration(
                           color: AppColors.white.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
@@ -98,10 +101,10 @@ class _GratitudeJournalScreenState extends State<GratitudeJournalScreen> {
                             color: AppColors.surfaceBorderLight,
                           ),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           LucideIcons.calendar,
                           color: Colors.white,
-                          size: 17,
+                          size: Responsive.w(17),
                         ),
                       ),
                     ),
@@ -110,16 +113,17 @@ class _GratitudeJournalScreenState extends State<GratitudeJournalScreen> {
               ),
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
+                  padding: EdgeInsets.fromLTRB(
+                    Responsive.w(20), Responsive.h(24), Responsive.w(20), Responsive.h(32),
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // ── Stats ────────────────────────────────────────
                       Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 14,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: Responsive.w(20),
+                          vertical: Responsive.h(14),
                         ),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
@@ -130,7 +134,7 @@ class _GratitudeJournalScreenState extends State<GratitudeJournalScreen> {
                               AppColors.amber.withValues(alpha: 0.08),
                             ],
                           ),
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(Responsive.w(16)),
                           border: Border.all(
                             color: AppColors.gold.withValues(alpha: 0.25),
                           ),
@@ -140,14 +144,14 @@ class _GratitudeJournalScreenState extends State<GratitudeJournalScreen> {
                             Icon(
                               LucideIcons.flame,
                               color: AppColors.gold,
-                              size: 20,
+                              size: Responsive.w(20),
                             ),
-                            const SizedBox(width: 10),
+                            SizedBox(width: Responsive.w(10)),
                             Expanded(
                               child: Text(
                                 '21 días escribiendo · Racha activa',
                                 style: GoogleFonts.urbanist(
-                                  fontSize: 14,
+                                  fontSize: Responsive.sp(14),
                                   fontWeight: FontWeight.w700,
                                   color: AppColors.gold,
                                 ),
@@ -155,26 +159,24 @@ class _GratitudeJournalScreenState extends State<GratitudeJournalScreen> {
                             ),
                             Text(
                               '🔥',
-                              style: const TextStyle(fontSize: 20),
+                              style: TextStyle(fontSize: Responsive.sp(20)),
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 24),
-
-                      // ── Today's entry ────────────────────────────────
+                      SizedBox(height: Responsive.h(24)),
                       Row(
                         children: [
                           Icon(
                             LucideIcons.sun,
                             color: AppColors.gold,
-                            size: 16,
+                            size: Responsive.w(16),
                           ),
-                          const SizedBox(width: 8),
+                          SizedBox(width: Responsive.w(8)),
                           Text(
                             'ENTRADA DE HOY',
                             style: GoogleFonts.urbanist(
-                              fontSize: 11,
+                              fontSize: Responsive.sp(11),
                               fontWeight: FontWeight.w700,
                               letterSpacing: 2.0,
                               color: AppColors.textTertiary,
@@ -184,45 +186,41 @@ class _GratitudeJournalScreenState extends State<GratitudeJournalScreen> {
                           Text(
                             '15 Mar 2026',
                             style: GoogleFonts.urbanist(
-                              fontSize: 12,
+                              fontSize: Responsive.sp(12),
                               color: AppColors.textMuted,
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 12),
-
-                      // ── 3 prompts ────────────────────────────────────
+                      SizedBox(height: Responsive.h(12)),
                       Text(
                         '3 cosas por las que agradeces hoy',
                         style: GoogleFonts.urbanist(
-                          fontSize: 16,
+                          fontSize: Responsive.sp(16),
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: Responsive.h(12)),
                       ...List.generate(3, (i) => _GratitudeInput(
                         number: i + 1,
                         hint: _prompts[i],
                         controller: _controllers[i],
                       )),
-                      const SizedBox(height: 16),
-
-                      // ── Save button ──────────────────────────────────
+                      SizedBox(height: Responsive.h(16)),
                       GestureDetector(
                         onTap: () {},
                         child: Container(
                           width: double.infinity,
-                          height: 52,
+                          height: Responsive.h(52),
                           decoration: BoxDecoration(
                             gradient: AppGradients.goldButton,
-                            borderRadius: BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(Responsive.w(14)),
                             boxShadow: [
                               BoxShadow(
                                 color: AppColors.gold.withValues(alpha: 0.35),
-                                blurRadius: 16,
-                                offset: const Offset(0, 6),
+                                blurRadius: Responsive.w(16),
+                                offset: Offset(0, Responsive.h(6)),
                               ),
                             ],
                           ),
@@ -230,7 +228,7 @@ class _GratitudeJournalScreenState extends State<GratitudeJournalScreen> {
                             child: Text(
                               'Guardar entrada de hoy',
                               style: GoogleFonts.urbanist(
-                                fontSize: 15,
+                                fontSize: Responsive.sp(15),
                                 fontWeight: FontWeight.w700,
                                 color: const Color(0xFF1A0A00),
                               ),
@@ -238,21 +236,17 @@ class _GratitudeJournalScreenState extends State<GratitudeJournalScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 28),
-
-                      // ── History label ────────────────────────────────
+                      SizedBox(height: Responsive.h(28)),
                       Text(
                         'HISTORIAL',
                         style: GoogleFonts.urbanist(
-                          fontSize: 11,
+                          fontSize: Responsive.sp(11),
                           fontWeight: FontWeight.w700,
                           letterSpacing: 2.0,
                           color: AppColors.textTertiary,
                         ),
                       ),
-                      const SizedBox(height: 12),
-
-                      // ── Past entries ─────────────────────────────────
+                      SizedBox(height: Responsive.h(12)),
                       ..._pastEntries.map((e) => _HistoryCard(entry: e)),
                     ],
                   ),
@@ -287,20 +281,20 @@ class _GratitudeInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: EdgeInsets.only(bottom: Responsive.h(10)),
       child: Container(
-        padding: const EdgeInsets.all(14),
+        padding: EdgeInsets.all(Responsive.w(14)),
         decoration: BoxDecoration(
           color: AppColors.white.withValues(alpha: 0.05),
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(Responsive.w(14)),
           border: Border.all(color: AppColors.surfaceBorderLight),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: 26,
-              height: 26,
+              width: Responsive.w(26),
+              height: Responsive.w(26),
               decoration: BoxDecoration(
                 color: AppColors.gold.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
@@ -312,26 +306,26 @@ class _GratitudeInput extends StatelessWidget {
                 child: Text(
                   '$number',
                   style: GoogleFonts.urbanist(
-                    fontSize: 12,
+                    fontSize: Responsive.sp(12),
                     fontWeight: FontWeight.w700,
                     color: AppColors.gold,
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: Responsive.w(12)),
             Expanded(
               child: TextField(
                 controller: controller,
                 style: GoogleFonts.urbanist(
-                  fontSize: 14,
+                  fontSize: Responsive.sp(14),
                   color: Colors.white,
                 ),
                 maxLines: null,
                 decoration: InputDecoration(
                   hintText: hint,
                   hintStyle: GoogleFonts.urbanist(
-                    fontSize: 13,
+                    fontSize: Responsive.sp(13),
                     color: AppColors.textMuted,
                   ),
                   border: InputBorder.none,
@@ -355,30 +349,30 @@ class _HistoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.only(bottom: Responsive.h(8)),
       child: Container(
-        padding: const EdgeInsets.all(14),
+        padding: EdgeInsets.all(Responsive.w(14)),
         decoration: BoxDecoration(
           color: AppColors.white.withValues(alpha: 0.04),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(Responsive.w(12)),
           border: Border.all(color: AppColors.surfaceBorderLight),
         ),
         child: Row(
           children: [
             Container(
-              width: 38,
-              height: 38,
+              width: Responsive.w(38),
+              height: Responsive.w(38),
               decoration: BoxDecoration(
                 color: AppColors.gold.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(Responsive.w(10)),
               ),
               child: Icon(
                 LucideIcons.bookOpen,
                 color: AppColors.gold,
-                size: 16,
+                size: Responsive.w(16),
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: Responsive.w(12)),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -386,16 +380,16 @@ class _HistoryCard extends StatelessWidget {
                   Text(
                     entry.date,
                     style: GoogleFonts.urbanist(
-                      fontSize: 11,
+                      fontSize: Responsive.sp(11),
                       fontWeight: FontWeight.w700,
                       color: AppColors.textMuted,
                     ),
                   ),
-                  const SizedBox(height: 3),
+                  SizedBox(height: Responsive.h(3)),
                   Text(
                     entry.preview,
                     style: GoogleFonts.urbanist(
-                      fontSize: 13,
+                      fontSize: Responsive.sp(13),
                       color: AppColors.textTertiary,
                     ),
                     maxLines: 1,
@@ -407,7 +401,7 @@ class _HistoryCard extends StatelessWidget {
             Icon(
               LucideIcons.chevronRight,
               color: AppColors.textMuted,
-              size: 16,
+              size: Responsive.w(16),
             ),
           ],
         ),

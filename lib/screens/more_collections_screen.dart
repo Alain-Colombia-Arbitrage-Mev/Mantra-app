@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
 import '../widgets/screen_bg.dart';
+import '../utils/responsive.dart';
 
-// Top-level data — keeps private types out of public class API.
 const List<_CollectionData> _popularCollections = [
   _CollectionData('Abundancia Total', '8 audios · 2h 30m', Color(0xFFFFD700)),
   _CollectionData('Sanación Profunda', '6 audios · 1h 45m', Color(0xFF55EFC4)),
@@ -23,12 +23,13 @@ class MoreCollectionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: const Color(0xEE0A0A1A),
       body: ScreenBg(
         child: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+            padding: EdgeInsets.fromLTRB(Responsive.w(20), Responsive.h(20), Responsive.w(20), Responsive.h(32)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -37,54 +38,54 @@ class MoreCollectionsScreen extends StatelessWidget {
                   title: 'Más Colecciones',
                   showBack: true,
                   trailing: Container(
-                    width: 36,
-                    height: 36,
+                    width: Responsive.w(36),
+                    height: Responsive.w(36),
                     decoration: BoxDecoration(
                       color: AppColors.white.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                       border: Border.all(color: AppColors.surfaceBorderLight),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       LucideIcons.slidersHorizontal,
                       color: Colors.white,
-                      size: 18,
+                      size: Responsive.w(18),
                     ),
                   ),
                 ),
-                const SizedBox(height: 28),
+                SizedBox(height: Responsive.h(28)),
 
                 // ── Popular collections ──────────────────────────────────
                 const SectionLabel('COLECCIONES POPULARES'),
-                const SizedBox(height: 12),
+                SizedBox(height: Responsive.h(12)),
 
                 ..._popularCollections.map((c) => Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
+                      padding: EdgeInsets.only(bottom: Responsive.h(10)),
                       child: _PopularCard(data: c),
                     )),
-                const SizedBox(height: 20),
+                SizedBox(height: Responsive.h(20)),
 
                 // ── User collections ─────────────────────────────────────
                 const SectionLabel('CREADOS POR TI'),
-                const SizedBox(height: 12),
+                SizedBox(height: Responsive.h(12)),
 
                 ..._userCollections.map((c) => Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
+                      padding: EdgeInsets.only(bottom: Responsive.h(10)),
                       child: _UserCollectionCard(data: c),
                     )),
-                const SizedBox(height: 20),
+                SizedBox(height: Responsive.h(20)),
 
                 // ── CTA ──────────────────────────────────────────────────
                 Container(
                   width: double.infinity,
-                  height: 56,
+                  height: Responsive.h(56),
                   decoration: BoxDecoration(
                     gradient: AppGradients.primaryButton,
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
                         color: AppColors.primary.withValues(alpha: 0.4),
-                        blurRadius: 20,
-                        offset: const Offset(0, 8),
+                        blurRadius: Responsive.w(20),
+                        offset: Offset(0, Responsive.h(8)),
                       ),
                     ],
                   ),
@@ -111,16 +112,16 @@ class MoreCollectionsScreen extends StatelessWidget {
                           Text(
                             'Crear nueva colección',
                             style: GoogleFonts.urbanist(
-                              fontSize: 16,
+                              fontSize: Responsive.sp(16),
                               fontWeight: FontWeight.w700,
                               color: Colors.white,
                             ),
                           ),
-                          const SizedBox(width: 10),
-                          const Icon(
+                          SizedBox(width: Responsive.w(10)),
+                          Icon(
                             LucideIcons.plus,
                             color: Colors.white,
-                            size: 20,
+                            size: Responsive.w(20),
                           ),
                         ],
                       ),
@@ -167,9 +168,8 @@ class _PopularCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Gradient accent bar
           Container(
-            width: 4,
+            width: Responsive.w(4),
             decoration: BoxDecoration(
               color: data.accent,
               borderRadius: const BorderRadius.only(
@@ -180,13 +180,12 @@ class _PopularCard extends StatelessWidget {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              padding: EdgeInsets.symmetric(horizontal: Responsive.w(16), vertical: Responsive.h(14)),
               child: Row(
                 children: [
-                  // Accent circle icon
                   Container(
-                    width: 44,
-                    height: 44,
+                    width: Responsive.w(44),
+                    height: Responsive.w(44),
                     decoration: BoxDecoration(
                       color: data.accent.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(10),
@@ -197,10 +196,10 @@ class _PopularCard extends StatelessWidget {
                     child: Icon(
                       LucideIcons.listMusic,
                       color: data.accent,
-                      size: 20,
+                      size: Responsive.w(20),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: Responsive.w(12)),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -208,16 +207,16 @@ class _PopularCard extends StatelessWidget {
                         Text(
                           data.title,
                           style: GoogleFonts.urbanist(
-                            fontSize: 15,
+                            fontSize: Responsive.sp(15),
                             fontWeight: FontWeight.w700,
                             color: Colors.white,
                           ),
                         ),
-                        const SizedBox(height: 3),
+                        SizedBox(height: Responsive.h(3)),
                         Text(
                           data.meta,
                           style: GoogleFonts.urbanist(
-                            fontSize: 12,
+                            fontSize: Responsive.sp(12),
                             color: AppColors.textTertiary,
                           ),
                         ),
@@ -227,7 +226,7 @@ class _PopularCard extends StatelessWidget {
                   Icon(
                     LucideIcons.chevronRight,
                     color: AppColors.textMuted,
-                    size: 20,
+                    size: Responsive.w(20),
                   ),
                 ],
               ),
@@ -247,12 +246,12 @@ class _UserCollectionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GlassCard(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      padding: EdgeInsets.symmetric(horizontal: Responsive.w(16), vertical: Responsive.h(14)),
       child: Row(
         children: [
           Container(
-            width: 44,
-            height: 44,
+            width: Responsive.w(44),
+            height: Responsive.w(44),
             decoration: BoxDecoration(
               color: AppColors.primaryLight.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(10),
@@ -260,9 +259,9 @@ class _UserCollectionCard extends StatelessWidget {
                 color: AppColors.primaryLight.withValues(alpha: 0.3),
               ),
             ),
-            child: Icon(data.icon, color: AppColors.primaryLight, size: 20),
+            child: Icon(data.icon, color: AppColors.primaryLight, size: Responsive.w(20)),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: Responsive.w(12)),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -270,23 +269,23 @@ class _UserCollectionCard extends StatelessWidget {
                 Text(
                   data.title,
                   style: GoogleFonts.urbanist(
-                    fontSize: 15,
+                    fontSize: Responsive.sp(15),
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: Responsive.h(2)),
                 Text(
                   data.count,
                   style: GoogleFonts.urbanist(
-                    fontSize: 12,
+                    fontSize: Responsive.sp(12),
                     color: AppColors.textTertiary,
                   ),
                 ),
               ],
             ),
           ),
-          Icon(LucideIcons.chevronRight, color: AppColors.textMuted, size: 20),
+          Icon(LucideIcons.chevronRight, color: AppColors.textMuted, size: Responsive.w(20)),
         ],
       ),
     );

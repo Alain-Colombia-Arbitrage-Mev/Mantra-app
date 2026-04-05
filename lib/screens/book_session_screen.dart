@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
 import '../widgets/screen_bg.dart';
+import '../utils/responsive.dart';
 
 class BookSessionScreen extends StatefulWidget {
   const BookSessionScreen({super.key});
@@ -15,9 +16,9 @@ class BookSessionScreen extends StatefulWidget {
 class _BookSessionScreenState extends State<BookSessionScreen> {
   int _selectedGuide = 0;
   int _selectedType = 0;
-  int _selectedDay = 2; // Mie 19 default
-  int _selectedTime = 1; // 10:00 default
-  int _selectedPlatform = 0; // Zoom default
+  int _selectedDay = 2;
+  int _selectedTime = 1;
+  int _selectedPlatform = 0;
 
   static const List<String> guides = ['David', 'Sarah', 'Moisés'];
   static const List<_SessionType> sessionTypes = [
@@ -46,12 +47,13 @@ class _BookSessionScreenState extends State<BookSessionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundEnd,
       body: ScreenBg(
         child: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+            padding: EdgeInsets.fromLTRB(Responsive.w(20), Responsive.h(20), Responsive.w(20), Responsive.h(32)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -60,22 +62,22 @@ class _BookSessionScreenState extends State<BookSessionScreen> {
                   title: 'Reservar Sesión',
                   showBack: true,
                 ),
-                const SizedBox(height: 28),
+                SizedBox(height: Responsive.h(28)),
 
                 // ── Elige tu guía ────────────────────────────────────────
                 const SectionLabel('ELIGE TU GUÍA'),
-                const SizedBox(height: 12),
+                SizedBox(height: Responsive.h(12)),
                 Row(
                   children: List.generate(guides.length, (i) {
                     final selected = i == _selectedGuide;
                     return Padding(
-                      padding: EdgeInsets.only(right: i < guides.length - 1 ? 8 : 0),
+                      padding: EdgeInsets.only(right: i < guides.length - 1 ? Responsive.w(8) : 0),
                       child: GestureDetector(
                         onTap: () => setState(() => _selectedGuide = i),
                         child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 10,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: Responsive.w(16),
+                            vertical: Responsive.h(10),
                           ),
                           decoration: BoxDecoration(
                             gradient: selected ? AppGradients.primaryButton : null,
@@ -90,7 +92,7 @@ class _BookSessionScreenState extends State<BookSessionScreen> {
                           child: Text(
                             guides[i],
                             style: GoogleFonts.urbanist(
-                              fontSize: 14,
+                              fontSize: Responsive.sp(14),
                               fontWeight: FontWeight.w700,
                               color: Colors.white,
                             ),
@@ -100,19 +102,19 @@ class _BookSessionScreenState extends State<BookSessionScreen> {
                     );
                   }),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: Responsive.h(24)),
 
                 // ── Tipo de sesión ───────────────────────────────────────
                 const SectionLabel('TIPO DE SESIÓN'),
-                const SizedBox(height: 12),
+                SizedBox(height: Responsive.h(12)),
                 ...List.generate(sessionTypes.length, (i) {
                   final selected = i == _selectedType;
                   return Padding(
-                    padding: EdgeInsets.only(bottom: i < sessionTypes.length - 1 ? 8 : 0),
+                    padding: EdgeInsets.only(bottom: i < sessionTypes.length - 1 ? Responsive.h(8) : 0),
                     child: GestureDetector(
                       onTap: () => setState(() => _selectedType = i),
                       child: Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: EdgeInsets.all(Responsive.w(16)),
                         decoration: BoxDecoration(
                           color: AppColors.surfaceLight,
                           borderRadius: BorderRadius.circular(12),
@@ -132,16 +134,16 @@ class _BookSessionScreenState extends State<BookSessionScreen> {
                                   Text(
                                     sessionTypes[i].name,
                                     style: GoogleFonts.urbanist(
-                                      fontSize: 15,
+                                      fontSize: Responsive.sp(15),
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white,
                                     ),
                                   ),
-                                  const SizedBox(height: 2),
+                                  SizedBox(height: Responsive.h(2)),
                                   Text(
                                     sessionTypes[i].detail,
                                     style: GoogleFonts.urbanist(
-                                      fontSize: 12,
+                                      fontSize: Responsive.sp(12),
                                       color: AppColors.textTertiary,
                                     ),
                                   ),
@@ -150,16 +152,16 @@ class _BookSessionScreenState extends State<BookSessionScreen> {
                             ),
                             if (selected)
                               Container(
-                                width: 20,
-                                height: 20,
+                                width: Responsive.w(20),
+                                height: Responsive.w(20),
                                 decoration: const BoxDecoration(
                                   gradient: AppGradients.primaryButton,
                                   shape: BoxShape.circle,
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.check,
                                   color: Colors.white,
-                                  size: 13,
+                                  size: Responsive.w(13),
                                 ),
                               ),
                           ],
@@ -168,22 +170,21 @@ class _BookSessionScreenState extends State<BookSessionScreen> {
                     ),
                   );
                 }),
-                const SizedBox(height: 24),
+                SizedBox(height: Responsive.h(24)),
 
                 // ── Fecha y hora ─────────────────────────────────────────
                 const SectionLabel('FECHA Y HORA'),
-                const SizedBox(height: 12),
-                // Day picker
+                SizedBox(height: Responsive.h(12)),
                 Row(
                   children: List.generate(days.length, (i) {
                     final selected = i == _selectedDay;
                     return Expanded(
                       child: Padding(
-                        padding: EdgeInsets.only(right: i < days.length - 1 ? 6 : 0),
+                        padding: EdgeInsets.only(right: i < days.length - 1 ? Responsive.w(6) : 0),
                         child: GestureDetector(
                           onTap: () => setState(() => _selectedDay = i),
                           child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            padding: EdgeInsets.symmetric(vertical: Responsive.h(10)),
                             decoration: BoxDecoration(
                               gradient:
                                   selected ? AppGradients.primaryButton : null,
@@ -200,18 +201,18 @@ class _BookSessionScreenState extends State<BookSessionScreen> {
                                 Text(
                                   days[i].day,
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 11,
+                                    fontSize: Responsive.sp(11),
                                     fontWeight: FontWeight.w600,
                                     color: selected
                                         ? Colors.white
                                         : AppColors.textTertiary,
                                   ),
                                 ),
-                                const SizedBox(height: 2),
+                                SizedBox(height: Responsive.h(2)),
                                 Text(
                                   days[i].num,
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 16,
+                                    fontSize: Responsive.sp(16),
                                     fontWeight: FontWeight.w800,
                                     color: Colors.white,
                                   ),
@@ -224,18 +225,17 @@ class _BookSessionScreenState extends State<BookSessionScreen> {
                     );
                   }),
                 ),
-                const SizedBox(height: 10),
-                // Time picker
+                SizedBox(height: Responsive.h(10)),
                 Row(
                   children: List.generate(times.length, (i) {
                     final selected = i == _selectedTime;
                     return Expanded(
                       child: Padding(
-                        padding: EdgeInsets.only(right: i < times.length - 1 ? 6 : 0),
+                        padding: EdgeInsets.only(right: i < times.length - 1 ? Responsive.w(6) : 0),
                         child: GestureDetector(
                           onTap: () => setState(() => _selectedTime = i),
                           child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            padding: EdgeInsets.symmetric(vertical: Responsive.h(10)),
                             decoration: BoxDecoration(
                               gradient:
                                   selected ? AppGradients.primaryButton : null,
@@ -251,7 +251,7 @@ class _BookSessionScreenState extends State<BookSessionScreen> {
                               times[i],
                               textAlign: TextAlign.center,
                               style: GoogleFonts.urbanist(
-                                fontSize: 14,
+                                fontSize: Responsive.sp(14),
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white,
                               ),
@@ -262,22 +262,22 @@ class _BookSessionScreenState extends State<BookSessionScreen> {
                     );
                   }),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: Responsive.h(24)),
 
                 // ── Plataforma ───────────────────────────────────────────
                 const SectionLabel('PLATAFORMA'),
-                const SizedBox(height: 12),
+                SizedBox(height: Responsive.h(12)),
                 Row(
                   children: List.generate(platforms.length, (i) {
                     final selected = i == _selectedPlatform;
                     return Padding(
-                      padding: EdgeInsets.only(right: i < platforms.length - 1 ? 8 : 0),
+                      padding: EdgeInsets.only(right: i < platforms.length - 1 ? Responsive.w(8) : 0),
                       child: GestureDetector(
                         onTap: () => setState(() => _selectedPlatform = i),
                         child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 10,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: Responsive.w(20),
+                            vertical: Responsive.h(10),
                           ),
                           decoration: BoxDecoration(
                             gradient: selected ? AppGradients.primaryButton : null,
@@ -292,7 +292,7 @@ class _BookSessionScreenState extends State<BookSessionScreen> {
                           child: Text(
                             platforms[i],
                             style: GoogleFonts.urbanist(
-                              fontSize: 14,
+                              fontSize: Responsive.sp(14),
                               fontWeight: FontWeight.w700,
                               color: Colors.white,
                             ),
@@ -302,7 +302,7 @@ class _BookSessionScreenState extends State<BookSessionScreen> {
                     );
                   }),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: Responsive.h(24)),
 
                 // ── Summary card ─────────────────────────────────────────
                 GlassCard(
@@ -312,30 +312,30 @@ class _BookSessionScreenState extends State<BookSessionScreen> {
                       Text(
                         'Resumen',
                         style: GoogleFonts.urbanist(
-                          fontSize: 15,
+                          fontSize: Responsive.sp(15),
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: Responsive.h(12)),
                       _SummaryRow(
                         icon: LucideIcons.user,
                         label: 'Guía',
                         value: guides[_selectedGuide],
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: Responsive.h(8)),
                       _SummaryRow(
                         icon: LucideIcons.music,
                         label: 'Sesión',
                         value: sessionTypes[_selectedType].name,
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: Responsive.h(8)),
                       _SummaryRow(
                         icon: LucideIcons.calendar,
                         label: 'Fecha',
                         value: '${days[_selectedDay].day} ${days[_selectedDay].num}',
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: Responsive.h(8)),
                       _SummaryRow(
                         icon: LucideIcons.clock,
                         label: 'Hora',
@@ -344,20 +344,20 @@ class _BookSessionScreenState extends State<BookSessionScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: Responsive.h(20)),
 
                 // ── CTA ──────────────────────────────────────────────────
                 Container(
                   width: double.infinity,
-                  height: 56,
+                  height: Responsive.h(56),
                   decoration: BoxDecoration(
                     gradient: AppGradients.primaryButton,
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
                         color: AppColors.primary.withValues(alpha: 0.4),
-                        blurRadius: 20,
-                        offset: const Offset(0, 8),
+                        blurRadius: Responsive.w(20),
+                        offset: Offset(0, Responsive.h(8)),
                       ),
                     ],
                   ),
@@ -372,29 +372,29 @@ class _BookSessionScreenState extends State<BookSessionScreen> {
                           Text(
                             'Confirmar Reserva',
                             style: GoogleFonts.urbanist(
-                              fontSize: 16,
+                              fontSize: Responsive.sp(16),
                               fontWeight: FontWeight.w700,
                               color: Colors.white,
                             ),
                           ),
-                          const SizedBox(width: 10),
-                          const Icon(
+                          SizedBox(width: Responsive.w(10)),
+                          Icon(
                             LucideIcons.check,
                             color: Colors.white,
-                            size: 18,
+                            size: Responsive.w(18),
                           ),
                         ],
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: Responsive.h(16)),
 
                 Center(
                   child: Text(
                     'Cancelación gratuita hasta 24h antes',
                     style: GoogleFonts.urbanist(
-                      fontSize: 12,
+                      fontSize: Responsive.sp(12),
                       color: AppColors.textSecondary,
                     ),
                   ),
@@ -435,19 +435,19 @@ class _SummaryRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, size: 14, color: AppColors.primaryLight),
-        const SizedBox(width: 8),
+        Icon(icon, size: Responsive.w(14), color: AppColors.primaryLight),
+        SizedBox(width: Responsive.w(8)),
         Text(
           '$label: ',
           style: GoogleFonts.urbanist(
-            fontSize: 13,
+            fontSize: Responsive.sp(13),
             color: AppColors.textTertiary,
           ),
         ),
         Text(
           value,
           style: GoogleFonts.urbanist(
-            fontSize: 13,
+            fontSize: Responsive.sp(13),
             fontWeight: FontWeight.w600,
             color: Colors.white,
           ),

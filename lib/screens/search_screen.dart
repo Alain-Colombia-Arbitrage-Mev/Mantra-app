@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
+import '../utils/responsive.dart';
 import '../widgets/screen_bg.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -46,6 +47,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundEnd,
       body: ScreenBg(
@@ -54,7 +56,7 @@ class _SearchScreenState extends State<SearchScreen> {
             children: [
               // ── Header ────────────────────────────────────────────────
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                padding: EdgeInsets.fromLTRB(Responsive.pagePadding, Responsive.h(20), Responsive.pagePadding, 0),
                 child: Row(
                   children: [
                     GestureDetector(
@@ -64,8 +66,8 @@ class _SearchScreenState extends State<SearchScreen> {
                         }
                       },
                       child: Container(
-                        width: 36,
-                        height: 36,
+                        width: Responsive.w(36),
+                        height: Responsive.w(36),
                         decoration: BoxDecoration(
                           color: AppColors.white.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
@@ -73,17 +75,17 @@ class _SearchScreenState extends State<SearchScreen> {
                             color: AppColors.surfaceBorderLight,
                           ),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           LucideIcons.chevronLeft,
                           color: Colors.white,
-                          size: 18,
+                          size: Responsive.w(18),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: Responsive.w(12)),
                     Expanded(
                       child: Container(
-                        height: 44,
+                        height: Responsive.h(44),
                         decoration: BoxDecoration(
                           color: AppColors.white.withValues(alpha: 0.08),
                           borderRadius: BorderRadius.circular(12),
@@ -96,19 +98,19 @@ class _SearchScreenState extends State<SearchScreen> {
                           autofocus: true,
                           onChanged: (v) => setState(() => _query = v),
                           style: GoogleFonts.urbanist(
-                            fontSize: 14,
+                            fontSize: Responsive.sp(14),
                             color: Colors.white,
                           ),
                           decoration: InputDecoration(
                             hintText: 'Buscar meditaciones, frecuencias...',
                             hintStyle: GoogleFonts.urbanist(
-                              fontSize: 14,
+                              fontSize: Responsive.sp(14),
                               color: AppColors.textMuted,
                             ),
                             prefixIcon: Icon(
                               LucideIcons.search,
                               color: AppColors.textMuted,
-                              size: 18,
+                              size: Responsive.w(18),
                             ),
                             suffixIcon: _query.isNotEmpty
                                 ? GestureDetector(
@@ -119,13 +121,13 @@ class _SearchScreenState extends State<SearchScreen> {
                                     child: Icon(
                                       LucideIcons.x,
                                       color: AppColors.textMuted,
-                                      size: 16,
+                                      size: Responsive.w(16),
                                     ),
                                   )
                                 : null,
                             border: InputBorder.none,
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 12,
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: Responsive.h(12),
                             ),
                           ),
                         ),
@@ -136,7 +138,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
+                  padding: EdgeInsets.fromLTRB(Responsive.pagePadding, Responsive.h(24), Responsive.pagePadding, Responsive.h(32)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -147,7 +149,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           Text(
                             'BÚSQUEDAS RECIENTES',
                             style: GoogleFonts.urbanist(
-                              fontSize: 11,
+                              fontSize: Responsive.sp(11),
                               fontWeight: FontWeight.w700,
                               letterSpacing: 2.0,
                               color: AppColors.textTertiary,
@@ -158,28 +160,28 @@ class _SearchScreenState extends State<SearchScreen> {
                             child: Text(
                               'Borrar',
                               style: GoogleFonts.urbanist(
-                                fontSize: 12,
+                                fontSize: Responsive.sp(12),
                                 color: AppColors.primaryLight,
                               ),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: Responsive.h(12)),
                       ..._recent.map((r) => _RecentItem(text: r)),
-                      const SizedBox(height: 24),
+                      SizedBox(height: Responsive.h(24)),
 
                       // ── Categories ──────────────────────────────────────
                       Text(
                         'CATEGORÍAS',
                         style: GoogleFonts.urbanist(
-                          fontSize: 11,
+                          fontSize: Responsive.sp(11),
                           fontWeight: FontWeight.w700,
                           letterSpacing: 2.0,
                           color: AppColors.textTertiary,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: Responsive.h(12)),
                       GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -196,19 +198,19 @@ class _SearchScreenState extends State<SearchScreen> {
                           onTap: () {},
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      SizedBox(height: Responsive.h(24)),
 
                       // ── Trending ────────────────────────────────────────
                       Text(
                         'TENDENCIAS',
                         style: GoogleFonts.urbanist(
-                          fontSize: 11,
+                          fontSize: Responsive.sp(11),
                           fontWeight: FontWeight.w700,
                           letterSpacing: 2.0,
                           color: AppColors.textTertiary,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: Responsive.h(12)),
                       ..._trending.map(
                         (t) => _TrendCard(
                           item: t,
@@ -251,21 +253,21 @@ class _RecentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.only(bottom: Responsive.h(8)),
       child: Row(
         children: [
-          Icon(LucideIcons.clock, color: AppColors.textMuted, size: 16),
-          const SizedBox(width: 12),
+          Icon(LucideIcons.clock, color: AppColors.textMuted, size: Responsive.w(16)),
+          SizedBox(width: Responsive.w(12)),
           Expanded(
             child: Text(
               text,
               style: GoogleFonts.urbanist(
-                fontSize: 14,
+                fontSize: Responsive.sp(14),
                 color: AppColors.textTertiary,
               ),
             ),
           ),
-          Icon(LucideIcons.arrowUpLeft, color: AppColors.textMuted, size: 16),
+          Icon(LucideIcons.arrowUpLeft, color: AppColors.textMuted, size: Responsive.w(16)),
         ],
       ),
     );
@@ -291,12 +293,12 @@ class _CategoryCell extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(category.icon, color: category.color, size: 22),
-            const SizedBox(height: 6),
+            Icon(category.icon, color: category.color, size: Responsive.w(22)),
+            SizedBox(height: Responsive.h(6)),
             Text(
               category.label,
               style: GoogleFonts.urbanist(
-                fontSize: 12,
+                fontSize: Responsive.sp(12),
                 fontWeight: FontWeight.w600,
                 color: Colors.white,
               ),
@@ -319,9 +321,9 @@ class _TrendCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 10),
+        padding: EdgeInsets.only(bottom: Responsive.h(10)),
         child: Container(
-          padding: const EdgeInsets.all(14),
+          padding: EdgeInsets.all(Responsive.w(14)),
           decoration: BoxDecoration(
             color: AppColors.white.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(12),
@@ -330,8 +332,8 @@ class _TrendCard extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                width: 28,
-                height: 28,
+                width: Responsive.w(28),
+                height: Responsive.w(28),
                 decoration: BoxDecoration(
                   color: AppColors.primary.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8),
@@ -340,14 +342,14 @@ class _TrendCard extends StatelessWidget {
                   child: Text(
                     item.rank,
                     style: GoogleFonts.urbanist(
-                      fontSize: 13,
+                      fontSize: Responsive.sp(13),
                       fontWeight: FontWeight.w800,
                       color: AppColors.primaryLight,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: Responsive.w(12)),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -355,7 +357,7 @@ class _TrendCard extends StatelessWidget {
                     Text(
                       item.title,
                       style: GoogleFonts.urbanist(
-                        fontSize: 13,
+                        fontSize: Responsive.sp(13),
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
                       ),
@@ -363,7 +365,7 @@ class _TrendCard extends StatelessWidget {
                     Text(
                       item.meta,
                       style: GoogleFonts.urbanist(
-                        fontSize: 11,
+                        fontSize: Responsive.sp(11),
                         color: AppColors.textMuted,
                       ),
                     ),
@@ -373,7 +375,7 @@ class _TrendCard extends StatelessWidget {
               Icon(
                 LucideIcons.trendingUp,
                 color: AppColors.mint,
-                size: 16,
+                size: Responsive.w(16),
               ),
             ],
           ),

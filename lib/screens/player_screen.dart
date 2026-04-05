@@ -4,6 +4,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../services/audio_service.dart';
 import '../theme.dart';
+import '../utils/responsive.dart';
 import '../widgets/screen_bg.dart';
 
 // Free royalty-free ambient meditation audio from Pixabay.
@@ -50,6 +51,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundEnd,
       extendBody: true,
@@ -57,7 +59,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
         child: SafeArea(
           bottom: false,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 48),
+            padding: EdgeInsets.fromLTRB(Responsive.pagePadding, Responsive.h(20), Responsive.pagePadding, Responsive.h(48)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -66,29 +68,29 @@ class _PlayerScreenState extends State<PlayerScreen> {
                   title: 'Reproductor',
                   showBack: true,
                   trailing: Container(
-                    width: 36,
-                    height: 36,
+                    width: Responsive.w(36),
+                    height: Responsive.w(36),
                     decoration: BoxDecoration(
                       color: AppColors.white.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                       border: Border.all(color: AppColors.surfaceBorderLight),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       LucideIcons.moreVertical,
                       color: Colors.white,
-                      size: 18,
+                      size: Responsive.w(18),
                     ),
                   ),
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: Responsive.h(32)),
 
                 // ── Album art + glow ────────────────────────────────────
                 Center(
                   child: Column(
                     children: [
                       Container(
-                        width: 310,
-                        height: 310,
+                        width: Responsive.w(310),
+                        height: Responsive.w(310),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(24),
                           boxShadow: [
@@ -108,11 +110,11 @@ class _PlayerScreenState extends State<PlayerScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: Responsive.h(8)),
                       // Purple glow ellipse below art
                       Container(
-                        width: 200,
-                        height: 20,
+                        width: Responsive.w(200),
+                        height: Responsive.h(20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(100),
                           boxShadow: const [
@@ -127,7 +129,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 28),
+                SizedBox(height: Responsive.h(28)),
 
                 // ── Track info row ──────────────────────────────────────
                 Row(
@@ -140,31 +142,31 @@ class _PlayerScreenState extends State<PlayerScreen> {
                           Text(
                             'Activación Theta · Abundancia',
                             style: GoogleFonts.urbanist(
-                              fontSize: 18,
+                              fontSize: Responsive.sp(18),
                               fontWeight: FontWeight.w700,
                               color: Colors.white,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          SizedBox(height: Responsive.h(4)),
                           Text(
                             '528Hz · Estado Theta · Bio-hacking',
                             style: GoogleFonts.urbanist(
-                              fontSize: 13,
+                              fontSize: Responsive.sp(13),
                               color: AppColors.textTertiary,
                             ),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: Responsive.w(12)),
                     Icon(
                       LucideIcons.heart,
                       color: AppColors.primary,
-                      size: 24,
+                      size: Responsive.w(24),
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: Responsive.h(24)),
 
                 // ── Progress bar (driven by position + duration streams) ─
                 StreamBuilder<Duration?>(
@@ -220,14 +222,14 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                     }
                                   },
                                   child: SizedBox(
-                                    height: 20,
+                                    height: Responsive.h(20),
                                     child: Stack(
                                       alignment: Alignment.centerLeft,
                                       children: [
                                         // Background track
                                         Container(
                                           width: double.infinity,
-                                          height: 4,
+                                          height: Responsive.h(4),
                                           decoration: BoxDecoration(
                                             color: AppColors.white
                                                 .withValues(alpha: 0.15),
@@ -238,7 +240,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                         // Filled portion
                                         Container(
                                           width: filled,
-                                          height: 4,
+                                          height: Responsive.h(4),
                                           decoration: BoxDecoration(
                                             gradient: AppGradients.primaryButton,
                                             borderRadius:
@@ -249,8 +251,8 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                         Positioned(
                                           left: dotLeft,
                                           child: Container(
-                                            width: 12,
-                                            height: 12,
+                                            width: Responsive.w(12),
+                                            height: Responsive.w(12),
                                             decoration: const BoxDecoration(
                                               color: Colors.white,
                                               shape: BoxShape.circle,
@@ -261,7 +263,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 8),
+                                SizedBox(height: Responsive.h(8)),
                                 // Time row
                                 Row(
                                   mainAxisAlignment:
@@ -270,14 +272,14 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                     Text(
                                       _fmt(position),
                                       style: GoogleFonts.urbanist(
-                                        fontSize: 12,
+                                        fontSize: Responsive.sp(12),
                                         color: AppColors.textTertiary,
                                       ),
                                     ),
                                     Text(
                                       _fmt(duration),
                                       style: GoogleFonts.urbanist(
-                                        fontSize: 12,
+                                        fontSize: Responsive.sp(12),
                                         color: AppColors.textTertiary,
                                       ),
                                     ),
@@ -291,7 +293,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     );
                   },
                 ),
-                const SizedBox(height: 28),
+                SizedBox(height: Responsive.h(28)),
 
                 // ── Controls row (driven by playerStateStream) ───────────
                 StreamBuilder<PlayerState>(
@@ -300,7 +302,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     final playing = snap.data?.playing ?? false;
                     return Center(
                       child: SizedBox(
-                        width: 280,
+                        width: Responsive.w(280),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -308,12 +310,12 @@ class _PlayerScreenState extends State<PlayerScreen> {
                             Icon(
                               LucideIcons.shuffle,
                               color: AppColors.white.withValues(alpha: 0.4),
-                              size: 22,
+                              size: Responsive.w(22),
                             ),
                             Icon(
                               LucideIcons.skipBack,
                               color: Colors.white,
-                              size: 28,
+                              size: Responsive.w(28),
                             ),
                             // Play/pause circle
                             GestureDetector(
@@ -325,8 +327,8 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                 }
                               },
                               child: Container(
-                                width: 56,
-                                height: 56,
+                                width: Responsive.w(56),
+                                height: Responsive.w(56),
                                 decoration: BoxDecoration(
                                   gradient: AppGradients.primaryButton,
                                   shape: BoxShape.circle,
@@ -344,19 +346,19 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                       ? LucideIcons.pause
                                       : LucideIcons.play,
                                   color: Colors.white,
-                                  size: 24,
+                                  size: Responsive.w(24),
                                 ),
                               ),
                             ),
                             Icon(
                               LucideIcons.skipForward,
                               color: Colors.white,
-                              size: 28,
+                              size: Responsive.w(28),
                             ),
                             Icon(
                               LucideIcons.repeat,
                               color: AppColors.white.withValues(alpha: 0.4),
-                              size: 22,
+                              size: Responsive.w(22),
                             ),
                           ],
                         ),
@@ -364,14 +366,14 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     );
                   },
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: Responsive.h(32)),
 
                 // ── Frequency chip ──────────────────────────────────────
                 Center(
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: Responsive.w(16),
+                      vertical: Responsive.h(8),
                     ),
                     decoration: BoxDecoration(
                       color: AppColors.primary.withValues(alpha: 0.15),
@@ -384,18 +386,18 @@ class _PlayerScreenState extends State<PlayerScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Container(
-                          width: 6,
-                          height: 6,
+                          width: Responsive.w(6),
+                          height: Responsive.w(6),
                           decoration: const BoxDecoration(
                             color: AppColors.primaryLight,
                             shape: BoxShape.circle,
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        SizedBox(width: Responsive.w(8)),
                         Text(
                           'Onda Theta · 528 Hz activa',
                           style: GoogleFonts.urbanist(
-                            fontSize: 13,
+                            fontSize: Responsive.sp(13),
                             fontWeight: FontWeight.w600,
                             color: AppColors.primaryLight,
                           ),

@@ -4,19 +4,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
 import '../widgets/screen_bg.dart';
+import '../utils/responsive.dart';
+import '../services/clock_service.dart';
 
 class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
 
-  String _currentTime() {
-    final now = DateTime.now();
+  static String _formatTime(DateTime now) {
     final h = now.hour.toString().padLeft(2, '0');
     final m = now.minute.toString().padLeft(2, '0');
     return '$h:$m';
   }
 
-  String _currentDate() {
-    final now = DateTime.now();
+  static String _formatDate(DateTime now) {
     const weekdays = [
       'Lunes', 'Martes', 'Miércoles', 'Jueves',
       'Viernes', 'Sábado', 'Domingo',
@@ -36,7 +36,7 @@ class HomeTab extends StatelessWidget {
       child: SafeArea(
         bottom: false,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+          padding: EdgeInsets.fromLTRB(Responsive.pagePadding, Responsive.h(20), Responsive.pagePadding, Responsive.bottomNavPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -45,14 +45,14 @@ class HomeTab extends StatelessWidget {
                 children: [
                   Image.asset(
                     'assets/images/logomantra.png',
-                    width: 32,
-                    height: 32,
+                    width: Responsive.w(32),
+                    height: Responsive.w(32),
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: Responsive.w(8)),
                   Text(
                     'Mantras',
                     style: GoogleFonts.urbanist(
-                      fontSize: 20,
+                      fontSize: Responsive.sp(20),
                       fontWeight: FontWeight.w800,
                       color: AppColors.white,
                     ),
@@ -61,60 +61,69 @@ class HomeTab extends StatelessWidget {
                   GestureDetector(
                     onTap: () => context.push('/mirror-hours'),
                     child: Container(
-                      width: 40,
-                      height: 40,
+                      width: Responsive.w(40),
+                      height: Responsive.w(40),
                       decoration: BoxDecoration(
                         color: AppColors.white.withValues(alpha: 0.08),
                         shape: BoxShape.circle,
                         border: Border.all(color: AppColors.surfaceBorderLight),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         LucideIcons.timer,
                         color: Colors.white,
-                        size: 18,
+                        size: Responsive.w(18),
                       ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: Responsive.h(32)),
 
               // ── Clock ───────────────────────────────────────────────
-              Center(
-                child: Text(
-                  _currentTime(),
-                  style: GoogleFonts.urbanist(
-                    fontSize: 72,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                    height: 1.0,
-                  ),
-                ),
+              ValueListenableBuilder<DateTime>(
+                valueListenable: ClockService.instance.now,
+                builder: (context, now, _) {
+                  return Column(
+                    children: [
+                      Center(
+                        child: Text(
+                          _formatTime(now),
+                          style: GoogleFonts.urbanist(
+                            fontSize: Responsive.sp(72),
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                            height: 1.0,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: Responsive.h(4)),
+                      Center(
+                        child: Text(
+                          _formatDate(now),
+                          style: GoogleFonts.urbanist(
+                            fontSize: Responsive.sp(16),
+                            color: const Color(0xCCFFFFFF),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
-              const SizedBox(height: 4),
-              Center(
-                child: Text(
-                  _currentDate(),
-                  style: GoogleFonts.urbanist(
-                    fontSize: 16,
-                    color: const Color(0xCCFFFFFF),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 28),
+              SizedBox(height: Responsive.h(28)),
 
               // ── Session Card ────────────────────────────────────────
               GestureDetector(
               onTap: () => context.push('/daily-ritual'),
               child: Container(
-                padding: const EdgeInsets.all(18),
+                padding: EdgeInsets.all(Responsive.w(18)),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [Color(0xFF2D1B69), Color(0xFF1A0F40)],
                   ),
-                  borderRadius: BorderRadius.circular(18),
+                  borderRadius: BorderRadius.circular(Responsive.w(18)),
                   border: Border.all(
                     color: AppColors.primary.withValues(alpha: 0.4),
                   ),
@@ -122,19 +131,19 @@ class HomeTab extends StatelessWidget {
                 child: Row(
                   children: [
                     Container(
-                      width: 44,
-                      height: 44,
+                      width: Responsive.w(44),
+                      height: Responsive.w(44),
                       decoration: BoxDecoration(
                         color: AppColors.primary.withValues(alpha: 0.25),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(
+                      child: Icon(
                         LucideIcons.sparkles,
                         color: AppColors.primaryLight,
-                        size: 22,
+                        size: Responsive.w(22),
                       ),
                     ),
-                    const SizedBox(width: 14),
+                    SizedBox(width: Responsive.w(14)),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,32 +151,32 @@ class HomeTab extends StatelessWidget {
                           Text(
                             'Tu sesión de bio-hacking te espera',
                             style: GoogleFonts.urbanist(
-                              fontSize: 15,
+                              fontSize: Responsive.sp(15),
                               fontWeight: FontWeight.w700,
                               color: Colors.white,
                             ),
                           ),
-                          const SizedBox(height: 3),
+                          SizedBox(height: Responsive.h(3)),
                           Text(
                             '3 min · Ondas Theta · Manifiesta ahora',
                             style: GoogleFonts.urbanist(
-                              fontSize: 13,
+                              fontSize: Responsive.sp(13),
                               color: AppColors.textTertiary,
                             ),
                           ),
                         ],
                       ),
                     ),
-                    const Icon(
+                    Icon(
                       LucideIcons.chevronRight,
                       color: AppColors.primaryLight,
-                      size: 20,
+                      size: Responsive.w(20),
                     ),
                   ],
                 ),
               ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: Responsive.h(16)),
 
               // ── Stats Row ───────────────────────────────────────────
               Row(
@@ -176,28 +185,28 @@ class HomeTab extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () => context.push('/sleep'),
                       child: GlassCard(
-                        padding: const EdgeInsets.all(14),
+                        padding: EdgeInsets.all(Responsive.w(14)),
                         child: Row(
                           children: [
                             Container(
-                              width: 36,
-                              height: 36,
+                              width: Responsive.w(36),
+                              height: Responsive.w(36),
                               decoration: BoxDecoration(
                                 color: AppColors.lunar.withValues(alpha: 0.2),
                                 shape: BoxShape.circle,
                               ),
-                              child: const Icon(
+                              child: Icon(
                                 LucideIcons.brain,
                                 color: AppColors.lunar,
-                                size: 18,
+                                size: Responsive.w(18),
                               ),
                             ),
-                            const SizedBox(width: 10),
+                            SizedBox(width: Responsive.w(10)),
                             Expanded(
                               child: Text(
                                 '12.5h en\nondas Theta',
                                 style: GoogleFonts.urbanist(
-                                  fontSize: 13,
+                                  fontSize: Responsive.sp(13),
                                   fontWeight: FontWeight.w600,
                                   color: Colors.white,
                                   height: 1.3,
@@ -209,33 +218,33 @@ class HomeTab extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: Responsive.w(12)),
                   Expanded(
                     child: GestureDetector(
                       onTap: () => context.push('/agenda'),
                       child: GlassCard(
-                        padding: const EdgeInsets.all(14),
+                        padding: EdgeInsets.all(Responsive.w(14)),
                         child: Row(
                           children: [
                             Container(
-                              width: 36,
-                              height: 36,
+                              width: Responsive.w(36),
+                              height: Responsive.w(36),
                               decoration: BoxDecoration(
                                 color: AppColors.amber.withValues(alpha: 0.2),
                                 shape: BoxShape.circle,
                               ),
-                              child: const Icon(
+                              child: Icon(
                                 LucideIcons.zap,
                                 color: AppColors.amber,
-                                size: 18,
+                                size: Responsive.w(18),
                               ),
                             ),
-                            const SizedBox(width: 10),
+                            SizedBox(width: Responsive.w(10)),
                             Expanded(
                               child: Text(
                                 '47 días de\nracha activa',
                                 style: GoogleFonts.urbanist(
-                                  fontSize: 13,
+                                  fontSize: Responsive.sp(13),
                                   fontWeight: FontWeight.w600,
                                   color: Colors.white,
                                   height: 1.3,
@@ -249,11 +258,11 @@ class HomeTab extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: Responsive.h(24)),
 
               // ── Quick Actions ───────────────────────────────────────
               const SectionLabel('ACCIONES RÁPIDAS'),
-              const SizedBox(height: 12),
+              SizedBox(height: Responsive.h(12)),
 
               _ActionCard(
                 title: 'El Alquimista',
@@ -262,7 +271,7 @@ class HomeTab extends StatelessWidget {
                 accentColor: AppColors.primary,
                 onTap: () => context.push('/alchemist'),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: Responsive.h(10)),
               _ActionCard(
                 title: 'Marketplace',
                 subtitle: '8 nuevos audios · Mercado social',
@@ -298,24 +307,24 @@ class _ActionCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(Responsive.w(16)),
       decoration: BoxDecoration(
         color: AppColors.surfaceLight,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(Responsive.w(16)),
         border: Border.all(color: AppColors.surfaceBorderLight),
       ),
       child: Row(
         children: [
           Container(
-            width: 42,
-            height: 42,
+            width: Responsive.w(42),
+            height: Responsive.w(42),
             decoration: BoxDecoration(
               color: accentColor.withValues(alpha: 0.18),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: accentColor, size: 20),
+            child: Icon(icon, color: accentColor, size: Responsive.w(20)),
           ),
-          const SizedBox(width: 14),
+          SizedBox(width: Responsive.w(14)),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -323,16 +332,16 @@ class _ActionCard extends StatelessWidget {
                 Text(
                   title,
                   style: GoogleFonts.urbanist(
-                    fontSize: 15,
+                    fontSize: Responsive.sp(15),
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: Responsive.h(2)),
                 Text(
                   subtitle,
                   style: GoogleFonts.urbanist(
-                    fontSize: 13,
+                    fontSize: Responsive.sp(13),
                     color: AppColors.textTertiary,
                   ),
                 ),
@@ -342,7 +351,7 @@ class _ActionCard extends StatelessWidget {
           Icon(
             LucideIcons.chevronRight,
             color: AppColors.textTertiary,
-            size: 18,
+            size: Responsive.w(18),
           ),
         ],
       ),

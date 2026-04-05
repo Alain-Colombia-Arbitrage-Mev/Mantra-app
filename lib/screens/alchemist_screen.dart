@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
 import '../widgets/screen_bg.dart';
+import '../utils/responsive.dart';
 
 
 class AlchemistScreen extends StatefulWidget {
@@ -13,9 +14,9 @@ class AlchemistScreen extends StatefulWidget {
 }
 
 class _AlchemistScreenState extends State<AlchemistScreen> {
-  int _selectedBrainState = 2; // Theta selected
-  int _selectedFrequency = 1; // 528Hz selected
-  int _selectedLandscape = 0; // Cosmos selected
+  int _selectedBrainState = 2;
+  int _selectedFrequency = 1;
+  int _selectedLandscape = 0;
   final TextEditingController _mantraController = TextEditingController();
 
   static const List<_BrainChip> _brainStates = [
@@ -48,6 +49,7 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundEnd,
       extendBody: true,
@@ -55,11 +57,12 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
         child: SafeArea(
           bottom: false,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
+            padding: EdgeInsets.fromLTRB(
+              Responsive.w(20), Responsive.h(20), Responsive.w(20), Responsive.h(40),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ── Header ──────────────────────────────────────────────
                 Row(
                   children: [
                     GestureDetector(
@@ -69,8 +72,8 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                         }
                       },
                       child: Container(
-                        width: 36,
-                        height: 36,
+                        width: Responsive.w(36),
+                        height: Responsive.w(36),
                         decoration: BoxDecoration(
                           color: Colors.white.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
@@ -78,10 +81,10 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                             color: AppColors.surfaceBorderLight,
                           ),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           LucideIcons.chevronLeft,
                           color: Colors.white,
-                          size: 18,
+                          size: Responsive.w(18),
                         ),
                       ),
                     ),
@@ -90,46 +93,43 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                         'El Alquimista',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.urbanist(
-                          fontSize: 18,
+                          fontSize: Responsive.sp(18),
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                         ),
                       ),
                     ),
                     Container(
-                      width: 36,
-                      height: 36,
+                      width: Responsive.w(36),
+                      height: Responsive.w(36),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                         border: Border.all(color: AppColors.surfaceBorderLight),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         LucideIcons.info,
                         color: Colors.white,
-                        size: 18,
+                        size: Responsive.w(18),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
-                // Subtitle
+                SizedBox(height: Responsive.h(8)),
                 Center(
                   child: Text(
                     'Crea tu Audio de Manifestación',
                     style: GoogleFonts.urbanist(
-                      fontSize: 13,
+                      fontSize: Responsive.sp(13),
                       fontWeight: FontWeight.w600,
                       letterSpacing: 0.3,
                       color: AppColors.primaryLight,
                     ),
                   ),
                 ),
-                const SizedBox(height: 28),
-
-                // ── Brain State ──────────────────────────────────────────
+                SizedBox(height: Responsive.h(28)),
                 const SectionLabel('ESTADO CEREBRAL'),
-                const SizedBox(height: 12),
+                SizedBox(height: Responsive.h(12)),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -138,22 +138,22 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                       final selected = i == _selectedBrainState;
                       return Padding(
                         padding: EdgeInsets.only(
-                          right: i < _brainStates.length - 1 ? 8 : 0,
+                          right: i < _brainStates.length - 1 ? Responsive.w(8) : 0,
                         ),
                         child: GestureDetector(
                           onTap: () =>
                               setState(() => _selectedBrainState = i),
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 200),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 18,
-                              vertical: 10,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: Responsive.w(18),
+                              vertical: Responsive.h(10),
                             ),
                             decoration: BoxDecoration(
                               color: selected
                                   ? AppColors.primary
                                   : const Color(0x1AFFFFFF),
-                              borderRadius: BorderRadius.circular(50),
+                              borderRadius: BorderRadius.circular(Responsive.w(50)),
                               border: Border.all(
                                 color: selected
                                     ? AppColors.primary
@@ -165,7 +165,7 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                                 Text(
                                   chip.label,
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 13,
+                                    fontSize: Responsive.sp(13),
                                     fontWeight: FontWeight.w700,
                                     color: selected
                                         ? Colors.white
@@ -175,7 +175,7 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                                 Text(
                                   chip.range,
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 11,
+                                    fontSize: Responsive.sp(11),
                                     color: selected
                                         ? Colors.white.withValues(alpha: 0.8)
                                         : const Color(0x66FFFFFF),
@@ -189,30 +189,27 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                     }),
                   ),
                 ),
-                const SizedBox(height: 24),
-
-                // ── Binaural Frequency ───────────────────────────────────
+                SizedBox(height: Responsive.h(24)),
                 const SectionLabel('FRECUENCIA BINAURAL'),
-                const SizedBox(height: 12),
-                // Row 1: first 3 frequencies
+                SizedBox(height: Responsive.h(12)),
                 Row(
                   children: List.generate(3, (i) {
                     final freq = _frequencies[i];
                     final selected = i == _selectedFrequency;
                     return Expanded(
                       child: Padding(
-                        padding: EdgeInsets.only(right: i < 2 ? 8 : 0),
+                        padding: EdgeInsets.only(right: i < 2 ? Responsive.w(8) : 0),
                         child: GestureDetector(
                           onTap: () =>
                               setState(() => _selectedFrequency = i),
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 200),
-                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            padding: EdgeInsets.symmetric(vertical: Responsive.h(12)),
                             decoration: BoxDecoration(
                               color: selected
                                   ? const Color(0x33F9A826)
                                   : const Color(0x1AFFFFFF),
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(Responsive.w(12)),
                               border: Border.all(
                                 color: selected
                                     ? AppColors.amber
@@ -224,7 +221,7 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                                 Text(
                                   freq.hz,
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 14,
+                                    fontSize: Responsive.sp(14),
                                     fontWeight: FontWeight.w700,
                                     color: selected
                                         ? AppColors.amber
@@ -234,7 +231,7 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                                 Text(
                                   freq.name,
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 11,
+                                    fontSize: Responsive.sp(11),
                                     color: selected
                                         ? AppColors.amber
                                             .withValues(alpha: 0.8)
@@ -249,8 +246,7 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                     );
                   }),
                 ),
-                const SizedBox(height: 8),
-                // Row 2: remaining 2 frequencies
+                SizedBox(height: Responsive.h(8)),
                 Row(
                   children: List.generate(2, (i) {
                     final idx = i + 3;
@@ -258,18 +254,18 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                     final selected = idx == _selectedFrequency;
                     return Expanded(
                       child: Padding(
-                        padding: EdgeInsets.only(right: i < 1 ? 8 : 0),
+                        padding: EdgeInsets.only(right: i < 1 ? Responsive.w(8) : 0),
                         child: GestureDetector(
                           onTap: () =>
                               setState(() => _selectedFrequency = idx),
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 200),
-                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            padding: EdgeInsets.symmetric(vertical: Responsive.h(12)),
                             decoration: BoxDecoration(
                               color: selected
                                   ? const Color(0x33F9A826)
                                   : const Color(0x1AFFFFFF),
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(Responsive.w(12)),
                               border: Border.all(
                                 color: selected
                                     ? AppColors.amber
@@ -281,7 +277,7 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                                 Text(
                                   freq.hz,
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 14,
+                                    fontSize: Responsive.sp(14),
                                     fontWeight: FontWeight.w700,
                                     color: selected
                                         ? AppColors.amber
@@ -291,7 +287,7 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                                 Text(
                                   freq.name,
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 11,
+                                    fontSize: Responsive.sp(11),
                                     color: selected
                                         ? AppColors.amber
                                             .withValues(alpha: 0.8)
@@ -306,11 +302,9 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                     );
                   }),
                 ),
-                const SizedBox(height: 24),
-
-                // ── Soundscape ───────────────────────────────────────────
+                SizedBox(height: Responsive.h(24)),
                 const SectionLabel('PAISAJE SONORO'),
-                const SizedBox(height: 12),
+                SizedBox(height: Responsive.h(12)),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -319,22 +313,22 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                       final selected = i == _selectedLandscape;
                       return Padding(
                         padding: EdgeInsets.only(
-                          right: i < _landscapes.length - 1 ? 8 : 0,
+                          right: i < _landscapes.length - 1 ? Responsive.w(8) : 0,
                         ),
                         child: GestureDetector(
                           onTap: () =>
                               setState(() => _selectedLandscape = i),
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 200),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 10,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: Responsive.w(16),
+                              vertical: Responsive.h(10),
                             ),
                             decoration: BoxDecoration(
                               color: selected
                                   ? AppColors.primary
                                   : const Color(0x1AFFFFFF),
-                              borderRadius: BorderRadius.circular(50),
+                              borderRadius: BorderRadius.circular(Responsive.w(50)),
                               border: Border.all(
                                 color: selected
                                     ? AppColors.primary
@@ -346,16 +340,16 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                               children: [
                                 Icon(
                                   ls.icon,
-                                  size: 14,
+                                  size: Responsive.w(14),
                                   color: selected
                                       ? Colors.white
                                       : const Color(0xAAFFFFFF),
                                 ),
-                                const SizedBox(width: 6),
+                                SizedBox(width: Responsive.w(6)),
                                 Text(
                                   ls.label,
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 13,
+                                    fontSize: Responsive.sp(13),
                                     fontWeight: FontWeight.w600,
                                     color: selected
                                         ? Colors.white
@@ -370,55 +364,50 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                     }),
                   ),
                 ),
-                const SizedBox(height: 24),
-
-                // ── Mantra input ─────────────────────────────────────────
+                SizedBox(height: Responsive.h(24)),
                 const SectionLabel('TU MANTRA'),
-                const SizedBox(height: 12),
+                SizedBox(height: Responsive.h(12)),
                 Container(
                   decoration: BoxDecoration(
                     color: const Color(0x1AFFFFFF),
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(Responsive.w(16)),
                     border: Border.all(color: const Color(0x26FFFFFF)),
                   ),
                   child: TextField(
                     controller: _mantraController,
                     maxLines: 3,
                     style: GoogleFonts.urbanist(
-                      fontSize: 14,
+                      fontSize: Responsive.sp(14),
                       color: Colors.white,
                     ),
                     decoration: InputDecoration(
                       hintText:
                           'Escribe tu intención o afirmación...',
                       hintStyle: GoogleFonts.urbanist(
-                        fontSize: 14,
+                        fontSize: Responsive.sp(14),
                         color: Colors.white.withValues(alpha: 0.4),
                       ),
                       border: InputBorder.none,
-                      contentPadding: const EdgeInsets.all(16),
+                      contentPadding: EdgeInsets.all(Responsive.w(16)),
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
-
-                // ── Voice recording card ─────────────────────────────────
+                SizedBox(height: Responsive.h(20)),
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: EdgeInsets.all(Responsive.w(16)),
                   decoration: BoxDecoration(
                     color: const Color(0x146C5CE7),
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(Responsive.w(16)),
                     border: Border.all(color: const Color(0x666C5CE7)),
                   ),
                   child: Column(
                     children: [
-                      // Top row
                       Row(
                         children: [
                           Text(
                             'GRABACIÓN DE VOZ',
                             style: GoogleFonts.urbanist(
-                              fontSize: 11,
+                              fontSize: Responsive.sp(11),
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.5,
                               color: AppColors.textTertiary,
@@ -426,30 +415,30 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                           ),
                           const Spacer(),
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 4,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: Responsive.w(10),
+                              vertical: Responsive.h(4),
                             ),
                             decoration: BoxDecoration(
                               color: AppColors.mint.withValues(alpha: 0.2),
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(Responsive.w(20)),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Container(
-                                  width: 6,
-                                  height: 6,
+                                  width: Responsive.w(6),
+                                  height: Responsive.w(6),
                                   decoration: const BoxDecoration(
                                     color: AppColors.mint,
                                     shape: BoxShape.circle,
                                   ),
                                 ),
-                                const SizedBox(width: 5),
+                                SizedBox(width: Responsive.w(5)),
                                 Text(
                                   'Listo',
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 11,
+                                    fontSize: Responsive.sp(11),
                                     fontWeight: FontWeight.w700,
                                     color: AppColors.mint,
                                   ),
@@ -459,16 +448,15 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
-                      // Center: mic + info
+                      SizedBox(height: Responsive.h(16)),
                       Row(
                         children: [
                           Icon(
                             LucideIcons.mic,
                             color: AppColors.primaryLight,
-                            size: 32,
+                            size: Responsive.w(32),
                           ),
-                          const SizedBox(width: 14),
+                          SizedBox(width: Responsive.w(14)),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -476,16 +464,16 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                                 Text(
                                   'Tu voz clonada activa',
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 14,
+                                    fontSize: Responsive.sp(14),
                                     fontWeight: FontWeight.w700,
                                     color: Colors.white,
                                   ),
                                 ),
-                                const SizedBox(height: 2),
+                                SizedBox(height: Responsive.h(2)),
                                 Text(
                                   'Graba 10 seg · Calidad 82% · Mi Voz',
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 12,
+                                    fontSize: Responsive.sp(12),
                                     color: AppColors.textTertiary,
                                   ),
                                 ),
@@ -494,8 +482,7 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 14),
-                      // Waveform bars
+                      SizedBox(height: Responsive.h(14)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: _buildWaveform(),
@@ -503,9 +490,7 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
-
-                // ── CTA ──────────────────────────────────────────────────
+                SizedBox(height: Responsive.h(24)),
                 GestureDetector(
                   onTap: () => ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -522,27 +507,27 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                   ),
                   child: Container(
                     width: double.infinity,
-                    height: 54,
+                    height: Responsive.h(54),
                     decoration: BoxDecoration(
                       gradient: AppGradients.primaryButton,
-                      borderRadius: BorderRadius.circular(27),
+                      borderRadius: BorderRadius.circular(Responsive.w(27)),
                       boxShadow: [
                         BoxShadow(
                           color: AppColors.primary.withValues(alpha: 0.40),
-                          blurRadius: 20,
-                          offset: const Offset(0, 8),
+                          blurRadius: Responsive.w(20),
+                          offset: Offset(0, Responsive.h(8)),
                         ),
                       ],
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(LucideIcons.mic, color: Colors.white, size: 20),
-                        const SizedBox(width: 10),
+                        Icon(LucideIcons.mic, color: Colors.white, size: Responsive.w(20)),
+                        SizedBox(width: Responsive.w(10)),
                         Text(
                           'Graba tu voz · Activa ahora',
                           style: GoogleFonts.urbanist(
-                            fontSize: 16,
+                            fontSize: Responsive.sp(16),
                             fontWeight: FontWeight.w700,
                             color: Colors.white,
                           ),
@@ -551,8 +536,7 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
-                // Save for later
+                SizedBox(height: Responsive.h(16)),
                 Center(
                   child: GestureDetector(
                     onTap: () {
@@ -563,13 +547,13 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
                     child: Text(
                       'Guardar para después',
                       style: GoogleFonts.urbanist(
-                        fontSize: 13,
+                        fontSize: Responsive.sp(13),
                         color: Colors.white.withValues(alpha: 0.66),
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: Responsive.h(20)),
               ],
             ),
           ),
@@ -579,17 +563,17 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
   }
 
   List<Widget> _buildWaveform() {
-    const heights = [8.0, 14.0, 20.0, 12.0, 24.0, 10.0, 18.0, 14.0, 22.0, 10.0, 16.0, 8.0];
+    final heights = [8.0, 14.0, 20.0, 12.0, 24.0, 10.0, 18.0, 14.0, 22.0, 10.0, 16.0, 8.0];
     return heights
         .map(
           (h) => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 2),
+            padding: EdgeInsets.symmetric(horizontal: Responsive.w(2)),
             child: Container(
-              width: 4,
-              height: h,
+              width: Responsive.w(4),
+              height: Responsive.h(h),
               decoration: BoxDecoration(
                 color: AppColors.primaryLight,
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: BorderRadius.circular(Responsive.w(2)),
               ),
             ),
           ),
@@ -598,7 +582,6 @@ class _AlchemistScreenState extends State<AlchemistScreen> {
   }
 }
 
-// Private data classes for chip configuration
 class _BrainChip {
   final String label;
   final String range;

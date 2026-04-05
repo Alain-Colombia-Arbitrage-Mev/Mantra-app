@@ -3,24 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
+import '../utils/responsive.dart';
 
 class NotifBannerScreen extends StatelessWidget {
   const NotifBannerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundEnd,
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Background image
           Image.asset('assets/images/splash_bg.jpg', fit: BoxFit.cover),
-          // #121212 at 66% overlay
           Container(color: const Color(0xAA121212)),
-          // Dimmed clock behind content
           Positioned(
-            top: 120,
+            top: Responsive.h(120),
             left: 0,
             right: 0,
             child: Column(
@@ -28,18 +27,18 @@ class NotifBannerScreen extends StatelessWidget {
                 Text(
                   '23:24',
                   style: GoogleFonts.urbanist(
-                    fontSize: 72,
+                    fontSize: Responsive.sp(72),
                     fontWeight: FontWeight.w700,
                     color: const Color(0x33FFFFFF),
                     height: 1.0,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 6),
+                SizedBox(height: Responsive.h(6)),
                 Text(
                   'Sábado 21 de Febrero',
                   style: GoogleFonts.urbanist(
-                    fontSize: 16,
+                    fontSize: Responsive.sp(16),
                     color: const Color(0x22FFFFFF),
                   ),
                   textAlign: TextAlign.center,
@@ -47,18 +46,16 @@ class NotifBannerScreen extends StatelessWidget {
               ],
             ),
           ),
-          // Additional dim overlay for depth
           Container(color: Colors.black.withValues(alpha: 0.25)),
-          // Status bar
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              padding: EdgeInsets.symmetric(horizontal: Responsive.w(20), vertical: Responsive.h(8)),
               child: Row(
                 children: [
                   Text(
                     '11:11',
                     style: GoogleFonts.urbanist(
-                      fontSize: 15,
+                      fontSize: Responsive.sp(15),
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
@@ -66,12 +63,12 @@ class NotifBannerScreen extends StatelessWidget {
                   const Spacer(),
                   Row(
                     children: [
-                      const Icon(LucideIcons.wifi, color: Colors.white, size: 16),
-                      const SizedBox(width: 8),
-                      const Icon(
+                      Icon(LucideIcons.wifi, color: Colors.white, size: Responsive.w(16)),
+                      SizedBox(width: Responsive.w(8)),
+                      Icon(
                         LucideIcons.battery,
                         color: Colors.white,
-                        size: 16,
+                        size: Responsive.w(16),
                       ),
                     ],
                   ),
@@ -79,11 +76,10 @@ class NotifBannerScreen extends StatelessWidget {
               ),
             ),
           ),
-          // Floating banners
           Positioned(
-            top: 200,
-            left: 20,
-            right: 20,
+            top: Responsive.h(200),
+            left: Responsive.w(20),
+            right: Responsive.w(20),
             child: _BannerCard(
               gradientColors: const [Color(0xFF1A1235), Color(0xFF2D1B69)],
               borderColor: const Color(0xCCA29BFE),
@@ -95,9 +91,9 @@ class NotifBannerScreen extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 310,
-            left: 20,
-            right: 20,
+            top: Responsive.h(310),
+            left: Responsive.w(20),
+            right: Responsive.w(20),
             child: _BannerCard(
               gradientColors: const [Color(0xFF2D1A00), Color(0xFF5A3300)],
               borderColor: const Color(0xCCFFEAA7),
@@ -109,9 +105,9 @@ class NotifBannerScreen extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 420,
-            left: 20,
-            right: 20,
+            top: Responsive.h(420),
+            left: Responsive.w(20),
+            right: Responsive.w(20),
             child: _BannerCard(
               gradientColors: const [Color(0xFF1F1200), Color(0xFF3D2600)],
               borderColor: const Color(0xCCF9A826),
@@ -123,9 +119,9 @@ class NotifBannerScreen extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 530,
-            left: 20,
-            right: 20,
+            top: Responsive.h(530),
+            left: Responsive.w(20),
+            right: Responsive.w(20),
             child: _BannerCard(
               gradientColors: const [Color(0xFF001A12), Color(0xFF003D22)],
               borderColor: const Color(0xCC55EFC4),
@@ -136,14 +132,13 @@ class NotifBannerScreen extends StatelessWidget {
               subtitle: 'El Señor es mi luz · Tu ritual matutino te espera',
             ),
           ),
-          // Back button
           Positioned(
             top: 0,
             left: 0,
             right: 0,
             child: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.only(left: 16, top: 48),
+                padding: EdgeInsets.only(left: Responsive.w(16), top: Responsive.h(48)),
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: GestureDetector(
@@ -153,8 +148,8 @@ class NotifBannerScreen extends StatelessWidget {
                       }
                     },
                     child: Container(
-                      width: 36,
-                      height: 36,
+                      width: Responsive.w(36),
+                      height: Responsive.w(36),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.1),
                         shape: BoxShape.circle,
@@ -162,10 +157,10 @@ class NotifBannerScreen extends StatelessWidget {
                           color: AppColors.surfaceBorderLight,
                         ),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.arrow_back_ios_new,
                         color: Colors.white,
-                        size: 16,
+                        size: Responsive.w(16),
                       ),
                     ),
                   ),
@@ -205,8 +200,8 @@ class _BannerCard extends StatelessWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
         child: Container(
-          height: 80,
-          padding: const EdgeInsets.symmetric(horizontal: 14),
+          height: Responsive.h(80),
+          padding: EdgeInsets.symmetric(horizontal: Responsive.w(14)),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
@@ -218,10 +213,9 @@ class _BannerCard extends StatelessWidget {
           ),
           child: Row(
             children: [
-              // Icon
               Container(
-                width: 44,
-                height: 44,
+                width: Responsive.w(44),
+                height: Responsive.w(44),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
@@ -230,9 +224,9 @@ class _BannerCard extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: Icon(icon, color: iconColor, size: 20),
+                child: Icon(icon, color: iconColor, size: Responsive.w(20)),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: Responsive.w(12)),
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -241,18 +235,18 @@ class _BannerCard extends StatelessWidget {
                     Text(
                       title,
                       style: GoogleFonts.urbanist(
-                        fontSize: 14,
+                        fontSize: Responsive.sp(14),
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 3),
+                    SizedBox(height: Responsive.h(3)),
                     Text(
                       subtitle,
                       style: GoogleFonts.urbanist(
-                        fontSize: 12,
+                        fontSize: Responsive.sp(12),
                         color: Colors.white.withValues(alpha: 0.75),
                       ),
                       maxLines: 1,
@@ -261,11 +255,11 @@ class _BannerCard extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: Responsive.w(8)),
               Icon(
                 LucideIcons.chevronRight,
                 color: Colors.white.withValues(alpha: 0.55),
-                size: 18,
+                size: Responsive.w(18),
               ),
             ],
           ),

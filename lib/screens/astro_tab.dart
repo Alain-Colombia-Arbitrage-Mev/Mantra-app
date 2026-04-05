@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
 import '../widgets/screen_bg.dart';
+import '../utils/responsive.dart';
 
 class AstroTab extends StatelessWidget {
   const AstroTab({super.key});
@@ -14,26 +15,26 @@ class AstroTab extends StatelessWidget {
       child: SafeArea(
         bottom: false,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
+          padding: EdgeInsets.fromLTRB(Responsive.w(16), 0, Responsive.w(16), Responsive.bottomNavPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 54),
+              SizedBox(height: Responsive.h(16)),
 
               // ── Header ───────────────────────────────────────────────
               Row(
                 children: [
-                  const Icon(
+                  Icon(
                     LucideIcons.chevronLeft,
                     color: Colors.white,
-                    size: 24,
+                    size: Responsive.w(24),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: Responsive.w(12)),
                   Expanded(
                     child: Text(
                       'Mapa de Poder Planetario · Hoy',
                       style: GoogleFonts.urbanist(
-                        fontSize: 20,
+                        fontSize: Responsive.sp(20),
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
                       ),
@@ -42,91 +43,88 @@ class AstroTab extends StatelessWidget {
                 ],
               ),
 
-              const SizedBox(height: 64), // y:118 - y:54 = 64
+              SizedBox(height: Responsive.h(24)),
 
               // ── Active window label ──────────────────────────────────
               Text(
                 '⚡ VENTANA DE MANIFESTACIÓN ACTIVA',
                 style: GoogleFonts.urbanist(
-                  fontSize: 12,
+                  fontSize: Responsive.sp(12),
                   fontWeight: FontWeight.w600,
                   letterSpacing: 1.5,
                   color: const Color(0x99FFFFFF),
                 ),
               ),
 
-              const SizedBox(height: 22), // y:140 - y:118 = 22
+              SizedBox(height: Responsive.h(22)),
 
               // ── Jupiter card ─────────────────────────────────────────
               Container(
-                height: 120,
+                height: Responsive.h(120),
                 decoration: BoxDecoration(
                   color: const Color(0x26FFFFFF),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(Responsive.w(20)),
                 ),
                 child: Stack(
                   clipBehavior: Clip.hardEdge,
                   children: [
-                    // Gold glow ellipse at (270, 20)
                     Positioned(
-                      left: 270,
-                      top: 20,
+                      left: Responsive.w(270),
+                      top: Responsive.h(20),
                       child: Container(
-                        width: 80,
-                        height: 80,
+                        width: Responsive.w(80),
+                        height: Responsive.w(80),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
                               color: AppColors.gold.withValues(alpha: 0.5),
-                              blurRadius: 40,
-                              spreadRadius: 10,
+                              blurRadius: Responsive.w(40),
+                              spreadRadius: Responsive.w(10),
                             ),
                           ],
                         ),
                       ),
                     ),
-                    // Planet icon frame at (16, 32): 56x56
                     Positioned(
-                      left: 16,
-                      top: 32,
+                      left: Responsive.w(16),
+                      top: Responsive.h(32),
                       child: Container(
-                        width: 56,
-                        height: 56,
+                        width: Responsive.w(56),
+                        height: Responsive.w(56),
                         decoration: BoxDecoration(
                           color: const Color(0x33F9A826),
-                          borderRadius: BorderRadius.circular(24),
+                          borderRadius: BorderRadius.circular(Responsive.w(24)),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           LucideIcons.star,
-                          color: Color(0xFFF9A826),
-                          size: 28,
+                          color: const Color(0xFFF9A826),
+                          size: Responsive.w(28),
                         ),
                       ),
                     ),
-                    // Text column at (88, 24)
                     Positioned(
-                      left: 88,
-                      top: 24,
-                      right: 16,
+                      left: Responsive.w(88),
+                      top: Responsive.h(24),
+                      right: Responsive.w(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             '✦ Júpiter · Ahora',
                             style: GoogleFonts.urbanist(
-                              fontSize: 18,
+                              fontSize: Responsive.sp(18),
                               fontWeight: FontWeight.w700,
                               color: const Color(0xFFF9A826),
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          SizedBox(height: Responsive.h(4)),
                           SizedBox(
-                            width: 230,
+                            width: Responsive.w(230),
                             child: Text(
                               '14:32 – 15:48 · Máximo poder para manifestar',
                               style: GoogleFonts.urbanist(
-                                fontSize: 13,
+                                fontSize: Responsive.sp(13),
                                 color: const Color(0xCCFFFFFF),
                               ),
                             ),
@@ -134,25 +132,24 @@ class AstroTab extends StatelessWidget {
                         ],
                       ),
                     ),
-                    // Progress bar at (16, 104): total width 326, fill 218
                     Positioned(
-                      left: 16,
-                      top: 104,
+                      left: Responsive.w(16),
+                      top: Responsive.h(104),
                       child: SizedBox(
-                        width: 326,
-                        height: 6,
+                        width: Responsive.w(326),
+                        height: Responsive.h(6),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(Responsive.w(4)),
                           child: Stack(
                             children: [
                               Container(
-                                width: 326,
-                                height: 6,
+                                width: Responsive.w(326),
+                                height: Responsive.h(6),
                                 color: const Color(0x26FFFFFF),
                               ),
                               Container(
-                                width: 218,
-                                height: 6,
+                                width: Responsive.w(218),
+                                height: Responsive.h(6),
                                 decoration: const BoxDecoration(
                                   gradient: LinearGradient(
                                     colors: [
@@ -171,66 +168,66 @@ class AstroTab extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 16),
+              SizedBox(height: Responsive.h(16)),
 
               // ── Mirror Hours quick link ──────────────────────────────
               GestureDetector(
                 onTap: () => context.push('/mirror-hours'),
                 child: Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: Responsive.w(16),
+                    vertical: Responsive.h(12),
                   ),
                   decoration: BoxDecoration(
                     color: const Color(0x1AA29BFE),
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(Responsive.w(14)),
                     border: Border.all(
                       color: const Color(0x44A29BFE),
                     ),
                   ),
                   child: Row(
                     children: [
-                      const Icon(
+                      Icon(
                         LucideIcons.moon,
-                        color: Color(0xFFA29BFE),
-                        size: 18,
+                        color: const Color(0xFFA29BFE),
+                        size: Responsive.w(18),
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: Responsive.w(10)),
                       Expanded(
                         child: Text(
                           'Horas Espejo · Próxima: 11:11',
                           style: GoogleFonts.urbanist(
-                            fontSize: 14,
+                            fontSize: Responsive.sp(14),
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
                           ),
                         ),
                       ),
-                      const Icon(
+                      Icon(
                         LucideIcons.chevronRight,
-                        color: Color(0xFFA29BFE),
-                        size: 18,
+                        color: const Color(0xFFA29BFE),
+                        size: Responsive.w(18),
                       ),
                     ],
                   ),
                 ),
               ),
 
-              const SizedBox(height: 90),
+              SizedBox(height: Responsive.h(28)),
 
               // ── Codes label ──────────────────────────────────────────
               Text(
                 'CÓDIGOS DE ACTIVACIÓN',
                 style: GoogleFonts.urbanist(
-                  fontSize: 12,
+                  fontSize: Responsive.sp(12),
                   fontWeight: FontWeight.w600,
                   letterSpacing: 1.5,
                   color: const Color(0x99FFFFFF),
                 ),
               ),
 
-              const SizedBox(height: 20), // y:298 - y:278 = 20
+              SizedBox(height: Responsive.h(20)),
 
               // ── Codes row ────────────────────────────────────────────
               Row(
@@ -242,7 +239,7 @@ class AstroTab extends StatelessWidget {
                       subtitle: 'Amor propio · Grabovoi',
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: Responsive.w(12)),
                   Expanded(
                     child: _CodeCard(
                       number: '741852',
@@ -250,7 +247,7 @@ class AstroTab extends StatelessWidget {
                       subtitle: 'Frecuencia · Agesta',
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: Responsive.w(12)),
                   Expanded(
                     child: _CodeCard(
                       number: '888',
@@ -261,20 +258,20 @@ class AstroTab extends StatelessWidget {
                 ],
               ),
 
-              const SizedBox(height: 98), // y:396 - y:298 = 98
+              SizedBox(height: Responsive.h(98)),
 
               // ── Schedule label ───────────────────────────────────────
               Text(
                 'VENTANAS BIO-ENERGÉTICAS HOY',
                 style: GoogleFonts.urbanist(
-                  fontSize: 12,
+                  fontSize: Responsive.sp(12),
                   fontWeight: FontWeight.w600,
                   letterSpacing: 1.5,
                   color: const Color(0x99FFFFFF),
                 ),
               ),
 
-              const SizedBox(height: 20), // y:416 - y:396 = 20
+              SizedBox(height: Responsive.h(20)),
 
               // ── Schedule list ────────────────────────────────────────
               _ScheduleCard(
@@ -285,14 +282,14 @@ class AstroTab extends StatelessWidget {
                 trailing: Text(
                   'Intuición · Sueños',
                   style: GoogleFonts.urbanist(
-                    fontSize: 12,
+                    fontSize: Responsive.sp(12),
                     color: const Color(0x66FFFFFF),
                   ),
                 ),
                 fill: const Color(0x1AFFFFFF),
               ),
 
-              const SizedBox(height: 6),
+              SizedBox(height: Responsive.h(6)),
 
               _ScheduleCard(
                 planetEmoji: '⚡',
@@ -300,17 +297,17 @@ class AstroTab extends StatelessWidget {
                 planetColor: const Color(0xFFF9A826),
                 time: '14:14 – 15:30',
                 trailing: Container(
-                  width: 54,
-                  height: 20,
+                  width: Responsive.w(54),
+                  height: Responsive.h(20),
                   decoration: BoxDecoration(
                     color: const Color(0xFFF9A826),
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(Responsive.w(10)),
                   ),
                   alignment: Alignment.center,
                   child: Text(
                     '✦ AHORA',
                     style: GoogleFonts.urbanist(
-                      fontSize: 10,
+                      fontSize: Responsive.sp(10),
                       fontWeight: FontWeight.w700,
                       color: const Color(0xFF12121E),
                     ),
@@ -319,7 +316,7 @@ class AstroTab extends StatelessWidget {
                 fill: const Color(0x20F9A826),
               ),
 
-              const SizedBox(height: 6),
+              SizedBox(height: Responsive.h(6)),
 
               _ScheduleCard(
                 planetEmoji: '🔴',
@@ -329,7 +326,7 @@ class AstroTab extends StatelessWidget {
                 trailing: Text(
                   'Acción · Coraje',
                   style: GoogleFonts.urbanist(
-                    fontSize: 12,
+                    fontSize: Responsive.sp(12),
                     color: const Color(0x66FFFFFF),
                   ),
                 ),
@@ -359,11 +356,11 @@ class _CodeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      height: Responsive.h(80),
+      padding: EdgeInsets.symmetric(horizontal: Responsive.w(12), vertical: Responsive.h(8)),
       decoration: BoxDecoration(
         color: const Color(0x26FFFFFF),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(Responsive.w(16)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -372,16 +369,16 @@ class _CodeCard extends StatelessWidget {
           Text(
             number,
             style: GoogleFonts.urbanist(
-              fontSize: 22,
+              fontSize: Responsive.sp(22),
               fontWeight: FontWeight.w700,
               color: numberColor,
             ),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: Responsive.h(4)),
           Text(
             subtitle,
             style: GoogleFonts.urbanist(
-              fontSize: 11,
+              fontSize: Responsive.sp(11),
               color: const Color(0xCCFFFFFF),
             ),
             maxLines: 2,
@@ -415,11 +412,11 @@ class _ScheduleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 48,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      height: Responsive.h(48),
+      padding: EdgeInsets.symmetric(horizontal: Responsive.w(16)),
       decoration: BoxDecoration(
         color: fill,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(Responsive.w(12)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -427,7 +424,7 @@ class _ScheduleCard extends StatelessWidget {
           Text(
             '$planetEmoji $planetLabel',
             style: GoogleFonts.urbanist(
-              fontSize: 14,
+              fontSize: Responsive.sp(14),
               fontWeight: FontWeight.w700,
               color: planetColor,
             ),
@@ -436,7 +433,7 @@ class _ScheduleCard extends StatelessWidget {
           Text(
             time,
             style: GoogleFonts.urbanist(
-              fontSize: 13,
+              fontSize: Responsive.sp(13),
               color: const Color(0xCCFFFFFF),
             ),
           ),

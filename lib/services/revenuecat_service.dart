@@ -6,8 +6,26 @@ class RevenueCatService {
   RevenueCatService._();
   static final instance = RevenueCatService._();
 
-  static const String _apiKey = 'test_gFKSXHoAKWePtGQLzGdLTNHVJRf';
+  /// Identificador de la app en RevenueCat (p. ej. rutas REST v2). No se usa en el SDK.
+  static const String restApiAppIdentifier = 'app8596a6d8c6';
+
+  /// Clave pública SDK — Google Play.
+  static const String _apiKeyAndroid = 'goog_JlocVtMHcIqotDVLbbWJCqVmdsX';
+
+  /// Clave pública SDK — Test Store / iOS y resto de plataformas (no Android).
+  static const String _apiKeyDefault = 'test_JfitLdFIFwIFNqHTIgUcVFTmJNQ';
+
   static const String entitlementId = 'Mantra Pro';
+
+  static String get _sdkApiKey {
+    if (kIsWeb) return _apiKeyDefault;
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.android:
+        return _apiKeyAndroid;
+      default:
+        return _apiKeyDefault;
+    }
+  }
 
   bool _initialized = false;
   CustomerInfo? _customerInfo;
@@ -27,8 +45,7 @@ class RevenueCatService {
 
     await Purchases.setLogLevel(LogLevel.debug);
 
-    // All platforms use the same key in this project.
-    final configuration = PurchasesConfiguration(_apiKey);
+    final configuration = PurchasesConfiguration(_sdkApiKey);
     await Purchases.configure(configuration);
     _initialized = true;
 

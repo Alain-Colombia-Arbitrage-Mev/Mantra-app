@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import '../utils/responsive.dart';
 import '../widgets/screen_bg.dart';
 
 class SilvaHubScreen extends StatelessWidget {
@@ -9,15 +10,17 @@ class SilvaHubScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return ScreenBg(
       child: SafeArea(
         bottom: false,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
+          padding: EdgeInsets.fromLTRB(
+              Responsive.w(16), 0, Responsive.w(16), Responsive.h(100)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 16),
+              SizedBox(height: Responsive.h(16)),
 
               // ── Header ──────────────────────────────────────────────────
               Row(
@@ -25,87 +28,89 @@ class SilvaHubScreen extends StatelessWidget {
                   GestureDetector(
                     onTap: () => Navigator.maybePop(context),
                     child: Container(
-                      width: 36,
-                      height: 36,
+                      width: Responsive.w(36),
+                      height: Responsive.w(36),
                       decoration: BoxDecoration(
                         color: const Color(0x15FFFFFF),
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(Responsive.w(10)),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         LucideIcons.chevronLeft,
                         color: Colors.white,
-                        size: 20,
+                        size: Responsive.w(20),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: Responsive.w(12)),
                   Text(
                     'Método Silva',
                     style: GoogleFonts.urbanist(
-                      fontSize: 24,
+                      fontSize: Responsive.sp(24),
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
                   ),
                   const Spacer(),
-                  const Icon(
+                  Icon(
                     LucideIcons.info,
-                    color: Color(0xCCFFFFFF),
-                    size: 22,
+                    color: const Color(0xCCFFFFFF),
+                    size: Responsive.w(22),
                   ),
                 ],
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: Responsive.h(20)),
 
               // ── Hero card ────────────────────────────────────────────────
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(Responsive.w(20)),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                     colors: [Color(0xCC008180), Color(0xCC6C5CE7)],
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(Responsive.w(20)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(
+                    Icon(
                       LucideIcons.brain,
-                      color: Color(0xFF55EFC4),
-                      size: 32,
+                      color: const Color(0xFF55EFC4),
+                      size: Responsive.w(32),
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: Responsive.h(12)),
                     Text(
                       '"Tu mente no tiene límites"',
                       style: GoogleFonts.urbanist(
-                        fontSize: 18,
+                        fontSize: Responsive.sp(18),
                         fontWeight: FontWeight.w700,
                         fontStyle: FontStyle.italic,
                         color: Colors.white,
                         height: 1.3,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    SizedBox(height: Responsive.h(6)),
                     Text(
                       'José Silva · Fundador',
                       style: GoogleFonts.urbanist(
-                        fontSize: 13,
+                        fontSize: Responsive.sp(13),
                         color: const Color(0xCCFFFFFF),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: Responsive.h(16)),
                     GestureDetector(
                       onTap: () => context.push('/silva/alfa'),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: Responsive.w(20),
+                            vertical: Responsive.h(10)),
                         decoration: BoxDecoration(
                           color: const Color(0x20FFFFFF),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius:
+                              BorderRadius.circular(Responsive.w(12)),
                           border: Border.all(
                               color: const Color(0x40FFFFFF), width: 1),
                         ),
@@ -115,14 +120,15 @@ class SilvaHubScreen extends StatelessWidget {
                             Text(
                               'Comenzar nivel',
                               style: GoogleFonts.urbanist(
-                                fontSize: 14,
+                                fontSize: Responsive.sp(14),
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,
                               ),
                             ),
-                            const SizedBox(width: 6),
-                            const Icon(LucideIcons.arrowRight,
-                                color: Colors.white, size: 16),
+                            SizedBox(width: Responsive.w(6)),
+                            Icon(LucideIcons.arrowRight,
+                                color: Colors.white,
+                                size: Responsive.w(16)),
                           ],
                         ),
                       ),
@@ -131,42 +137,43 @@ class SilvaHubScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: Responsive.h(24)),
 
               // ── Techniques label ─────────────────────────────────────────
               Text(
                 'TÉCNICAS DEL MÉTODO SILVA',
                 style: GoogleFonts.urbanist(
-                  fontSize: 11,
+                  fontSize: Responsive.sp(11),
                   fontWeight: FontWeight.w700,
                   letterSpacing: 1.5,
                   color: const Color(0x99FFFFFF),
                 ),
               ),
 
-              const SizedBox(height: 14),
+              SizedBox(height: Responsive.h(14)),
 
               // ── 2×3 Grid ─────────────────────────────────────────────────
               _TechniqueGrid(),
 
-              const SizedBox(height: 20),
+              SizedBox(height: Responsive.h(20)),
 
               // ── Progress card ────────────────────────────────────────────
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(Responsive.w(16)),
                 decoration: BoxDecoration(
                   color: const Color(0x0AFFFFFF),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0x15FFFFFF), width: 1),
+                  borderRadius: BorderRadius.circular(Responsive.w(16)),
+                  border:
+                      Border.all(color: const Color(0x15FFFFFF), width: 1),
                 ),
                 child: Row(
                   children: [
-                    const Icon(
+                    Icon(
                       LucideIcons.flame,
-                      color: Color(0xFFF9A826),
-                      size: 28,
+                      color: const Color(0xFFF9A826),
+                      size: Responsive.w(28),
                     ),
-                    const SizedBox(width: 14),
+                    SizedBox(width: Responsive.w(14)),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,28 +181,30 @@ class SilvaHubScreen extends StatelessWidget {
                           Text(
                             'Tu progreso Silva',
                             style: GoogleFonts.urbanist(
-                              fontSize: 15,
+                              fontSize: Responsive.sp(15),
                               fontWeight: FontWeight.w700,
                               color: Colors.white,
                             ),
                           ),
-                          const SizedBox(height: 2),
+                          SizedBox(height: Responsive.h(2)),
                           Text(
                             '7 días de práctica · Nivel: Iniciado',
                             style: GoogleFonts.urbanist(
-                              fontSize: 12,
+                              fontSize: Responsive.sp(12),
                               color: const Color(0x80FFFFFF),
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: Responsive.h(10)),
                           Row(
                             children: List.generate(7, (i) {
                               final active = i < 5;
                               return Padding(
-                                padding: EdgeInsets.only(right: i < 6 ? 6 : 0),
+                                padding: EdgeInsets.only(
+                                    right:
+                                        i < 6 ? Responsive.w(6) : 0),
                                 child: Container(
-                                  width: 28,
-                                  height: 28,
+                                  width: Responsive.w(28),
+                                  height: Responsive.w(28),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: active
@@ -212,7 +221,7 @@ class SilvaHubScreen extends StatelessWidget {
                                     child: Text(
                                       ['L', 'M', 'M', 'J', 'V', 'S', 'D'][i],
                                       style: GoogleFonts.urbanist(
-                                        fontSize: 10,
+                                        fontSize: Responsive.sp(10),
                                         fontWeight: FontWeight.w700,
                                         color: active
                                             ? Colors.black
@@ -327,27 +336,27 @@ class _TechniqueGrid extends StatelessWidget {
             Expanded(
               child: _TechCard(item: _techniques[0]),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: Responsive.w(12)),
             Expanded(
               child: _TechCard(item: _techniques[1]),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: Responsive.w(12)),
             Expanded(
               child: _TechCard(item: _techniques[2]),
             ),
           ],
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: Responsive.h(12)),
         Row(
           children: [
             Expanded(
               child: _TechCard(item: _techniques[3]),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: Responsive.w(12)),
             Expanded(
               child: _TechCard(item: _techniques[4]),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: Responsive.w(12)),
             Expanded(
               child: _TechCard(item: _techniques[5]),
             ),
@@ -367,42 +376,42 @@ class _TechCard extends StatelessWidget {
     return GestureDetector(
       onTap: () => context.push(item.route),
       child: Container(
-        height: 155,
-        padding: const EdgeInsets.all(12),
+        height: Responsive.h(155),
+        padding: EdgeInsets.all(Responsive.w(12)),
         decoration: BoxDecoration(
           color: item.fill,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(Responsive.w(16)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(item.icon, color: item.iconColor, size: 26),
+            Icon(item.icon, color: item.iconColor, size: Responsive.w(26)),
             const Spacer(),
             Text(
               item.title,
               style: GoogleFonts.urbanist(
-                fontSize: 13,
+                fontSize: Responsive.sp(13),
                 fontWeight: FontWeight.w700,
                 color: Colors.white,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 2),
+            SizedBox(height: Responsive.h(2)),
             Text(
               item.tag,
               style: GoogleFonts.urbanist(
-                fontSize: 10,
+                fontSize: Responsive.sp(10),
                 color: const Color(0xAAFFFFFF),
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 2),
+            SizedBox(height: Responsive.h(2)),
             Text(
               item.sub,
               style: GoogleFonts.urbanist(
-                fontSize: 10,
+                fontSize: Responsive.sp(10),
                 color: item.iconColor.withValues(alpha: 0.80),
               ),
               maxLines: 1,

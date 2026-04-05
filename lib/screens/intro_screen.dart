@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
+import '../utils/responsive.dart';
 import '../widgets/cta_button.dart';
 
 // ─── Slide data matching .pen design exactly ─────────────────────────────────
@@ -92,6 +93,7 @@ class _IntroScreenState extends State<IntroScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundEnd,
       body: PageView.builder(
@@ -149,7 +151,7 @@ class _IntroPage extends StatelessWidget {
             bottom: 0,
             left: 0,
             right: 0,
-            height: 500,
+            height: Responsive.h(500),
             child: Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -168,13 +170,13 @@ class _IntroPage extends StatelessWidget {
 
         // ── Text content ──
         Positioned(
-          left: 16,
-          right: 16,
-          bottom: 140,
+          left: Responsive.w(16),
+          right: Responsive.w(16),
+          bottom: Responsive.h(140),
           child: Text(
             slide.text,
             style: GoogleFonts.urbanist(
-              fontSize: 64,
+              fontSize: Responsive.sp(64),
               fontWeight: slide.fontWeight,
               color: AppColors.white,
               height: 1.0,
@@ -185,9 +187,9 @@ class _IntroPage extends StatelessWidget {
 
         // ── Bottom bar: dots + next button ──
         Positioned(
-          left: 16,
-          right: 16,
-          bottom: 40,
+          left: Responsive.w(16),
+          right: Responsive.w(16),
+          bottom: Responsive.h(40),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -195,9 +197,9 @@ class _IntroPage extends StatelessWidget {
               _ProgressDots(
                 current: pageIndex,
                 total: totalPages,
-                activeWidth: 25,
-                inactiveWidth: 14,
-                height: 5,
+                activeWidth: Responsive.w(25),
+                inactiveWidth: Responsive.w(14),
+                height: Responsive.h(5),
               ),
               _NextButton(onTap: onNext),
             ],
@@ -231,7 +233,7 @@ class _FinalPage extends StatelessWidget {
           bottom: 0,
           left: 0,
           right: 0,
-          height: 500,
+          height: Responsive.h(500),
           child: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -250,7 +252,7 @@ class _FinalPage extends StatelessWidget {
         // ── Content ──
         SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
+            padding: EdgeInsets.symmetric(horizontal: Responsive.w(25)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -260,19 +262,19 @@ class _FinalPage extends StatelessWidget {
                 Text(
                   'MANTRAS',
                   style: GoogleFonts.urbanist(
-                    fontSize: 14,
+                    fontSize: Responsive.sp(14),
                     fontWeight: FontWeight.w700,
                     color: AppColors.primaryLight,
                     letterSpacing: 4,
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: Responsive.h(12)),
 
                 // Main title
                 Text(
                   'Tu mejor versión\ncomienza hoy',
                   style: GoogleFonts.urbanist(
-                    fontSize: 52,
+                    fontSize: Responsive.sp(52),
                     fontWeight: FontWeight.w700,
                     color: AppColors.white,
                     height: 1.05,
@@ -286,20 +288,20 @@ class _FinalPage extends StatelessWidget {
                 Text(
                   'Alarmas biológicas · Frecuencias sagradas\nRituales personales',
                   style: GoogleFonts.urbanist(
-                    fontSize: 15,
+                    fontSize: Responsive.sp(15),
                     fontWeight: FontWeight.w600,
                     color: AppColors.white.withValues(alpha: 0.93),
                     height: 1.5,
                   ),
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: Responsive.h(32)),
 
                 // CTA Button
                 CtaButton(
                   label: 'Comenzar mi viaje',
                   onTap: () => context.go('/onboarding'),
                 ),
-                const SizedBox(height: 18),
+                SizedBox(height: Responsive.h(18)),
 
                 // Login link
                 Center(
@@ -309,7 +311,7 @@ class _FinalPage extends StatelessWidget {
                       TextSpan(
                         text: '¿Ya tienes cuenta? ',
                         style: GoogleFonts.urbanist(
-                          fontSize: 13,
+                          fontSize: Responsive.sp(13),
                           fontWeight: FontWeight.w500,
                           color: AppColors.white.withValues(alpha: 0.87),
                         ),
@@ -317,7 +319,7 @@ class _FinalPage extends StatelessWidget {
                           TextSpan(
                             text: 'Iniciar sesión',
                             style: GoogleFonts.urbanist(
-                              fontSize: 13,
+                              fontSize: Responsive.sp(13),
                               fontWeight: FontWeight.w600,
                               color: AppColors.primaryLight,
                             ),
@@ -327,17 +329,17 @@ class _FinalPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 28),
+                SizedBox(height: Responsive.h(28)),
 
                 // Progress dots (5 dots, last active)
                 _ProgressDots(
                   current: 4,
                   total: totalPages,
-                  activeWidth: 25,
-                  inactiveWidth: 14,
-                  height: 5,
+                  activeWidth: Responsive.w(25),
+                  inactiveWidth: Responsive.w(14),
+                  height: Responsive.h(5),
                 ),
-                const SizedBox(height: 28),
+                SizedBox(height: Responsive.h(28)),
               ],
             ),
           ),
@@ -348,8 +350,6 @@ class _FinalPage extends StatelessWidget {
 }
 
 // ─── Progress Dots ───────────────────────────────────────────────────────────
-// Design: rounded rects, active=white 25px, inactive=white50% 14px,
-// gap=3, height=5, cornerRadius=100
 
 class _ProgressDots extends StatelessWidget {
   final int current;
@@ -391,7 +391,6 @@ class _ProgressDots extends StatelessWidget {
 }
 
 // ─── Next Button ─────────────────────────────────────────────────────────────
-// Design: frosted pill 126x64, white circle 48px inside with arrow
 
 class _NextButton extends StatelessWidget {
   final VoidCallback onTap;
@@ -406,19 +405,19 @@ class _NextButton extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 13, sigmaY: 13),
           child: Container(
-            width: 126,
-            height: 64,
+            width: Responsive.w(126),
+            height: Responsive.h(64),
             decoration: BoxDecoration(
               color: AppColors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(100),
             ),
             child: Row(
               children: [
-                const SizedBox(width: 8),
+                SizedBox(width: Responsive.w(8)),
                 // Arrow circle button
                 Container(
-                  width: 48,
-                  height: 48,
+                  width: Responsive.w(48),
+                  height: Responsive.w(48),
                   decoration: BoxDecoration(
                     color: AppColors.white,
                     shape: BoxShape.circle,
@@ -431,20 +430,20 @@ class _NextButton extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: const Icon(
+                  child: Icon(
                     LucideIcons.arrowRight,
                     color: AppColors.backgroundEnd,
-                    size: 22,
+                    size: Responsive.w(22),
                   ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: Responsive.w(12)),
                 // Triple chevrons (decreasing opacity)
                 Icon(LucideIcons.chevronRight,
-                    color: AppColors.white.withValues(alpha: 0.4), size: 14),
+                    color: AppColors.white.withValues(alpha: 0.4), size: Responsive.w(14)),
                 Icon(LucideIcons.chevronRight,
-                    color: AppColors.white.withValues(alpha: 0.6), size: 14),
+                    color: AppColors.white.withValues(alpha: 0.6), size: Responsive.w(14)),
                 Icon(LucideIcons.chevronRight,
-                    color: AppColors.white, size: 14),
+                    color: AppColors.white, size: Responsive.w(14)),
               ],
             ),
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import '../utils/responsive.dart';
 
 class SilvaAlfaScreen extends StatefulWidget {
   const SilvaAlfaScreen({super.key});
@@ -24,6 +25,7 @@ class _SilvaAlfaScreenState extends State<SilvaAlfaScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
@@ -39,23 +41,25 @@ class _SilvaAlfaScreenState extends State<SilvaAlfaScreen> {
             children: [
               // ── Top bar ────────────────────────────────────────────────
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: EdgeInsets.symmetric(
+                    horizontal: Responsive.w(20), vertical: Responsive.h(12)),
                 child: Row(
                   children: [
                     const Spacer(),
                     GestureDetector(
                       onTap: () => Navigator.pop(context),
                       child: Container(
-                        width: 36,
-                        height: 36,
+                        width: Responsive.w(36),
+                        height: Responsive.w(36),
                         decoration: BoxDecoration(
                           color: const Color(0x15FFFFFF),
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius:
+                              BorderRadius.circular(Responsive.w(10)),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           LucideIcons.x,
                           color: Colors.white,
-                          size: 18,
+                          size: Responsive.w(18),
                         ),
                       ),
                     ),
@@ -67,69 +71,71 @@ class _SilvaAlfaScreenState extends State<SilvaAlfaScreen> {
               Text(
                 'NIVEL ALFA · 8-12 Hz',
                 style: GoogleFonts.urbanist(
-                  fontSize: 11,
+                  fontSize: Responsive.sp(11),
                   fontWeight: FontWeight.w700,
                   letterSpacing: 2,
                   color: const Color(0xCC55EFC4),
                 ),
               ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: Responsive.h(24)),
 
               // ── Countdown ──────────────────────────────────────────────
               Text(
                 '3',
                 style: GoogleFonts.urbanist(
-                  fontSize: 160,
+                  fontSize: Responsive.sp(160),
                   fontWeight: FontWeight.w800,
                   color: const Color(0xFF55EFC4),
                   height: 1.0,
                 ),
               ),
 
-              const SizedBox(height: 16),
+              SizedBox(height: Responsive.h(16)),
 
               // ── Instructions ───────────────────────────────────────────
               Text(
                 'Cierra los ojos...\nRelaja tu cuerpo...\nSiente la calma...',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.urbanist(
-                  fontSize: 18,
+                  fontSize: Responsive.sp(18),
                   color: const Color(0x9AFFFFFF),
                   height: 1.8,
                 ),
               ),
 
-              const SizedBox(height: 28),
+              SizedBox(height: Responsive.h(28)),
 
               // ── Waveform ───────────────────────────────────────────────
               SizedBox(
-                height: 60,
+                height: Responsive.h(60),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: List.generate(_waveHeights.length, (i) {
                     return Container(
-                      width: 4,
-                      height: _waveHeights[i],
-                      margin: const EdgeInsets.symmetric(horizontal: 3),
+                      width: Responsive.w(4),
+                      height: Responsive.h(_waveHeights[i]),
+                      margin: EdgeInsets.symmetric(
+                          horizontal: Responsive.w(3)),
                       decoration: BoxDecoration(
                         color: const Color(0xFF55EFC4)
                             .withValues(alpha: _waveOpacities[i]),
-                        borderRadius: BorderRadius.circular(2),
+                        borderRadius:
+                            BorderRadius.circular(Responsive.w(2)),
                       ),
                     );
                   }),
                 ),
               ),
 
-              const SizedBox(height: 16),
+              SizedBox(height: Responsive.h(16)),
 
               // ── Timer ──────────────────────────────────────────────────
               Text(
                 '12:00',
                 style: GoogleFonts.urbanist(
-                  fontSize: 14,
+                  fontSize: Responsive.sp(14),
                   color: const Color(0x66FFFFFF),
                 ),
               ),
@@ -141,17 +147,17 @@ class _SilvaAlfaScreenState extends State<SilvaAlfaScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Icon(
+                  Icon(
                     LucideIcons.skipBack,
-                    color: Color(0x99FFFFFF),
-                    size: 28,
+                    color: const Color(0x99FFFFFF),
+                    size: Responsive.w(28),
                   ),
-                  const SizedBox(width: 32),
+                  SizedBox(width: Responsive.w(32)),
                   GestureDetector(
                     onTap: () => setState(() => _isPlaying = !_isPlaying),
                     child: Container(
-                      width: 80,
-                      height: 80,
+                      width: Responsive.w(80),
+                      height: Responsive.w(80),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         gradient: const LinearGradient(
@@ -161,50 +167,51 @@ class _SilvaAlfaScreenState extends State<SilvaAlfaScreen> {
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(0xFF55EFC4).withValues(alpha: 0.35),
-                            blurRadius: 24,
-                            spreadRadius: 2,
+                            color: const Color(0xFF55EFC4)
+                                .withValues(alpha: 0.35),
+                            blurRadius: Responsive.w(24),
+                            spreadRadius: Responsive.w(2),
                           ),
                         ],
                       ),
                       child: Icon(
                         _isPlaying ? LucideIcons.pause : LucideIcons.play,
                         color: Colors.white,
-                        size: 32,
+                        size: Responsive.w(32),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 32),
-                  const Icon(
+                  SizedBox(width: Responsive.w(32)),
+                  Icon(
                     LucideIcons.skipForward,
-                    color: Color(0x99FFFFFF),
-                    size: 28,
+                    color: const Color(0x99FFFFFF),
+                    size: Responsive.w(28),
                   ),
                 ],
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: Responsive.h(20)),
 
               // ── Session label ──────────────────────────────────────────
               Text(
                 'Sesión guiada · Relajación profunda',
                 style: GoogleFonts.urbanist(
-                  fontSize: 13,
+                  fontSize: Responsive.sp(13),
                   color: const Color(0x80FFFFFF),
                 ),
               ),
 
-              const SizedBox(height: 6),
+              SizedBox(height: Responsive.h(6)),
 
               Text(
                 'Basado en el Método Silva de Control Mental',
                 style: GoogleFonts.urbanist(
-                  fontSize: 11,
+                  fontSize: Responsive.sp(11),
                   color: const Color(0x4DFFFFFF),
                 ),
               ),
 
-              const SizedBox(height: 32),
+              SizedBox(height: Responsive.h(32)),
             ],
           ),
         ),

@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
 import '../widgets/screen_bg.dart';
+import '../utils/responsive.dart';
 
 class MarketplaceScreen extends StatefulWidget {
   const MarketplaceScreen({super.key});
@@ -24,6 +25,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundEnd,
       extendBody: true,
@@ -31,55 +33,54 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
         child: SafeArea(
           bottom: false,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
+            padding: EdgeInsets.fromLTRB(
+              Responsive.w(20), Responsive.h(20), Responsive.w(20), Responsive.h(40),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ── Nav ───────────────────────────────────────────────
                 ScreenNav(
                   title: 'Mercado Social · Hecho para ti',
                   showBack: true,
                   trailing: GestureDetector(
                     onTap: () => context.push('/search'),
                     child: Container(
-                      width: 36,
-                      height: 36,
+                      width: Responsive.w(36),
+                      height: Responsive.w(36),
                       decoration: BoxDecoration(
                         color: AppColors.white.withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                         border: Border.all(color: AppColors.surfaceBorderLight),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         LucideIcons.search,
                         color: Colors.white,
-                        size: 18,
+                        size: Responsive.w(18),
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
-
-                // ── Featured banner ────────────────────────────────────
+                SizedBox(height: Responsive.h(24)),
                 GestureDetector(
                 onTap: () => context.push('/alchemist'),
                 child: Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(Responsive.w(20)),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [Color(0xFF2D1B69), Color(0xFF0D0730)],
                     ),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(Responsive.w(20)),
                     border: Border.all(
                       color: AppColors.primary.withValues(alpha: 0.4),
                     ),
                     boxShadow: [
                       BoxShadow(
                         color: AppColors.primary.withValues(alpha: 0.25),
-                        blurRadius: 24,
-                        offset: const Offset(0, 10),
+                        blurRadius: Responsive.w(24),
+                        offset: Offset(0, Responsive.h(10)),
                       ),
                     ],
                   ),
@@ -90,28 +91,28 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 4,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: Responsive.w(10), vertical: Responsive.h(4),
                               ),
                               decoration: BoxDecoration(
                                 color: AppColors.gold.withValues(alpha: 0.2),
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(Responsive.w(20)),
                               ),
                               child: Text(
                                 'EXCLUSIVO MANTRAS',
                                 style: GoogleFonts.urbanist(
-                                  fontSize: 9,
+                                  fontSize: Responsive.sp(9),
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: 1.5,
                                   color: AppColors.gold,
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: Responsive.h(10)),
                             Text(
                               'El Alquimista',
                               style: GoogleFonts.urbanist(
-                                fontSize: 22,
+                                fontSize: Responsive.sp(22),
                                 fontWeight: FontWeight.w800,
                                 color: Colors.white,
                               ),
@@ -119,16 +120,16 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                             Text(
                               'Crea tu Audio IA',
                               style: GoogleFonts.urbanist(
-                                fontSize: 16,
+                                fontSize: Responsive.sp(16),
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.primaryLight,
                               ),
                             ),
-                            const SizedBox(height: 6),
+                            SizedBox(height: Responsive.h(6)),
                             Text(
                               '528Hz · Theta · Tu voz · Sin límites',
                               style: GoogleFonts.urbanist(
-                                fontSize: 12,
+                                fontSize: Responsive.sp(12),
                                 color: AppColors.textTertiary,
                               ),
                             ),
@@ -136,45 +137,43 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                         ),
                       ),
                       Container(
-                        width: 64,
-                        height: 64,
+                        width: Responsive.w(64),
+                        height: Responsive.w(64),
                         decoration: BoxDecoration(
                           color: AppColors.primary.withValues(alpha: 0.25),
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(
+                        child: Icon(
                           LucideIcons.mic,
                           color: AppColors.primaryLight,
-                          size: 30,
+                          size: Responsive.w(30),
                         ),
                       ),
                     ],
                   ),
                 ),
                 ),
-                const SizedBox(height: 20),
-
-                // ── Category chips ─────────────────────────────────────
+                SizedBox(height: Responsive.h(20)),
                 SizedBox(
-                  height: 38,
+                  height: Responsive.h(38),
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemCount: _categories.length,
-                    separatorBuilder: (_, __) => const SizedBox(width: 8),
+                    separatorBuilder: (_, __) => SizedBox(width: Responsive.w(8)),
                     itemBuilder: (context, i) {
                       final active = i == _selectedCategory;
                       return GestureDetector(
                         onTap: () => setState(() => _selectedCategory = i),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 200),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 18, vertical: 9,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: Responsive.w(18), vertical: Responsive.h(9),
                           ),
                           decoration: BoxDecoration(
                             color: active
                                 ? AppColors.primary
                                 : AppColors.surfaceLight,
-                            borderRadius: BorderRadius.circular(50),
+                            borderRadius: BorderRadius.circular(Responsive.w(50)),
                             border: Border.all(
                               color: active
                                   ? AppColors.primary
@@ -184,7 +183,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                           child: Text(
                             _categories[i],
                             style: GoogleFonts.urbanist(
-                              fontSize: 13,
+                              fontSize: Responsive.sp(13),
                               fontWeight: FontWeight.w600,
                               color: active
                                   ? Colors.white
@@ -196,12 +195,9 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                     },
                   ),
                 ),
-                const SizedBox(height: 24),
-
-                // ── Product list label ─────────────────────────────────
+                SizedBox(height: Responsive.h(24)),
                 const SectionLabel('LO MÁS TRANSFORMADOR DEL MERCADO'),
-                const SizedBox(height: 14),
-
+                SizedBox(height: Responsive.h(14)),
                 _ProductCard(
                   title: 'Reprograma tu ADN · 528 Hz',
                   price: '\$4.99',
@@ -210,7 +206,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                   badgeColor: AppColors.mint,
                   accentColor: AppColors.primary,
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: Responsive.h(12)),
                 _ProductCard(
                   title: 'Sana a tu niño interior',
                   price: '\$6.99',
@@ -219,7 +215,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                   badgeColor: AppColors.chakra,
                   accentColor: AppColors.chakra,
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: Responsive.h(12)),
                 _ProductCard(
                   title: 'Activa tu Merkaba · 963 Hz',
                   price: '\$9.99',
@@ -259,100 +255,100 @@ class _ProductCard extends StatelessWidget {
     return GestureDetector(
       onTap: () => context.push('/player'),
       child: Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceLight,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.surfaceBorderLight),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 52,
-            height: 52,
-            decoration: BoxDecoration(
-              color: accentColor.withValues(alpha: 0.18),
-              borderRadius: BorderRadius.circular(14),
+        padding: EdgeInsets.all(Responsive.w(16)),
+        decoration: BoxDecoration(
+          color: AppColors.surfaceLight,
+          borderRadius: BorderRadius.circular(Responsive.w(16)),
+          border: Border.all(color: AppColors.surfaceBorderLight),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: Responsive.w(52),
+              height: Responsive.w(52),
+              decoration: BoxDecoration(
+                color: accentColor.withValues(alpha: 0.18),
+                borderRadius: BorderRadius.circular(Responsive.w(14)),
+              ),
+              child: Icon(LucideIcons.headphones, color: accentColor, size: Responsive.w(24)),
             ),
-            child: Icon(LucideIcons.headphones, color: accentColor, size: 24),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            SizedBox(width: Responsive.w(14)),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: GoogleFonts.urbanist(
+                      fontSize: Responsive.sp(14),
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(height: Responsive.h(3)),
+                  Text(
+                    meta,
+                    style: GoogleFonts.urbanist(
+                      fontSize: Responsive.sp(12),
+                      color: AppColors.textTertiary,
+                    ),
+                  ),
+                  SizedBox(height: Responsive.h(6)),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: Responsive.w(8), vertical: Responsive.h(3),
+                    ),
+                    decoration: BoxDecoration(
+                      color: badgeColor.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(Responsive.w(6)),
+                    ),
+                    child: Text(
+                      badge,
+                      style: GoogleFonts.urbanist(
+                        fontSize: Responsive.sp(11),
+                        fontWeight: FontWeight.w600,
+                        color: badgeColor,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(width: Responsive.w(10)),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  title,
+                  price,
                   style: GoogleFonts.urbanist(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
+                    fontSize: Responsive.sp(18),
+                    fontWeight: FontWeight.w800,
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 3),
-                Text(
-                  meta,
-                  style: GoogleFonts.urbanist(
-                    fontSize: 12,
-                    color: AppColors.textTertiary,
-                  ),
-                ),
-                const SizedBox(height: 6),
+                SizedBox(height: Responsive.h(6)),
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8, vertical: 3,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: Responsive.w(12), vertical: Responsive.h(6),
                   ),
                   decoration: BoxDecoration(
-                    color: badgeColor.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(6),
+                    gradient: AppGradients.primaryButton,
+                    borderRadius: BorderRadius.circular(Responsive.w(20)),
                   ),
                   child: Text(
-                    badge,
+                    'Obtener',
                     style: GoogleFonts.urbanist(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: badgeColor,
+                      fontSize: Responsive.sp(12),
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
                     ),
                   ),
                 ),
               ],
             ),
-          ),
-          const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                price,
-                style: GoogleFonts.urbanist(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 6),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12, vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  gradient: AppGradients.primaryButton,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  'Obtener',
-                  style: GoogleFonts.urbanist(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
     );
   }
 }

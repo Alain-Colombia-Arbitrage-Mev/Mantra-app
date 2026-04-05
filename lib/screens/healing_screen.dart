@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
+import '../utils/responsive.dart';
 import '../widgets/screen_bg.dart';
 
 class HealingScreen extends StatefulWidget {
@@ -19,6 +20,7 @@ class _HealingScreenState extends State<HealingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       extendBody: true,
       body: Container(
@@ -34,7 +36,11 @@ class _HealingScreenState extends State<HealingScreen> {
         child: SafeArea(
           bottom: false,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 48),
+            padding: EdgeInsets.fromLTRB(
+                Responsive.w(20),
+                Responsive.h(20),
+                Responsive.w(20),
+                Responsive.h(48)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -43,31 +49,32 @@ class _HealingScreenState extends State<HealingScreen> {
                   title: 'Healing · Bio-Resonancia',
                   showBack: true,
                   trailing: Container(
-                    width: 36,
-                    height: 36,
+                    width: Responsive.w(36),
+                    height: Responsive.w(36),
                     decoration: BoxDecoration(
                       color: AppColors.white.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
-                      border: Border.all(color: AppColors.surfaceBorderLight),
+                      border:
+                          Border.all(color: AppColors.surfaceBorderLight),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       LucideIcons.moreHorizontal,
                       color: Colors.white,
-                      size: 18,
+                      size: Responsive.w(18),
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: Responsive.h(24)),
 
                 // ── Section label ────────────────────────────────────────
                 const SectionLabel('TU SESIÓN DE BIO-RESONANCIA'),
-                const SizedBox(height: 28),
+                SizedBox(height: Responsive.h(28)),
 
                 // ── Healing orb ──────────────────────────────────────────
                 Center(
                   child: Container(
-                    width: 180,
-                    height: 180,
+                    width: Responsive.w(180),
+                    height: Responsive.w(180),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: const RadialGradient(
@@ -75,20 +82,21 @@ class _HealingScreenState extends State<HealingScreen> {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFF55EFC4).withValues(alpha: 0.4),
-                          blurRadius: 60,
-                          spreadRadius: 20,
+                          color: const Color(0xFF55EFC4)
+                              .withValues(alpha: 0.4),
+                          blurRadius: Responsive.w(60),
+                          spreadRadius: Responsive.w(20),
                         ),
                       ],
                     ),
-                    child: const Icon(
+                    child: Icon(
                       LucideIcons.heartPulse,
                       color: AppColors.mint,
-                      size: 64,
+                      size: Responsive.w(64),
                     ),
                   ),
                 ),
-                const SizedBox(height: 28),
+                SizedBox(height: Responsive.h(28)),
 
                 // ── Timer ────────────────────────────────────────────────
                 Center(
@@ -97,44 +105,46 @@ class _HealingScreenState extends State<HealingScreen> {
                       Text(
                         '25:00',
                         style: GoogleFonts.urbanist(
-                          fontSize: 40,
+                          fontSize: Responsive.sp(40),
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                           height: 1.0,
                         ),
                       ),
-                      const SizedBox(height: 6),
+                      SizedBox(height: Responsive.h(6)),
                       Text(
                         'Tiempo de Resonancia Restante',
                         style: GoogleFonts.urbanist(
-                          fontSize: 12,
+                          fontSize: Responsive.sp(12),
                           color: AppColors.white.withValues(alpha: 0.4),
                         ),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: Responsive.h(24)),
 
                 // ── Frequency chips ──────────────────────────────────────
                 Center(
                   child: Wrap(
-                    spacing: 10,
+                    spacing: Responsive.w(10),
                     children: List.generate(_chips.length, (i) {
                       final isSelected = i == _selectedChip;
                       return GestureDetector(
                         onTap: () => setState(() => _selectedChip = i),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 180),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: Responsive.w(16),
+                            vertical: Responsive.h(8),
                           ),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? AppColors.mint.withValues(alpha: 0.15)
+                                ? AppColors.mint
+                                    .withValues(alpha: 0.15)
                                 : AppColors.surfaceLight,
-                            borderRadius: BorderRadius.circular(50),
+                            borderRadius: BorderRadius.circular(
+                                Responsive.w(50)),
                             border: Border.all(
                               color: isSelected
                                   ? AppColors.mint
@@ -144,7 +154,7 @@ class _HealingScreenState extends State<HealingScreen> {
                           child: Text(
                             _chips[i],
                             style: GoogleFonts.urbanist(
-                              fontSize: 13,
+                              fontSize: Responsive.sp(13),
                               fontWeight: FontWeight.w600,
                               color: isSelected
                                   ? AppColors.mint
@@ -156,57 +166,60 @@ class _HealingScreenState extends State<HealingScreen> {
                     }),
                   ),
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: Responsive.h(32)),
 
                 // ── Green CTA ────────────────────────────────────────────
                 Center(
                   child: GestureDetector(
-                  onTap: () => context.push('/player'),
-                  child: Container(
-                    width: 280,
-                    height: 56,
-                    decoration: BoxDecoration(
-                      gradient: AppGradients.greenButton,
-                      borderRadius: BorderRadius.circular(28),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.mint.withValues(alpha: 0.35),
-                          blurRadius: 20,
-                          offset: const Offset(0, 6),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          LucideIcons.play,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          'Iniciar Sesión de Sanación',
-                          style: GoogleFonts.urbanist(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
+                    onTap: () => context.push('/player'),
+                    child: Container(
+                      width: Responsive.w(280),
+                      height: Responsive.h(56),
+                      decoration: BoxDecoration(
+                        gradient: AppGradients.greenButton,
+                        borderRadius:
+                            BorderRadius.circular(Responsive.w(28)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.mint
+                                .withValues(alpha: 0.35),
+                            blurRadius: Responsive.w(20),
+                            offset: Offset(0, Responsive.h(6)),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            LucideIcons.play,
+                            color: Colors.white,
+                            size: Responsive.w(20),
+                          ),
+                          SizedBox(width: Responsive.w(10)),
+                          Text(
+                            'Iniciar Sesión de Sanación',
+                            style: GoogleFonts.urbanist(
+                              fontSize: Responsive.sp(16),
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: Responsive.h(24)),
 
                 // ── Info card ────────────────────────────────────────────
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(18),
+                  padding: EdgeInsets.all(Responsive.w(18)),
                   decoration: BoxDecoration(
                     color: AppColors.white.withValues(alpha: 0.05),
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius:
+                        BorderRadius.circular(Responsive.w(16)),
                     border: Border.all(
                       color: AppColors.white.withValues(alpha: 0.1),
                     ),
@@ -217,16 +230,16 @@ class _HealingScreenState extends State<HealingScreen> {
                       Text(
                         'Reparación celular con frecuencias Solfeggio',
                         style: GoogleFonts.urbanist(
-                          fontSize: 14,
+                          fontSize: Responsive.sp(14),
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: Responsive.h(8)),
                       Text(
                         'Las frecuencias Solfeggio actúan directamente sobre el ADN y los campos electromagnéticos del cuerpo, induciendo estados profundos de reparación celular y coherencia biológica. La frecuencia 528Hz es conocida como la "Frecuencia del Amor" y está asociada con la regeneración del ADN.',
                         style: GoogleFonts.urbanist(
-                          fontSize: 13,
+                          fontSize: Responsive.sp(13),
                           color: AppColors.textTertiary,
                           height: 1.6,
                         ),

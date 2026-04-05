@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import '../utils/responsive.dart';
 
 class SilvaLabScreen extends StatelessWidget {
   const SilvaLabScreen({super.key});
@@ -14,6 +15,7 @@ class SilvaLabScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
@@ -32,13 +34,13 @@ class SilvaLabScreen extends StatelessWidget {
 
           // ── Steel blue glow ─────────────────────────────────────────────
           Positioned(
-            top: -60,
+            top: Responsive.h(-60),
             left: 0,
             right: 0,
             child: Center(
               child: Container(
-                width: 320,
-                height: 320,
+                width: Responsive.w(320),
+                height: Responsive.w(320),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
@@ -55,7 +57,8 @@ class SilvaLabScreen extends StatelessWidget {
           // ── Content ──────────────────────────────────────────────────────
           SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+              padding: EdgeInsets.fromLTRB(
+                  Responsive.w(20), 0, Responsive.w(20), Responsive.h(32)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -65,67 +68,69 @@ class SilvaLabScreen extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () => Navigator.pop(context),
                       child: Container(
-                        width: 36,
-                        height: 36,
-                        margin: const EdgeInsets.only(top: 12),
+                        width: Responsive.w(36),
+                        height: Responsive.w(36),
+                        margin: EdgeInsets.only(top: Responsive.h(12)),
                         decoration: BoxDecoration(
                           color: const Color(0x15FFFFFF),
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius:
+                              BorderRadius.circular(Responsive.w(10)),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           LucideIcons.x,
                           color: Colors.white,
-                          size: 18,
+                          size: Responsive.w(18),
                         ),
                       ),
                     ),
                   ),
 
-                  const SizedBox(height: 8),
+                  SizedBox(height: Responsive.h(8)),
 
                   Text(
                     'LABORATORIO MENTAL',
                     style: GoogleFonts.urbanist(
-                      fontSize: 11,
+                      fontSize: Responsive.sp(11),
                       fontWeight: FontWeight.w700,
                       letterSpacing: 2,
                       color: const Color(0xCC8B9DC3),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: Responsive.h(10)),
 
                   Text(
                     'Tu espacio\nsagrado interior',
                     textAlign: TextAlign.center,
                     style: GoogleFonts.urbanist(
-                      fontSize: 28,
+                      fontSize: Responsive.sp(28),
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                       height: 1.15,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: Responsive.h(8)),
 
                   Text(
                     'Construye en tu mente un laboratorio\npersonal donde puedes resolver cualquier problema.',
                     textAlign: TextAlign.center,
                     style: GoogleFonts.urbanist(
-                      fontSize: 14,
+                      fontSize: Responsive.sp(14),
                       color: const Color(0x80FFFFFF),
                       height: 1.5,
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: Responsive.h(24)),
 
                   // ── Lab visual card ───────────────────────────────────────
                   Container(
-                    width: 320,
-                    height: 180,
-                    padding: const EdgeInsets.all(20),
+                    width: Responsive.w(320),
+                    height: Responsive.h(180),
+                    padding: EdgeInsets.all(Responsive.w(20)),
                     decoration: BoxDecoration(
                       color: const Color(0x0AFFFFFF),
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius:
+                          BorderRadius.circular(Responsive.w(20)),
                       border: Border.all(
                         color: const Color(0x208B9DC3),
                         width: 1,
@@ -133,63 +138,58 @@ class SilvaLabScreen extends StatelessWidget {
                     ),
                     child: Stack(
                       children: [
-                        // Central monitor icon
                         Center(
                           child: Container(
-                            width: 60,
-                            height: 60,
+                            width: Responsive.w(60),
+                            height: Responsive.w(60),
                             decoration: BoxDecoration(
                               color: const Color(0x208B9DC3),
-                              borderRadius: BorderRadius.circular(14),
+                              borderRadius:
+                                  BorderRadius.circular(Responsive.w(14)),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               LucideIcons.monitor,
-                              color: Color(0xFF8B9DC3),
-                              size: 30,
+                              color: const Color(0xFF8B9DC3),
+                              size: Responsive.w(30),
                             ),
                           ),
                         ),
-                        // Chair icon — bottom left
                         Positioned(
-                          bottom: 8,
-                          left: 8,
-                          child: const Icon(
+                          bottom: Responsive.h(8),
+                          left: Responsive.w(8),
+                          child: Icon(
                             LucideIcons.armchair,
-                            color: Color(0x608B9DC3),
-                            size: 22,
+                            color: const Color(0x608B9DC3),
+                            size: Responsive.w(22),
                           ),
                         ),
-                        // Timer — top left
                         Positioned(
                           top: 0,
                           left: 0,
-                          child: const Icon(
+                          child: Icon(
                             LucideIcons.timer,
-                            color: Color(0x608B9DC3),
-                            size: 18,
+                            color: const Color(0x608B9DC3),
+                            size: Responsive.w(18),
                           ),
                         ),
-                        // Calendar — top right
                         Positioned(
                           top: 0,
                           right: 0,
-                          child: const Icon(
+                          child: Icon(
                             LucideIcons.calendar,
-                            color: Color(0x608B9DC3),
-                            size: 18,
+                            color: const Color(0x608B9DC3),
+                            size: Responsive.w(18),
                           ),
                         ),
-                        // Tool — bottom right
                         Positioned(
-                          bottom: 8,
-                          right: 8,
-                          child: const Icon(
+                          bottom: Responsive.h(8),
+                          right: Responsive.w(8),
+                          child: Icon(
                             LucideIcons.wrench,
-                            color: Color(0x608B9DC3),
-                            size: 22,
+                            color: const Color(0x608B9DC3),
+                            size: Responsive.w(22),
                           ),
                         ),
-                        // Label
                         const Positioned(
                           bottom: 0,
                           left: 0,
@@ -199,16 +199,16 @@ class SilvaLabScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: Responsive.h(8)),
                   Text(
                     'Mi Laboratorio',
                     style: GoogleFonts.urbanist(
-                      fontSize: 13,
+                      fontSize: Responsive.sp(13),
                       color: const Color(0x60FFFFFF),
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: Responsive.h(24)),
 
                   // ── Tools label ───────────────────────────────────────────
                   Align(
@@ -216,14 +216,14 @@ class SilvaLabScreen extends StatelessWidget {
                     child: Text(
                       'HERRAMIENTAS DE TU LABORATORIO',
                       style: GoogleFonts.urbanist(
-                        fontSize: 11,
+                        fontSize: Responsive.sp(11),
                         fontWeight: FontWeight.w700,
                         letterSpacing: 1.5,
                         color: const Color(0x80FFFFFF),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: Responsive.h(12)),
 
                   // ── Tool cards ────────────────────────────────────────────
                   Row(
@@ -231,13 +231,17 @@ class SilvaLabScreen extends StatelessWidget {
                       return Expanded(
                         child: Padding(
                           padding: EdgeInsets.only(
-                              right: i < _tools.length - 1 ? 8 : 0),
+                              right: i < _tools.length - 1
+                                  ? Responsive.w(8)
+                                  : 0),
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 12, horizontal: 8),
+                            padding: EdgeInsets.symmetric(
+                                vertical: Responsive.h(12),
+                                horizontal: Responsive.w(8)),
                             decoration: BoxDecoration(
                               color: const Color(0x158B9DC3),
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius:
+                                  BorderRadius.circular(Responsive.w(12)),
                               border: Border.all(
                                 color: const Color(0x308B9DC3),
                                 width: 1,
@@ -248,13 +252,13 @@ class SilvaLabScreen extends StatelessWidget {
                                 Icon(
                                   _tools[i].$2,
                                   color: const Color(0xFF8B9DC3),
-                                  size: 20,
+                                  size: Responsive.w(20),
                                 ),
-                                const SizedBox(height: 6),
+                                SizedBox(height: Responsive.h(6)),
                                 Text(
                                   _tools[i].$1,
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 11,
+                                    fontSize: Responsive.sp(11),
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white,
                                   ),
@@ -270,34 +274,36 @@ class SilvaLabScreen extends StatelessWidget {
                     }),
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: Responsive.h(24)),
 
                   Text(
                     'Visualización guiada · Construye tu espacio',
                     style: GoogleFonts.urbanist(
-                      fontSize: 12,
+                      fontSize: Responsive.sp(12),
                       color: const Color(0x80FFFFFF),
                     ),
                   ),
 
-                  const SizedBox(height: 20),
+                  SizedBox(height: Responsive.h(20)),
 
                   // ── Steel blue CTA ────────────────────────────────────────
                   Container(
                     width: double.infinity,
-                    height: 56,
+                    height: Responsive.h(56),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                         colors: [Color(0xFF8B9DC3), Color(0xFF5A6D8E)],
                       ),
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius:
+                          BorderRadius.circular(Responsive.w(16)),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFF8B9DC3).withValues(alpha: 0.35),
-                          blurRadius: 20,
-                          offset: const Offset(0, 6),
+                          color: const Color(0xFF8B9DC3)
+                              .withValues(alpha: 0.35),
+                          blurRadius: Responsive.w(20),
+                          offset: Offset(0, Responsive.h(6)),
                         ),
                       ],
                     ),
@@ -305,7 +311,7 @@ class SilvaLabScreen extends StatelessWidget {
                       child: Text(
                         'Entrar al laboratorio',
                         style: GoogleFonts.urbanist(
-                          fontSize: 18,
+                          fontSize: Responsive.sp(18),
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                         ),

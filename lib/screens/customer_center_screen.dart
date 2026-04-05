@@ -6,6 +6,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import '../theme.dart';
 import '../widgets/screen_bg.dart';
 import '../services/revenuecat_service.dart';
+import '../utils/responsive.dart';
 
 class CustomerCenterScreen extends StatefulWidget {
   const CustomerCenterScreen({super.key});
@@ -65,7 +66,7 @@ class _CustomerCenterScreenState extends State<CustomerCenterScreen> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (_) => Padding(
-        padding: const EdgeInsets.fromLTRB(24, 20, 24, 40),
+        padding: EdgeInsets.fromLTRB(Responsive.w(24), Responsive.h(20), Responsive.w(24), Responsive.h(40)),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,29 +74,29 @@ class _CustomerCenterScreenState extends State<CustomerCenterScreen> {
             Text(
               'Cancelar suscripción',
               style: GoogleFonts.urbanist(
-                fontSize: 20,
+                fontSize: Responsive.sp(20),
                 fontWeight: FontWeight.w700,
                 color: Colors.white,
               ),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: Responsive.h(12)),
             Text(
               'Para cancelar tu suscripción, visita la tienda donde realizaste la compra:\n\n'
               '• Android: Google Play → Suscripciones\n'
               '• iOS: App Store → Tu nombre → Suscripciones\n\n'
               'Tu acceso Pro continuará hasta el final del período facturado.',
               style: GoogleFonts.urbanist(
-                fontSize: 14,
+                fontSize: Responsive.sp(14),
                 height: 1.6,
                 color: AppColors.textTertiary,
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: Responsive.h(20)),
             GestureDetector(
               onTap: () => Navigator.of(context).pop(),
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 14),
+                padding: EdgeInsets.symmetric(vertical: Responsive.h(14)),
                 decoration: BoxDecoration(
                   color: AppColors.white.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(50),
@@ -105,7 +106,7 @@ class _CustomerCenterScreenState extends State<CustomerCenterScreen> {
                   'Entendido',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.urbanist(
-                    fontSize: 15,
+                    fontSize: Responsive.sp(15),
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
@@ -150,6 +151,7 @@ class _CustomerCenterScreenState extends State<CustomerCenterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundEnd,
       body: ScreenBg(
@@ -159,23 +161,23 @@ class _CustomerCenterScreenState extends State<CustomerCenterScreen> {
             children: [
               // ── Header ────────────────────────────────────────────────
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                padding: EdgeInsets.fromLTRB(Responsive.w(20), Responsive.h(16), Responsive.w(20), 0),
                 child: Row(
                   children: [
                     GestureDetector(
                       onTap: () => Navigator.of(context).pop(),
                       child: Container(
-                        width: 36,
-                        height: 36,
+                        width: Responsive.w(36),
+                        height: Responsive.w(36),
                         decoration: BoxDecoration(
                           color: AppColors.white.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
                           border: Border.all(color: AppColors.surfaceBorderLight),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           LucideIcons.chevronLeft,
                           color: Colors.white,
-                          size: 18,
+                          size: Responsive.w(18),
                         ),
                       ),
                     ),
@@ -184,27 +186,26 @@ class _CustomerCenterScreenState extends State<CustomerCenterScreen> {
                         'Mi Suscripción',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.urbanist(
-                          fontSize: 17,
+                          fontSize: Responsive.sp(17),
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                         ),
                       ),
                     ),
-                    // Refresh button
                     GestureDetector(
                       onTap: _loading ? null : _loadInfo,
                       child: Container(
-                        width: 36,
-                        height: 36,
+                        width: Responsive.w(36),
+                        height: Responsive.w(36),
                         decoration: BoxDecoration(
                           color: AppColors.white.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
                           border: Border.all(color: AppColors.surfaceBorderLight),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           LucideIcons.refreshCw,
                           color: Colors.white,
-                          size: 16,
+                          size: Responsive.w(16),
                         ),
                       ),
                     ),
@@ -221,18 +222,18 @@ class _CustomerCenterScreenState extends State<CustomerCenterScreen> {
                         ),
                       )
                     : SingleChildScrollView(
-                        padding: const EdgeInsets.fromLTRB(20, 24, 20, 40),
+                        padding: EdgeInsets.fromLTRB(Responsive.w(20), Responsive.h(24), Responsive.w(20), Responsive.h(40)),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // ── Status card ───────────────────────────────
                             _StatusCard(isPro: _isPro),
-                            const SizedBox(height: 20),
+                            SizedBox(height: Responsive.h(20)),
 
                             // ── Customer info card ────────────────────────
                             if (_info != null) ...[
                               _InfoCard(info: _info!, formatDate: _formatDate),
-                              const SizedBox(height: 20),
+                              SizedBox(height: Responsive.h(20)),
                             ],
 
                             // ── Subscription details ──────────────────────
@@ -241,12 +242,12 @@ class _CustomerCenterScreenState extends State<CustomerCenterScreen> {
                                 entitlement: _proEntitlement!,
                                 formatDate: _formatDate,
                               ),
-                              const SizedBox(height: 20),
+                              SizedBox(height: Responsive.h(20)),
                             ],
 
                             // ── Section label ─────────────────────────────
                             SectionLabel('ACCIONES'),
-                            const SizedBox(height: 10),
+                            SizedBox(height: Responsive.h(10)),
 
                             // ── Action buttons ────────────────────────────
                             Container(
@@ -305,7 +306,7 @@ class _StatusCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(Responsive.w(20)),
       decoration: BoxDecoration(
         gradient: isPro
             ? const LinearGradient(
@@ -326,8 +327,8 @@ class _StatusCard extends StatelessWidget {
             ? [
                 BoxShadow(
                   color: AppColors.primary.withValues(alpha: 0.2),
-                  blurRadius: 24,
-                  offset: const Offset(0, 8),
+                  blurRadius: Responsive.w(24),
+                  offset: Offset(0, Responsive.h(8)),
                 ),
               ]
             : null,
@@ -335,8 +336,8 @@ class _StatusCard extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 48,
-            height: 48,
+            width: Responsive.w(48),
+            height: Responsive.w(48),
             decoration: BoxDecoration(
               color: isPro
                   ? AppColors.primary.withValues(alpha: 0.25)
@@ -346,28 +347,28 @@ class _StatusCard extends StatelessWidget {
             child: Icon(
               isPro ? LucideIcons.crown : LucideIcons.lock,
               color: isPro ? AppColors.primaryLight : AppColors.textTertiary,
-              size: 22,
+              size: Responsive.w(22),
             ),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: Responsive.w(16)),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 isPro ? 'Plan Pro Activo' : 'Plan Gratuito',
                 style: GoogleFonts.urbanist(
-                  fontSize: 18,
+                  fontSize: Responsive.sp(18),
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),
               ),
-              const SizedBox(height: 2),
+              SizedBox(height: Responsive.h(2)),
               Text(
                 isPro
                     ? 'Acceso completo a todas las funciones'
                     : 'Actualiza para desbloquear todo',
                 style: GoogleFonts.urbanist(
-                  fontSize: 13,
+                  fontSize: Responsive.sp(13),
                   color: AppColors.textTertiary,
                 ),
               ),
@@ -388,7 +389,7 @@ class _InfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(Responsive.w(20)),
       decoration: BoxDecoration(
         color: AppColors.surfaceLight,
         borderRadius: BorderRadius.circular(16),
@@ -398,18 +399,18 @@ class _InfoCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SectionLabel('INFORMACIÓN DE LA CUENTA'),
-          const SizedBox(height: 12),
+          SizedBox(height: Responsive.h(12)),
           _InfoRow(
             label: 'ID de usuario',
             value: info.originalAppUserId,
             canCopy: true,
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: Responsive.h(10)),
           _InfoRow(
             label: 'Primera compra',
             value: formatDate(info.firstSeen),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: Responsive.h(10)),
           _InfoRow(
             label: 'Última actualización',
             value: formatDate(info.requestDate),
@@ -441,7 +442,7 @@ class _InfoRow extends StatelessWidget {
           child: Text(
             label,
             style: GoogleFonts.urbanist(
-              fontSize: 12,
+              fontSize: Responsive.sp(12),
               fontWeight: FontWeight.w600,
               color: AppColors.textTertiary,
             ),
@@ -472,7 +473,7 @@ class _InfoRow extends StatelessWidget {
             child: Text(
               value,
               style: GoogleFonts.urbanist(
-                fontSize: 13,
+                fontSize: Responsive.sp(13),
                 fontWeight: FontWeight.w600,
                 color: Colors.white,
               ),
@@ -498,7 +499,7 @@ class _DetailsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(Responsive.w(20)),
       decoration: BoxDecoration(
         color: AppColors.surfaceLight,
         borderRadius: BorderRadius.circular(16),
@@ -508,33 +509,33 @@ class _DetailsCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SectionLabel('ESTADO DE LA SUSCRIPCIÓN'),
-          const SizedBox(height: 12),
+          SizedBox(height: Responsive.h(12)),
           _InfoRow(
             label: 'Plan actual',
             value: entitlement.productIdentifier,
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: Responsive.h(10)),
           _InfoRow(
             label: 'Estado',
             value: entitlement.isActive ? 'Activo' : 'Inactivo',
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: Responsive.h(10)),
           _InfoRow(
             label: 'Renovación automática',
             value: entitlement.willRenew ? 'Activada' : 'Desactivada',
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: Responsive.h(10)),
           _InfoRow(
             label: 'Vence el',
             value: formatDate(entitlement.expirationDate),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: Responsive.h(10)),
           _InfoRow(
             label: 'Activo desde',
             value: formatDate(entitlement.latestPurchaseDate),
           ),
           if (entitlement.store != Store.unknownStore) ...[
-            const SizedBox(height: 10),
+            SizedBox(height: Responsive.h(10)),
             _InfoRow(
               label: 'Tienda',
               value: _storeName(entitlement.store),
@@ -581,42 +582,42 @@ class _ActionRow extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        padding: EdgeInsets.symmetric(horizontal: Responsive.w(16), vertical: Responsive.h(14)),
         child: Row(
           children: [
             Container(
-              width: 38,
-              height: 38,
+              width: Responsive.w(38),
+              height: Responsive.w(38),
               decoration: BoxDecoration(
                 color: iconColor.withValues(alpha: 0.18),
                 shape: BoxShape.circle,
               ),
               child: loading
                   ? SizedBox(
-                      width: 18,
-                      height: 18,
+                      width: Responsive.w(18),
+                      height: Responsive.w(18),
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
                         color: iconColor,
                       ),
                     )
-                  : Icon(icon, color: iconColor, size: 18),
+                  : Icon(icon, color: iconColor, size: Responsive.w(18)),
             ),
-            const SizedBox(width: 14),
+            SizedBox(width: Responsive.w(14)),
             Expanded(
               child: Text(
                 label,
                 style: GoogleFonts.urbanist(
-                  fontSize: 15,
+                  fontSize: Responsive.sp(15),
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
                 ),
               ),
             ),
-            const Icon(
+            Icon(
               LucideIcons.chevronRight,
               color: AppColors.textTertiary,
-              size: 18,
+              size: Responsive.w(18),
             ),
           ],
         ),
@@ -630,7 +631,7 @@ class _RowDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 1,
-      margin: const EdgeInsets.only(left: 68),
+      margin: EdgeInsets.only(left: Responsive.w(68)),
       color: AppColors.white.withValues(alpha: 0.07),
     );
   }

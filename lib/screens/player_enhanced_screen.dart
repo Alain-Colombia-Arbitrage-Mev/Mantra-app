@@ -5,6 +5,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../services/audio_service.dart';
 import '../theme.dart';
+import '../utils/responsive.dart';
 
 // Same demo track used by PlayerScreen.
 const _kDemoAudioUrl =
@@ -59,6 +60,7 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: const Color(0xFF0C0A20),
       body: Container(
@@ -74,11 +76,11 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
           children: [
             // Glow effect
             Positioned(
-              top: 100,
-              left: MediaQuery.of(context).size.width / 2 - 120,
+              top: Responsive.h(100),
+              left: MediaQuery.of(context).size.width / 2 - Responsive.w(120),
               child: Container(
-                width: 240,
-                height: 240,
+                width: Responsive.w(240),
+                height: Responsive.w(240),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   boxShadow: [
@@ -96,7 +98,7 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                 children: [
                   // ── Header ──────────────────────────────────────────────
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                    padding: EdgeInsets.fromLTRB(Responsive.pagePadding, Responsive.h(16), Responsive.pagePadding, 0),
                     child: Row(
                       children: [
                         GestureDetector(
@@ -106,8 +108,8 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                             }
                           },
                           child: Container(
-                            width: 36,
-                            height: 36,
+                            width: Responsive.w(36),
+                            height: Responsive.w(36),
                             decoration: BoxDecoration(
                               color: AppColors.white.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
@@ -115,10 +117,10 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                                 color: AppColors.surfaceBorderLight,
                               ),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               LucideIcons.chevronDown,
                               color: Colors.white,
-                              size: 18,
+                              size: Responsive.w(18),
                             ),
                           ),
                         ),
@@ -128,24 +130,24 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                               Text(
                                 'RELAXING ZEN MUSIC',
                                 style: GoogleFonts.urbanist(
-                                  fontSize: 11,
+                                  fontSize: Responsive.sp(11),
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: 1.5,
                                   color: AppColors.textTertiary,
                                 ),
                               ),
-                              const SizedBox(height: 2),
+                              SizedBox(height: Responsive.h(2)),
                               Icon(
                                 LucideIcons.chevronDown,
                                 color: AppColors.textMuted,
-                                size: 14,
+                                size: Responsive.w(14),
                               ),
                             ],
                           ),
                         ),
                         Container(
-                          width: 36,
-                          height: 36,
+                          width: Responsive.w(36),
+                          height: Responsive.w(36),
                           decoration: BoxDecoration(
                             color: AppColors.white.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
@@ -153,10 +155,10 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                               color: AppColors.surfaceBorderLight,
                             ),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             LucideIcons.bookmark,
                             color: Colors.white,
-                            size: 17,
+                            size: Responsive.w(17),
                           ),
                         ),
                       ],
@@ -164,13 +166,13 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                   ),
                   Expanded(
                     child: SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
+                      padding: EdgeInsets.fromLTRB(Responsive.pagePadding, Responsive.h(24), Responsive.pagePadding, Responsive.h(24)),
                       child: Column(
                         children: [
                           // ── Album art ───────────────────────────────────
                           Container(
-                            width: 280,
-                            height: 280,
+                            width: Responsive.w(280),
+                            height: Responsive.w(280),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               boxShadow: [
@@ -191,7 +193,7 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 28),
+                          SizedBox(height: Responsive.h(28)),
 
                           // ── Track info ──────────────────────────────────
                           Row(
@@ -203,16 +205,16 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                                     Text(
                                       'Activación Theta · Abundancia',
                                       style: GoogleFonts.urbanist(
-                                        fontSize: 18,
+                                        fontSize: Responsive.sp(18),
                                         fontWeight: FontWeight.w700,
                                         color: Colors.white,
                                       ),
                                     ),
-                                    const SizedBox(height: 4),
+                                    SizedBox(height: Responsive.h(4)),
                                     Text(
                                       '528Hz · Estado Theta · Bio-hacking',
                                       style: GoogleFonts.urbanist(
-                                        fontSize: 13,
+                                        fontSize: Responsive.sp(13),
                                         color: AppColors.textTertiary,
                                       ),
                                     ),
@@ -220,21 +222,21 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                                 ),
                               ),
                               Container(
-                                width: 36,
-                                height: 36,
+                                width: Responsive.w(36),
+                                height: Responsive.w(36),
                                 decoration: BoxDecoration(
                                   color: AppColors.white.withValues(alpha: 0.1),
                                   shape: BoxShape.circle,
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   LucideIcons.heart,
                                   color: Colors.white,
-                                  size: 17,
+                                  size: Responsive.w(17),
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: Responsive.h(20)),
 
                           // ── Progress bar (stream-driven) ─────────────────
                           StreamBuilder<Duration?>(
@@ -288,8 +290,8 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 4,
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: Responsive.w(4),
                                         ),
                                         child: Row(
                                           mainAxisAlignment:
@@ -298,14 +300,14 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                                             Text(
                                               _fmt(position),
                                               style: GoogleFonts.urbanist(
-                                                fontSize: 12,
+                                                fontSize: Responsive.sp(12),
                                                 color: AppColors.textTertiary,
                                               ),
                                             ),
                                             Text(
                                               _fmt(duration),
                                               style: GoogleFonts.urbanist(
-                                                fontSize: 12,
+                                                fontSize: Responsive.sp(12),
                                                 color: AppColors.textTertiary,
                                               ),
                                             ),
@@ -318,7 +320,7 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                               );
                             },
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: Responsive.h(16)),
 
                           // ── Controls (stream-driven play/pause) ───────────
                           StreamBuilder<PlayerState>(
@@ -338,16 +340,16 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                                       color: _isShuffle
                                           ? AppColors.primary
                                           : AppColors.textMuted,
-                                      size: 22,
+                                      size: Responsive.w(22),
                                     ),
                                   ),
                                   // Skip back
                                   GestureDetector(
                                     onTap: () {},
-                                    child: const Icon(
+                                    child: Icon(
                                       LucideIcons.skipBack,
                                       color: Colors.white,
-                                      size: 26,
+                                      size: Responsive.w(26),
                                     ),
                                   ),
                                   // Play/Pause
@@ -360,8 +362,8 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                                       }
                                     },
                                     child: Container(
-                                      width: 66,
-                                      height: 66,
+                                      width: Responsive.w(66),
+                                      height: Responsive.w(66),
                                       decoration: BoxDecoration(
                                         gradient: AppGradients.primaryButton,
                                         shape: BoxShape.circle,
@@ -380,17 +382,17 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                                             ? LucideIcons.pause
                                             : LucideIcons.play,
                                         color: Colors.white,
-                                        size: 28,
+                                        size: Responsive.w(28),
                                       ),
                                     ),
                                   ),
                                   // Skip forward
                                   GestureDetector(
                                     onTap: () {},
-                                    child: const Icon(
+                                    child: Icon(
                                       LucideIcons.skipForward,
                                       color: Colors.white,
-                                      size: 26,
+                                      size: Responsive.w(26),
                                     ),
                                   ),
                                   // Repeat
@@ -402,14 +404,14 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                                       color: _isRepeat
                                           ? AppColors.primary
                                           : AppColors.textMuted,
-                                      size: 22,
+                                      size: Responsive.w(22),
                                     ),
                                   ),
                                 ],
                               );
                             },
                           ),
-                          const SizedBox(height: 28),
+                          SizedBox(height: Responsive.h(28)),
 
                           // ── Colección label ─────────────────────────────
                           Row(
@@ -418,7 +420,7 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                               Text(
                                 'Colección',
                                 style: GoogleFonts.urbanist(
-                                  fontSize: 15,
+                                  fontSize: Responsive.sp(15),
                                   fontWeight: FontWeight.w700,
                                   color: Colors.white,
                                 ),
@@ -428,7 +430,7 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                                 child: Text(
                                   'Ver todo',
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 13,
+                                    fontSize: Responsive.sp(13),
                                     fontWeight: FontWeight.w600,
                                     color: AppColors.primaryLight,
                                   ),
@@ -436,17 +438,17 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: Responsive.h(12)),
 
                           // ── Track list ──────────────────────────────────
                           ...List.generate(_tracks.length, (i) {
                             final t = _tracks[i];
                             return Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
+                              padding: EdgeInsets.only(bottom: Responsive.h(8)),
                               child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 14,
-                                  vertical: 12,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: Responsive.w(14),
+                                  vertical: Responsive.h(12),
                                 ),
                                 decoration: BoxDecoration(
                                   color: AppColors.white.withValues(alpha: 0.05),
@@ -459,20 +461,20 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                                   children: [
                                     // Track number
                                     SizedBox(
-                                      width: 20,
+                                      width: Responsive.w(20),
                                       child: Text(
                                         '${i + 1}',
                                         style: GoogleFonts.urbanist(
-                                          fontSize: 12,
+                                          fontSize: Responsive.sp(12),
                                           color: AppColors.textMuted,
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(width: 10),
+                                    SizedBox(width: Responsive.w(10)),
                                     // Thumb circle
                                     Container(
-                                      width: 36,
-                                      height: 36,
+                                      width: Responsive.w(36),
+                                      height: Responsive.w(36),
                                       decoration: BoxDecoration(
                                         color: t.color.withValues(alpha: 0.2),
                                         shape: BoxShape.circle,
@@ -483,10 +485,10 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                                       child: Icon(
                                         LucideIcons.music,
                                         color: t.color,
-                                        size: 16,
+                                        size: Responsive.w(16),
                                       ),
                                     ),
-                                    const SizedBox(width: 12),
+                                    SizedBox(width: Responsive.w(12)),
                                     // Title + artist
                                     Expanded(
                                       child: Column(
@@ -496,16 +498,16 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                                           Text(
                                             t.title,
                                             style: GoogleFonts.urbanist(
-                                              fontSize: 13,
+                                              fontSize: Responsive.sp(13),
                                               fontWeight: FontWeight.w600,
                                               color: Colors.white,
                                             ),
                                           ),
-                                          const SizedBox(height: 2),
+                                          SizedBox(height: Responsive.h(2)),
                                           Text(
                                             t.artist,
                                             style: GoogleFonts.urbanist(
-                                              fontSize: 11,
+                                              fontSize: Responsive.sp(11),
                                               color: AppColors.textTertiary,
                                             ),
                                           ),
@@ -515,7 +517,7 @@ class _PlayerEnhancedScreenState extends State<PlayerEnhancedScreen> {
                                     Icon(
                                       LucideIcons.barChart2,
                                       color: AppColors.textMuted,
-                                      size: 16,
+                                      size: Responsive.w(16),
                                     ),
                                   ],
                                 ),

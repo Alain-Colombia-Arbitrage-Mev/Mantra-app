@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/revenuecat_service.dart';
+import '../utils/responsive.dart';
 
 /// Wraps content that requires Pro. Shows the RevenueCat paywall on tap if the
 /// user is not yet subscribed. Pass [lockedChild] for a custom locked-state UI;
@@ -28,22 +29,25 @@ class ProGate extends StatelessWidget {
         Positioned.fill(
           child: Center(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: EdgeInsets.symmetric(
+                horizontal: Responsive.w(16),
+                vertical: Responsive.h(8),
+              ),
               decoration: BoxDecoration(
                 color: const Color(0xFF6C5CE7),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(Responsive.w(20)),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.lock, color: Colors.white, size: 16),
-                  SizedBox(width: 6),
+                  Icon(Icons.lock, color: Colors.white, size: Responsive.w(16)),
+                  SizedBox(width: Responsive.w(6)),
                   Text(
                     'PRO',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 12,
+                      fontSize: Responsive.sp(12),
                     ),
                   ),
                 ],

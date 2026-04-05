@@ -3,62 +3,60 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
+import '../utils/responsive.dart';
 
 class NotifModalScreen extends StatelessWidget {
   const NotifModalScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: const Color(0xF5060612),
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Purple glow top-center
           Positioned(
-            top: -60,
-            left: MediaQuery.of(context).size.width / 2 - 140,
+            top: Responsive.h(-60),
+            left: MediaQuery.of(context).size.width / 2 - Responsive.w(140),
             child: Container(
-              width: 280,
-              height: 280,
+              width: Responsive.w(280),
+              height: Responsive.w(280),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
                     color: AppColors.primary.withValues(alpha: 0.35),
-                    blurRadius: 140,
-                    spreadRadius: 60,
+                    blurRadius: Responsive.w(140),
+                    spreadRadius: Responsive.w(60),
                   ),
                 ],
               ),
             ),
           ),
-          // Amber glow bottom
           Positioned(
-            bottom: -40,
-            right: -40,
+            bottom: Responsive.h(-40),
+            right: Responsive.w(-40),
             child: Container(
-              width: 200,
-              height: 200,
+              width: Responsive.w(200),
+              height: Responsive.w(200),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
                     color: AppColors.amber.withValues(alpha: 0.20),
-                    blurRadius: 100,
-                    spreadRadius: 40,
+                    blurRadius: Responsive.w(100),
+                    spreadRadius: Responsive.w(40),
                   ),
                 ],
               ),
             ),
           ),
-          // Main content
           SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+              padding: EdgeInsets.fromLTRB(Responsive.w(20), Responsive.h(20), Responsive.w(20), Responsive.h(32)),
               child: Column(
                 children: [
-                  // Close button row
                   Align(
                     alignment: Alignment.topRight,
                     child: GestureDetector(
@@ -68,8 +66,8 @@ class NotifModalScreen extends StatelessWidget {
                         }
                       },
                       child: Container(
-                        width: 36,
-                        height: 36,
+                        width: Responsive.w(36),
+                        height: Responsive.w(36),
                         decoration: BoxDecoration(
                           color: Colors.white.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
@@ -77,27 +75,26 @@ class NotifModalScreen extends StatelessWidget {
                             color: AppColors.surfaceBorderLight,
                           ),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           LucideIcons.x,
                           color: Colors.white,
-                          size: 18,
+                          size: Responsive.w(18),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 24),
-                  // Symbol circle
+                  SizedBox(height: Responsive.h(24)),
                   Container(
-                    width: 80,
-                    height: 80,
+                    width: Responsive.w(80),
+                    height: Responsive.w(80),
                     decoration: BoxDecoration(
                       gradient: AppGradients.primaryButton,
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
                           color: AppColors.primary.withValues(alpha: 0.45),
-                          blurRadius: 30,
-                          offset: const Offset(0, 10),
+                          blurRadius: Responsive.w(30),
+                          offset: Offset(0, Responsive.h(10)),
                         ),
                       ],
                     ),
@@ -105,39 +102,36 @@ class NotifModalScreen extends StatelessWidget {
                       child: Text(
                         '✦',
                         style: GoogleFonts.urbanist(
-                          fontSize: 38,
+                          fontSize: Responsive.sp(38),
                           color: Colors.white,
                           height: 1.0,
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  // Subtitle label
+                  SizedBox(height: Responsive.h(16)),
                   Text(
                     'HORA ESPEJO 11:11',
                     style: GoogleFonts.urbanist(
-                      fontSize: 13,
+                      fontSize: Responsive.sp(13),
                       fontWeight: FontWeight.w600,
                       letterSpacing: 2.0,
                       color: AppColors.primaryLight,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 12),
-                  // Main title
+                  SizedBox(height: Responsive.h(12)),
                   Text(
                     'Puerta de\nManifestación',
                     style: GoogleFonts.urbanist(
-                      fontSize: 34,
+                      fontSize: Responsive.sp(34),
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                       height: 1.15,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 16),
-                  // Tags row
+                  SizedBox(height: Responsive.h(16)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -147,7 +141,7 @@ class NotifModalScreen extends StatelessWidget {
                         borderColor: AppColors.primary.withValues(alpha: 0.4),
                         textColor: AppColors.primaryLight,
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: Responsive.w(8)),
                       _TagPill(
                         label: '14 min restantes',
                         bgColor: AppColors.amber.withValues(alpha: 0.15),
@@ -156,11 +150,10 @@ class NotifModalScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  // Verse card
+                  SizedBox(height: Responsive.h(20)),
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(18),
+                    padding: EdgeInsets.all(Responsive.w(18)),
                     decoration: BoxDecoration(
                       color: const Color(0x0DFFFFFF),
                       borderRadius: BorderRadius.circular(20),
@@ -173,17 +166,17 @@ class NotifModalScreen extends StatelessWidget {
                         Text(
                           '«Pide y se te dará, busca y encontrarás,\ntoca y se te abrirá la puerta»',
                           style: GoogleFonts.urbanist(
-                            fontSize: 15,
+                            fontSize: Responsive.sp(15),
                             color: const Color(0xEEFFFFFF),
                             height: 1.5,
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: Responsive.h(8)),
                         Text(
                           '— Tehilim 27 · Afirmación del día',
                           style: GoogleFonts.urbanist(
-                            fontSize: 11,
+                            fontSize: Responsive.sp(11),
                             color: const Color(0x55FFFFFF),
                           ),
                           textAlign: TextAlign.center,
@@ -191,22 +184,20 @@ class NotifModalScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 24),
-                  // Mantras del día label
+                  SizedBox(height: Responsive.h(24)),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'MANTRAS DEL DÍA',
                       style: GoogleFonts.urbanist(
-                        fontSize: 11,
+                        fontSize: Responsive.sp(11),
                         fontWeight: FontWeight.w700,
                         letterSpacing: 2.0,
                         color: AppColors.textTertiary,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  // 4 mantra cards horizontal
+                  SizedBox(height: Responsive.h(12)),
                   Row(
                     children: [
                       Expanded(
@@ -219,7 +210,7 @@ class NotifModalScreen extends StatelessWidget {
                           line2: 'cia',
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: Responsive.w(8)),
                       Expanded(
                         child: _MantraCard(
                           icon: LucideIcons.heart,
@@ -230,7 +221,7 @@ class NotifModalScreen extends StatelessWidget {
                           line2: '',
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: Responsive.w(8)),
                       Expanded(
                         child: _MantraCard(
                           icon: LucideIcons.leaf,
@@ -241,7 +232,7 @@ class NotifModalScreen extends StatelessWidget {
                           line2: '',
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: Responsive.w(8)),
                       Expanded(
                         child: _MantraCard(
                           icon: LucideIcons.briefcase,
@@ -254,22 +245,20 @@ class NotifModalScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
-                  // Tu ritual ahora label
+                  SizedBox(height: Responsive.h(24)),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'TU RITUAL AHORA',
                       style: GoogleFonts.urbanist(
-                        fontSize: 11,
+                        fontSize: Responsive.sp(11),
                         fontWeight: FontWeight.w700,
                         letterSpacing: 2.0,
                         color: AppColors.textTertiary,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 14),
-                  // 3 ritual steps
+                  SizedBox(height: Responsive.h(14)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -292,13 +281,12 @@ class NotifModalScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
-                  // Purple CTA
+                  SizedBox(height: Responsive.h(24)),
                   GestureDetector(
                     onTap: () => context.push('/tehilim'),
                     child: Container(
                       width: double.infinity,
-                      height: 60,
+                      height: Responsive.h(60),
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
                           begin: Alignment.centerLeft,
@@ -309,24 +297,24 @@ class NotifModalScreen extends StatelessWidget {
                         boxShadow: [
                           BoxShadow(
                             color: AppColors.primary.withValues(alpha: 0.40),
-                            blurRadius: 20,
-                            offset: const Offset(0, 8),
+                            blurRadius: Responsive.w(20),
+                            offset: Offset(0, Responsive.h(8)),
                           ),
                         ],
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
+                          Icon(
                             LucideIcons.play,
                             color: Colors.white,
-                            size: 20,
+                            size: Responsive.w(20),
                           ),
-                          const SizedBox(width: 10),
+                          SizedBox(width: Responsive.w(10)),
                           Text(
                             'Comenzar mi ritual ahora',
                             style: GoogleFonts.urbanist(
-                              fontSize: 16,
+                              fontSize: Responsive.sp(16),
                               fontWeight: FontWeight.w700,
                               color: Colors.white,
                             ),
@@ -335,8 +323,7 @@ class NotifModalScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  // Dismiss button
+                  SizedBox(height: Responsive.h(12)),
                   GestureDetector(
                     onTap: () {
                       if (Navigator.of(context).canPop()) {
@@ -345,7 +332,7 @@ class NotifModalScreen extends StatelessWidget {
                     },
                     child: Container(
                       width: double.infinity,
-                      height: 52,
+                      height: Responsive.h(52),
                       decoration: BoxDecoration(
                         color: const Color(0x0DFFFFFF),
                         borderRadius: BorderRadius.circular(28),
@@ -357,7 +344,7 @@ class NotifModalScreen extends StatelessWidget {
                         child: Text(
                           'Recuérdame en 5 min',
                           style: GoogleFonts.urbanist(
-                            fontSize: 14,
+                            fontSize: Responsive.sp(14),
                             fontWeight: FontWeight.w600,
                             color: Colors.white.withValues(alpha: 0.66),
                           ),
@@ -391,7 +378,7 @@ class _TagPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+      padding: EdgeInsets.symmetric(horizontal: Responsive.w(14), vertical: Responsive.h(7)),
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: BorderRadius.circular(50),
@@ -400,7 +387,7 @@ class _TagPill extends StatelessWidget {
       child: Text(
         label,
         style: GoogleFonts.urbanist(
-          fontSize: 12,
+          fontSize: Responsive.sp(12),
           fontWeight: FontWeight.w600,
           color: textColor,
         ),
@@ -429,7 +416,7 @@ class _MantraCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 90,
+      height: Responsive.h(90),
       decoration: BoxDecoration(
         color: fillColor,
         borderRadius: BorderRadius.circular(14),
@@ -438,12 +425,12 @@ class _MantraCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: iconColor, size: 22),
-          const SizedBox(height: 6),
+          Icon(icon, color: iconColor, size: Responsive.w(22)),
+          SizedBox(height: Responsive.h(6)),
           Text(
             line1,
             style: GoogleFonts.urbanist(
-              fontSize: 11,
+              fontSize: Responsive.sp(11),
               fontWeight: FontWeight.w700,
               color: Colors.white,
             ),
@@ -453,7 +440,7 @@ class _MantraCard extends StatelessWidget {
             Text(
               line2,
               style: GoogleFonts.urbanist(
-                fontSize: 11,
+                fontSize: Responsive.sp(11),
                 fontWeight: FontWeight.w700,
                 color: Colors.white,
               ),
@@ -481,8 +468,8 @@ class _RitualStep extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 52,
-          height: 52,
+          width: Responsive.w(52),
+          height: Responsive.w(52),
           decoration: BoxDecoration(
             color: isActive
                 ? AppColors.primary
@@ -497,8 +484,8 @@ class _RitualStep extends StatelessWidget {
                 ? [
                     BoxShadow(
                       color: AppColors.primary.withValues(alpha: 0.4),
-                      blurRadius: 16,
-                      offset: const Offset(0, 4),
+                      blurRadius: Responsive.w(16),
+                      offset: Offset(0, Responsive.h(4)),
                     ),
                   ]
                 : null,
@@ -506,14 +493,14 @@ class _RitualStep extends StatelessWidget {
           child: Icon(
             icon,
             color: isActive ? Colors.white : Colors.white.withValues(alpha: 0.55),
-            size: 22,
+            size: Responsive.w(22),
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: Responsive.h(6)),
         Text(
           label,
           style: GoogleFonts.urbanist(
-            fontSize: 11,
+            fontSize: Responsive.sp(11),
             fontWeight: FontWeight.w600,
             color: isActive ? Colors.white : Colors.white.withValues(alpha: 0.55),
           ),
@@ -529,11 +516,11 @@ class _StepChevron extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
+      padding: EdgeInsets.only(bottom: Responsive.h(20)),
       child: Icon(
         LucideIcons.chevronRight,
         color: Colors.white.withValues(alpha: 0.30),
-        size: 20,
+        size: Responsive.w(20),
       ),
     );
   }

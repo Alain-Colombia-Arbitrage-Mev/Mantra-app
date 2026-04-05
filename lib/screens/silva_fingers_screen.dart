@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import '../utils/responsive.dart';
 
 class SilvaFingersScreen extends StatelessWidget {
   const SilvaFingersScreen({super.key});
@@ -14,6 +15,7 @@ class SilvaFingersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
@@ -32,13 +34,13 @@ class SilvaFingersScreen extends StatelessWidget {
 
           // ── Gold glow ─────────────────────────────────────────────────
           Positioned(
-            top: -80,
+            top: Responsive.h(-80),
             left: 0,
             right: 0,
             child: Center(
               child: Container(
-                width: 300,
-                height: 300,
+                width: Responsive.w(300),
+                height: Responsive.w(300),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
@@ -55,7 +57,8 @@ class SilvaFingersScreen extends StatelessWidget {
           // ── Content ──────────────────────────────────────────────────
           SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+              padding: EdgeInsets.fromLTRB(
+                  Responsive.w(20), 0, Responsive.w(20), Responsive.h(32)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -65,70 +68,70 @@ class SilvaFingersScreen extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () => Navigator.pop(context),
                       child: Container(
-                        width: 36,
-                        height: 36,
-                        margin: const EdgeInsets.only(top: 12),
+                        width: Responsive.w(36),
+                        height: Responsive.w(36),
+                        margin: EdgeInsets.only(top: Responsive.h(12)),
                         decoration: BoxDecoration(
                           color: const Color(0x15FFFFFF),
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius:
+                              BorderRadius.circular(Responsive.w(10)),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           LucideIcons.x,
                           color: Colors.white,
-                          size: 18,
+                          size: Responsive.w(18),
                         ),
                       ),
                     ),
                   ),
 
-                  const SizedBox(height: 8),
+                  SizedBox(height: Responsive.h(8)),
 
                   Text(
                     'LOS 3 DEDOS · ANCLAJE',
                     style: GoogleFonts.urbanist(
-                      fontSize: 11,
+                      fontSize: Responsive.sp(11),
                       fontWeight: FontWeight.w700,
                       letterSpacing: 2,
                       color: const Color(0xCCF9A826),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: Responsive.h(10)),
 
                   Text(
                     'Tu ancla de\npoder mental',
                     textAlign: TextAlign.center,
                     style: GoogleFonts.urbanist(
-                      fontSize: 28,
+                      fontSize: Responsive.sp(28),
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                       height: 1.15,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: Responsive.h(8)),
 
                   Text(
                     'Une el pulgar, índice y dedo medio.\nEste gesto activa tu estado mental óptimo.',
                     textAlign: TextAlign.center,
                     style: GoogleFonts.urbanist(
-                      fontSize: 14,
+                      fontSize: Responsive.sp(14),
                       color: const Color(0x80FFFFFF),
                       height: 1.5,
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: Responsive.h(24)),
 
                   // ── Visual hand circle ────────────────────────────────
                   SizedBox(
-                    width: 220,
-                    height: 220,
+                    width: Responsive.w(220),
+                    height: Responsive.w(220),
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        // Outer pulse ring
                         Container(
-                          width: 220,
-                          height: 220,
+                          width: Responsive.w(220),
+                          height: Responsive.w(220),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
@@ -137,10 +140,9 @@ class SilvaFingersScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        // Inner ring
                         Container(
-                          width: 170,
-                          height: 170,
+                          width: Responsive.w(170),
+                          height: Responsive.w(170),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
@@ -149,10 +151,9 @@ class SilvaFingersScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        // Center circle
                         Container(
-                          width: 120,
-                          height: 120,
+                          width: Responsive.w(120),
+                          height: Responsive.w(120),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: const Color(0x20F9A826),
@@ -161,27 +162,26 @@ class SilvaFingersScreen extends StatelessWidget {
                               width: 2,
                             ),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             LucideIcons.hand,
-                            color: Color(0xFFF9A826),
-                            size: 80,
+                            color: const Color(0xFFF9A826),
+                            size: Responsive.w(80),
                           ),
                         ),
-                        // Zap icon top-right
                         Positioned(
-                          top: 20,
-                          right: 20,
+                          top: Responsive.w(20),
+                          right: Responsive.w(20),
                           child: Container(
-                            width: 28,
-                            height: 28,
-                            decoration: BoxDecoration(
-                              color: const Color(0x30F9A826),
+                            width: Responsive.w(28),
+                            height: Responsive.w(28),
+                            decoration: const BoxDecoration(
+                              color: Color(0x30F9A826),
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(
+                            child: Icon(
                               LucideIcons.zap,
-                              color: Color(0xFFF9A826),
-                              size: 14,
+                              color: const Color(0xFFF9A826),
+                              size: Responsive.w(14),
                             ),
                           ),
                         ),
@@ -189,7 +189,7 @@ class SilvaFingersScreen extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: Responsive.h(24)),
 
                   // ── Uses label ────────────────────────────────────────
                   Align(
@@ -197,14 +197,14 @@ class SilvaFingersScreen extends StatelessWidget {
                     child: Text(
                       'USOS PRÁCTICOS',
                       style: GoogleFonts.urbanist(
-                        fontSize: 11,
+                        fontSize: Responsive.sp(11),
                         fontWeight: FontWeight.w700,
                         letterSpacing: 1.5,
                         color: const Color(0x80FFFFFF),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: Responsive.h(12)),
 
                   // ── Use cards horizontal ──────────────────────────────
                   Row(
@@ -212,13 +212,17 @@ class SilvaFingersScreen extends StatelessWidget {
                       return Expanded(
                         child: Padding(
                           padding: EdgeInsets.only(
-                              right: i < _uses.length - 1 ? 8 : 0),
+                              right: i < _uses.length - 1
+                                  ? Responsive.w(8)
+                                  : 0),
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 12, horizontal: 8),
+                            padding: EdgeInsets.symmetric(
+                                vertical: Responsive.h(12),
+                                horizontal: Responsive.w(8)),
                             decoration: BoxDecoration(
                               color: const Color(0x15F9A826),
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius:
+                                  BorderRadius.circular(Responsive.w(12)),
                               border: Border.all(
                                 color: const Color(0x30F9A826),
                                 width: 1,
@@ -229,13 +233,13 @@ class SilvaFingersScreen extends StatelessWidget {
                                 Icon(
                                   _uses[i].$2,
                                   color: const Color(0xFFF9A826),
-                                  size: 20,
+                                  size: Responsive.w(20),
                                 ),
-                                const SizedBox(height: 6),
+                                SizedBox(height: Responsive.h(6)),
                                 Text(
                                   _uses[i].$1,
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 11,
+                                    fontSize: Responsive.sp(11),
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white,
                                   ),
@@ -249,34 +253,36 @@ class SilvaFingersScreen extends StatelessWidget {
                     }),
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: Responsive.h(24)),
 
                   Text(
                     'Sesión guiada · Programación del anclaje',
                     style: GoogleFonts.urbanist(
-                      fontSize: 12,
+                      fontSize: Responsive.sp(12),
                       color: const Color(0x80FFFFFF),
                     ),
                   ),
 
-                  const SizedBox(height: 20),
+                  SizedBox(height: Responsive.h(20)),
 
                   // ── Gold CTA ──────────────────────────────────────────
                   Container(
                     width: double.infinity,
-                    height: 56,
+                    height: Responsive.h(56),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                         colors: [Color(0xFFF9A826), Color(0xFFD4850F)],
                       ),
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius:
+                          BorderRadius.circular(Responsive.w(16)),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFFF9A826).withValues(alpha: 0.40),
-                          blurRadius: 20,
-                          offset: const Offset(0, 6),
+                          color: const Color(0xFFF9A826)
+                              .withValues(alpha: 0.40),
+                          blurRadius: Responsive.w(20),
+                          offset: Offset(0, Responsive.h(6)),
                         ),
                       ],
                     ),
@@ -284,7 +290,7 @@ class SilvaFingersScreen extends StatelessWidget {
                       child: Text(
                         'Activar tu anclaje',
                         style: GoogleFonts.urbanist(
-                          fontSize: 18,
+                          fontSize: Responsive.sp(18),
                           fontWeight: FontWeight.w700,
                           color: Colors.black,
                         ),

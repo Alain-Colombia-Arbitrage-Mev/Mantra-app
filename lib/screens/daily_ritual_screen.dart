@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
+import '../utils/responsive.dart';
 import '../widgets/screen_bg.dart';
 
 class DailyRitualScreen extends StatefulWidget {
@@ -25,12 +26,13 @@ class _DailyRitualScreenState extends State<DailyRitualScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundEnd,
       body: ScreenBg(
         child: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 48),
+            padding: EdgeInsets.fromLTRB(Responsive.pagePadding, Responsive.h(20), Responsive.pagePadding, Responsive.h(48)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -44,8 +46,8 @@ class _DailyRitualScreenState extends State<DailyRitualScreen> {
                         }
                       },
                       child: Container(
-                        width: 36,
-                        height: 36,
+                        width: Responsive.w(36),
+                        height: Responsive.w(36),
                         decoration: BoxDecoration(
                           color: AppColors.white.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
@@ -53,42 +55,42 @@ class _DailyRitualScreenState extends State<DailyRitualScreen> {
                             color: AppColors.surfaceBorderLight,
                           ),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           LucideIcons.chevronLeft,
                           color: Colors.white,
-                          size: 18,
+                          size: Responsive.w(18),
                         ),
                       ),
                     ),
                     const Spacer(),
                   ],
                 ),
-                const SizedBox(height: 28),
+                SizedBox(height: Responsive.h(28)),
 
                 // ── Greeting ─────────────────────────────────────────────
                 Text(
                   'Buenos días,',
                   style: GoogleFonts.urbanist(
-                    fontSize: 16,
+                    fontSize: Responsive.sp(16),
                     color: AppColors.textTertiary,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: Responsive.h(4)),
                 Text(
                   'Tu Nombre',
                   style: GoogleFonts.urbanist(
-                    fontSize: 32,
+                    fontSize: Responsive.sp(32),
                     fontWeight: FontWeight.w800,
                     color: Colors.white,
                     height: 1.1,
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: Responsive.h(24)),
 
                 // ── Today's intention ────────────────────────────────────
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(Responsive.w(20)),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
@@ -111,13 +113,13 @@ class _DailyRitualScreenState extends State<DailyRitualScreen> {
                           Icon(
                             LucideIcons.sun,
                             color: AppColors.gold,
-                            size: 16,
+                            size: Responsive.w(16),
                           ),
-                          const SizedBox(width: 8),
+                          SizedBox(width: Responsive.w(8)),
                           Text(
                             'INTENCIÓN DEL DÍA',
                             style: GoogleFonts.urbanist(
-                              fontSize: 10,
+                              fontSize: Responsive.sp(10),
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.5,
                               color: AppColors.gold,
@@ -125,11 +127,11 @@ class _DailyRitualScreenState extends State<DailyRitualScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: Responsive.h(10)),
                       Text(
                         '"Hoy actúo con gratitud y atraigo todo lo que necesito"',
                         style: GoogleFonts.urbanist(
-                          fontSize: 15,
+                          fontSize: Responsive.sp(15),
                           fontStyle: FontStyle.italic,
                           color: Colors.white,
                           height: 1.5,
@@ -138,7 +140,7 @@ class _DailyRitualScreenState extends State<DailyRitualScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: Responsive.h(24)),
 
                 // ── Daily tasks label ────────────────────────────────────
                 Row(
@@ -147,7 +149,7 @@ class _DailyRitualScreenState extends State<DailyRitualScreen> {
                     Text(
                       'RITUAL DE HOY',
                       style: GoogleFonts.urbanist(
-                        fontSize: 11,
+                        fontSize: Responsive.sp(11),
                         fontWeight: FontWeight.w700,
                         letterSpacing: 2.0,
                         color: AppColors.textTertiary,
@@ -156,25 +158,25 @@ class _DailyRitualScreenState extends State<DailyRitualScreen> {
                     Text(
                       '$_completedCount/3',
                       style: GoogleFonts.urbanist(
-                        fontSize: 13,
+                        fontSize: Responsive.sp(13),
                         fontWeight: FontWeight.w600,
                         color: AppColors.primaryLight,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: Responsive.h(12)),
 
                 // ── Tasks ────────────────────────────────────────────────
                 ...List.generate(_tasks.length, (i) {
                   final t = _tasks[i];
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
+                    padding: EdgeInsets.only(bottom: Responsive.h(10)),
                     child: GestureDetector(
                       onTap: () => setState(() => _checked[i] = !_checked[i]),
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 200),
-                        padding: const EdgeInsets.all(16),
+                        padding: EdgeInsets.all(Responsive.w(16)),
                         decoration: BoxDecoration(
                           color: _checked[i]
                               ? t.color.withValues(alpha: 0.1)
@@ -189,15 +191,15 @@ class _DailyRitualScreenState extends State<DailyRitualScreen> {
                         child: Row(
                           children: [
                             Container(
-                              width: 44,
-                              height: 44,
+                              width: Responsive.w(44),
+                              height: Responsive.w(44),
                               decoration: BoxDecoration(
                                 color: t.color.withValues(alpha: 0.15),
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: Icon(t.icon, color: t.color, size: 20),
+                              child: Icon(t.icon, color: t.color, size: Responsive.w(20)),
                             ),
-                            const SizedBox(width: 14),
+                            SizedBox(width: Responsive.w(14)),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -205,7 +207,7 @@ class _DailyRitualScreenState extends State<DailyRitualScreen> {
                                   Text(
                                     t.title,
                                     style: GoogleFonts.urbanist(
-                                      fontSize: 15,
+                                      fontSize: Responsive.sp(15),
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white,
                                       decoration: _checked[i]
@@ -217,7 +219,7 @@ class _DailyRitualScreenState extends State<DailyRitualScreen> {
                                   Text(
                                     t.duration,
                                     style: GoogleFonts.urbanist(
-                                      fontSize: 12,
+                                      fontSize: Responsive.sp(12),
                                       color: AppColors.textTertiary,
                                     ),
                                   ),
@@ -226,8 +228,8 @@ class _DailyRitualScreenState extends State<DailyRitualScreen> {
                             ),
                             AnimatedContainer(
                               duration: const Duration(milliseconds: 200),
-                              width: 24,
-                              height: 24,
+                              width: Responsive.w(24),
+                              height: Responsive.w(24),
                               decoration: BoxDecoration(
                                 color: _checked[i]
                                     ? t.color
@@ -241,10 +243,10 @@ class _DailyRitualScreenState extends State<DailyRitualScreen> {
                                 ),
                               ),
                               child: _checked[i]
-                                  ? const Icon(
+                                  ? Icon(
                                       LucideIcons.check,
                                       color: Colors.white,
-                                      size: 13,
+                                      size: Responsive.w(13),
                                     )
                                   : null,
                             ),
@@ -254,7 +256,7 @@ class _DailyRitualScreenState extends State<DailyRitualScreen> {
                     ),
                   );
                 }),
-                const SizedBox(height: 24),
+                SizedBox(height: Responsive.h(24)),
 
                 // ── Stats row ────────────────────────────────────────────
                 Row(
@@ -267,7 +269,7 @@ class _DailyRitualScreenState extends State<DailyRitualScreen> {
                         label: 'Días racha',
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: Responsive.w(12)),
                     Expanded(
                       child: _StatCard(
                         icon: LucideIcons.clock,
@@ -276,7 +278,7 @@ class _DailyRitualScreenState extends State<DailyRitualScreen> {
                         label: 'Min hoy',
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: Responsive.w(12)),
                     Expanded(
                       child: _StatCard(
                         icon: LucideIcons.star,
@@ -287,14 +289,14 @@ class _DailyRitualScreenState extends State<DailyRitualScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 28),
+                SizedBox(height: Responsive.h(28)),
 
                 // ── CTA ──────────────────────────────────────────────────
                 GestureDetector(
                   onTap: () => context.push('/player'),
                   child: Container(
                     width: double.infinity,
-                    height: 58,
+                    height: Responsive.h(58),
                     decoration: BoxDecoration(
                       gradient: AppGradients.primaryButton,
                       borderRadius: BorderRadius.circular(16),
@@ -309,16 +311,16 @@ class _DailyRitualScreenState extends State<DailyRitualScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
+                        Icon(
                           LucideIcons.play,
                           color: Colors.white,
-                          size: 18,
+                          size: Responsive.w(18),
                         ),
-                        const SizedBox(width: 10),
+                        SizedBox(width: Responsive.w(10)),
                         Text(
                           'Comenzar ritual matutino',
                           style: GoogleFonts.urbanist(
-                            fontSize: 16,
+                            fontSize: Responsive.sp(16),
                             fontWeight: FontWeight.w700,
                             color: Colors.white,
                           ),
@@ -361,7 +363,7 @@ class _StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: EdgeInsets.all(Responsive.w(14)),
       decoration: BoxDecoration(
         color: AppColors.white.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(14),
@@ -369,21 +371,21 @@ class _StatCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Icon(icon, color: iconColor, size: 20),
-          const SizedBox(height: 6),
+          Icon(icon, color: iconColor, size: Responsive.w(20)),
+          SizedBox(height: Responsive.h(6)),
           Text(
             value,
             style: GoogleFonts.urbanist(
-              fontSize: 20,
+              fontSize: Responsive.sp(20),
               fontWeight: FontWeight.w800,
               color: Colors.white,
             ),
           ),
-          const SizedBox(height: 2),
+          SizedBox(height: Responsive.h(2)),
           Text(
             label,
             style: GoogleFonts.urbanist(
-              fontSize: 11,
+              fontSize: Responsive.sp(11),
               color: AppColors.textTertiary,
             ),
           ),

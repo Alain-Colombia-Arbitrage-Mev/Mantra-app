@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
 import '../widgets/screen_bg.dart';
+import '../utils/responsive.dart';
 
 class SoundLibraryScreen extends StatefulWidget {
   const SoundLibraryScreen({super.key});
@@ -41,12 +42,13 @@ class _SoundLibraryScreenState extends State<SoundLibraryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundEnd,
       body: ScreenBg(
         child: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+            padding: EdgeInsets.fromLTRB(Responsive.w(20), Responsive.h(20), Responsive.w(20), Responsive.h(32)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -55,21 +57,21 @@ class _SoundLibraryScreenState extends State<SoundLibraryScreen> {
                   title: 'Biblioteca de Sonidos',
                   showBack: true,
                   trailing: Container(
-                    width: 36,
-                    height: 36,
+                    width: Responsive.w(36),
+                    height: Responsive.w(36),
                     decoration: BoxDecoration(
                       color: AppColors.white.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                       border: Border.all(color: AppColors.surfaceBorderLight),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       LucideIcons.search,
                       color: Colors.white,
-                      size: 18,
+                      size: Responsive.w(18),
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: Responsive.h(20)),
 
                 // ── Category chips ───────────────────────────────────────
                 SingleChildScrollView(
@@ -79,15 +81,15 @@ class _SoundLibraryScreenState extends State<SoundLibraryScreen> {
                       final selected = i == _selectedCategory;
                       return Padding(
                         padding: EdgeInsets.only(
-                          right: i < categories.length - 1 ? 8 : 0,
+                          right: i < categories.length - 1 ? Responsive.w(8) : 0,
                         ),
                         child: GestureDetector(
                           onTap: () =>
                               setState(() => _selectedCategory = i),
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: Responsive.w(16),
+                              vertical: Responsive.h(8),
                             ),
                             decoration: BoxDecoration(
                               gradient: selected
@@ -105,7 +107,7 @@ class _SoundLibraryScreenState extends State<SoundLibraryScreen> {
                             child: Text(
                               categories[i],
                               style: GoogleFonts.urbanist(
-                                fontSize: 13,
+                                fontSize: Responsive.sp(13),
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,
                               ),
@@ -116,24 +118,24 @@ class _SoundLibraryScreenState extends State<SoundLibraryScreen> {
                     }),
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: Responsive.h(24)),
 
                 // ── Solfeggio label ──────────────────────────────────────
                 const SectionLabel('FRECUENCIAS SOLFEGGIO'),
-                const SizedBox(height: 12),
+                SizedBox(height: Responsive.h(12)),
 
                 ...frequencies.map((f) => Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
+                      padding: EdgeInsets.only(bottom: Responsive.h(8)),
                       child: _FrequencyCard(data: f),
                     )),
-                const SizedBox(height: 16),
+                SizedBox(height: Responsive.h(16)),
 
                 // ── Nature label ─────────────────────────────────────────
                 const SectionLabel('SONIDOS DE NATURALEZA'),
-                const SizedBox(height: 12),
+                SizedBox(height: Responsive.h(12)),
 
                 ...natures.map((n) => Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
+                      padding: EdgeInsets.only(bottom: Responsive.h(8)),
                       child: _NatureCardWidget(data: n),
                     )),
               ],
@@ -167,7 +169,7 @@ class _FrequencyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: EdgeInsets.all(Responsive.w(14)),
       decoration: BoxDecoration(
         color: data.highlighted
             ? AppColors.primary.withValues(alpha: 0.15)
@@ -182,10 +184,9 @@ class _FrequencyCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Hz number badge
           Container(
-            width: 52,
-            height: 52,
+            width: Responsive.w(52),
+            height: Responsive.w(52),
             decoration: BoxDecoration(
               color: data.highlighted
                   ? AppColors.primary.withValues(alpha: 0.3)
@@ -198,7 +199,7 @@ class _FrequencyCard extends StatelessWidget {
                 Text(
                   data.hz,
                   style: GoogleFonts.urbanist(
-                    fontSize: 16,
+                    fontSize: Responsive.sp(16),
                     fontWeight: FontWeight.w800,
                     color: data.highlighted
                         ? AppColors.primaryLight
@@ -208,7 +209,7 @@ class _FrequencyCard extends StatelessWidget {
                 Text(
                   'Hz',
                   style: GoogleFonts.urbanist(
-                    fontSize: 9,
+                    fontSize: Responsive.sp(9),
                     fontWeight: FontWeight.w600,
                     color: AppColors.textTertiary,
                   ),
@@ -216,8 +217,7 @@ class _FrequencyCard extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 12),
-          // Name + desc
+          SizedBox(width: Responsive.w(12)),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -225,28 +225,27 @@ class _FrequencyCard extends StatelessWidget {
                 Text(
                   data.name,
                   style: GoogleFonts.urbanist(
-                    fontSize: 14,
+                    fontSize: Responsive.sp(14),
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: Responsive.h(2)),
                 Text(
                   data.desc,
                   style: GoogleFonts.urbanist(
-                    fontSize: 12,
+                    fontSize: Responsive.sp(12),
                     color: AppColors.textTertiary,
                   ),
                 ),
               ],
             ),
           ),
-          // Play button
           GestureDetector(
             onTap: () => context.push('/player'),
             child: Container(
-              width: 36,
-              height: 36,
+              width: Responsive.w(36),
+              height: Responsive.w(36),
               decoration: BoxDecoration(
                 gradient: data.highlighted
                     ? AppGradients.primaryButton
@@ -256,10 +255,10 @@ class _FrequencyCard extends StatelessWidget {
                     : AppColors.white.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
+              child: Icon(
                 LucideIcons.play,
                 color: Colors.white,
-                size: 16,
+                size: Responsive.w(16),
               ),
             ),
           ),
@@ -276,12 +275,12 @@ class _NatureCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GlassCard(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: EdgeInsets.symmetric(horizontal: Responsive.w(16), vertical: Responsive.h(12)),
       child: Row(
         children: [
           Container(
-            width: 44,
-            height: 44,
+            width: Responsive.w(44),
+            height: Responsive.w(44),
             decoration: BoxDecoration(
               color: AppColors.mint.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(10),
@@ -289,14 +288,14 @@ class _NatureCardWidget extends StatelessWidget {
                 color: AppColors.mint.withValues(alpha: 0.3),
               ),
             ),
-            child: Icon(data.icon, color: AppColors.mint, size: 20),
+            child: Icon(data.icon, color: AppColors.mint, size: Responsive.w(20)),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: Responsive.w(12)),
           Expanded(
             child: Text(
               data.name,
               style: GoogleFonts.urbanist(
-                fontSize: 15,
+                fontSize: Responsive.sp(15),
                 fontWeight: FontWeight.w700,
                 color: Colors.white,
               ),
@@ -305,24 +304,24 @@ class _NatureCardWidget extends StatelessWidget {
           Text(
             data.duration,
             style: GoogleFonts.urbanist(
-              fontSize: 12,
+              fontSize: Responsive.sp(12),
               color: AppColors.textTertiary,
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: Responsive.w(12)),
           GestureDetector(
             onTap: () => context.push('/player'),
             child: Container(
-              width: 32,
-              height: 32,
+              width: Responsive.w(32),
+              height: Responsive.w(32),
               decoration: BoxDecoration(
                 color: AppColors.white.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
+              child: Icon(
                 LucideIcons.play,
                 color: Colors.white,
-                size: 14,
+                size: Responsive.w(14),
               ),
             ),
           ),

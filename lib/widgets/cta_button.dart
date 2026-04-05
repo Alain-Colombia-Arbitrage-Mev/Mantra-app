@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme.dart';
+import '../utils/responsive.dart';
 
 class CtaButton extends StatefulWidget {
   final String label;
@@ -57,7 +58,7 @@ class _CtaButtonState extends State<CtaButton> {
             boxShadow: [
               BoxShadow(
                 color: shadow,
-                blurRadius: 24,
+                blurRadius: Responsive.w(24),
                 offset: const Offset(0, 8),
               ),
             ],
@@ -66,13 +67,13 @@ class _CtaButtonState extends State<CtaButton> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (widget.icon != null) ...[
-                Icon(widget.icon, color: widget.textColor, size: 20),
-                const SizedBox(width: 10),
+                Icon(widget.icon, color: widget.textColor, size: Responsive.w(20)),
+                SizedBox(width: Responsive.w(10)),
               ],
               Text(
                 widget.label,
                 style: GoogleFonts.urbanist(
-                  fontSize: 18,
+                  fontSize: Responsive.sp(18),
                   fontWeight: FontWeight.w700,
                   color: widget.textColor,
                 ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
+import '../utils/responsive.dart';
 
 class BottomNav extends StatelessWidget {
   final int currentIndex;
@@ -24,7 +25,7 @@ class BottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
+      height: Responsive.h(70),
       decoration: BoxDecoration(
         color: const Color(0xE60A0A1A),
         border: Border(
@@ -49,13 +50,13 @@ class BottomNav extends StatelessWidget {
                     color: isActive
                         ? AppColors.primary
                         : AppColors.white.withValues(alpha: 0.5),
-                    size: 22,
+                    size: Responsive.w(22),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: Responsive.h(4)),
                   if (isActive)
                     Container(
-                      width: 6,
-                      height: 6,
+                      width: Responsive.w(6),
+                      height: Responsive.w(6),
                       decoration: const BoxDecoration(
                         color: AppColors.primary,
                         shape: BoxShape.circle,
@@ -65,7 +66,7 @@ class BottomNav extends StatelessWidget {
                     Text(
                       tab.$2,
                       style: GoogleFonts.urbanist(
-                        fontSize: 10,
+                        fontSize: Responsive.sp(10),
                         color: AppColors.white.withValues(alpha: 0.4),
                       ),
                     ),

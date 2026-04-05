@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme.dart';
+import '../utils/responsive.dart';
 
 /// Full-screen background: splash_bg.jpg with a dark overlay gradient.
 /// Wrap all main tab screens with this widget.
@@ -45,7 +46,7 @@ class SectionLabel extends StatelessWidget {
       text,
       style: TextStyle(
         fontFamily: 'Urbanist',
-        fontSize: 11,
+        fontSize: Responsive.sp(11),
         fontWeight: FontWeight.w700,
         letterSpacing: 2.0,
         color: color ?? AppColors.textTertiary,
@@ -69,13 +70,15 @@ class GlassCard extends StatelessWidget {
     this.borderColor,
   });
 
+  double get _resolvedRadius => Responsive.w(radius);
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: padding ?? const EdgeInsets.all(16),
+      padding: padding ?? EdgeInsets.all(Responsive.w(16)),
       decoration: BoxDecoration(
         color: AppColors.surfaceLight,
-        borderRadius: BorderRadius.circular(radius),
+        borderRadius: BorderRadius.circular(_resolvedRadius),
         border: Border.all(
           color: borderColor ?? AppColors.surfaceBorderLight,
         ),
@@ -110,29 +113,29 @@ class ScreenNav extends StatelessWidget {
               }
             },
             child: Container(
-              width: 36,
-              height: 36,
+              width: Responsive.w(36),
+              height: Responsive.w(36),
               decoration: BoxDecoration(
                 color: AppColors.white.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
                 border: Border.all(color: AppColors.surfaceBorderLight),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.arrow_back_ios_new,
                 color: Colors.white,
-                size: 16,
+                size: Responsive.w(16),
               ),
             ),
           )
         else
-          const SizedBox(width: 36),
+          SizedBox(width: Responsive.w(36)),
         Expanded(
           child: Text(
             title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Urbanist',
-              fontSize: 17,
+              fontSize: Responsive.sp(17),
               fontWeight: FontWeight.w700,
               color: Colors.white,
             ),
@@ -141,7 +144,7 @@ class ScreenNav extends StatelessWidget {
         if (trailing != null)
           trailing!
         else
-          const SizedBox(width: 36),
+          SizedBox(width: Responsive.w(36)),
       ],
     );
   }

@@ -3,12 +3,14 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
+import '../utils/responsive.dart';
 
 class ChakrasScreen extends StatelessWidget {
   const ChakrasScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundEnd,
       body: Container(
@@ -23,18 +25,18 @@ class ChakrasScreen extends StatelessWidget {
           children: [
             // Plum glow
             Positioned(
-              top: 60,
-              right: -60,
+              top: Responsive.h(60),
+              right: Responsive.w(-60),
               child: Container(
-                width: 280,
-                height: 280,
+                width: Responsive.w(280),
+                height: Responsive.w(280),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
                       color: AppColors.chakra.withValues(alpha: 0.18),
-                      blurRadius: 140,
-                      spreadRadius: 70,
+                      blurRadius: Responsive.w(140),
+                      spreadRadius: Responsive.w(70),
                     ),
                   ],
                 ),
@@ -45,7 +47,8 @@ class ChakrasScreen extends StatelessWidget {
                 children: [
                   // ── Header ──────────────────────────────────────────────
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                    padding: EdgeInsets.fromLTRB(
+                        Responsive.w(20), Responsive.h(16), Responsive.w(20), 0),
                     child: Row(
                       children: [
                         GestureDetector(
@@ -55,8 +58,8 @@ class ChakrasScreen extends StatelessWidget {
                             }
                           },
                           child: Container(
-                            width: 36,
-                            height: 36,
+                            width: Responsive.w(36),
+                            height: Responsive.w(36),
                             decoration: BoxDecoration(
                               color: AppColors.white.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
@@ -64,10 +67,10 @@ class ChakrasScreen extends StatelessWidget {
                                 color: AppColors.surfaceBorderLight,
                               ),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               LucideIcons.chevronLeft,
                               color: Colors.white,
-                              size: 18,
+                              size: Responsive.w(18),
                             ),
                           ),
                         ),
@@ -76,15 +79,15 @@ class ChakrasScreen extends StatelessWidget {
                             'Chakras',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.urbanist(
-                              fontSize: 17,
+                              fontSize: Responsive.sp(17),
                               fontWeight: FontWeight.w700,
                               color: Colors.white,
                             ),
                           ),
                         ),
                         Container(
-                          width: 36,
-                          height: 36,
+                          width: Responsive.w(36),
+                          height: Responsive.w(36),
                           decoration: BoxDecoration(
                             color: AppColors.white.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
@@ -92,10 +95,10 @@ class ChakrasScreen extends StatelessWidget {
                               color: AppColors.surfaceBorderLight,
                             ),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             LucideIcons.bell,
                             color: Colors.white,
-                            size: 17,
+                            size: Responsive.w(17),
                           ),
                         ),
                       ],
@@ -103,24 +106,30 @@ class ChakrasScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
+                      padding: EdgeInsets.fromLTRB(
+                          Responsive.w(20),
+                          Responsive.h(24),
+                          Responsive.w(20),
+                          Responsive.h(32)),
                       child: Column(
                         children: [
                           // ── Hero image ──────────────────────────────────
                           Container(
-                            width: 200,
-                            height: 200,
+                            width: Responsive.w(200),
+                            height: Responsive.w(200),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
-                                color: AppColors.chakra.withValues(alpha: 0.2),
+                                color: AppColors.chakra
+                                    .withValues(alpha: 0.2),
                                 width: 2,
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: AppColors.chakra.withValues(alpha: 0.2),
-                                  blurRadius: 40,
-                                  spreadRadius: 10,
+                                  color: AppColors.chakra
+                                      .withValues(alpha: 0.2),
+                                  blurRadius: Responsive.w(40),
+                                  spreadRadius: Responsive.w(10),
                                 ),
                               ],
                             ),
@@ -131,46 +140,50 @@ class ChakrasScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: Responsive.h(16)),
 
                           // ── Section label ───────────────────────────────
                           Text(
                             'Centros de energía vital',
                             style: GoogleFonts.urbanist(
-                              fontSize: 14,
+                              fontSize: Responsive.sp(14),
                               fontWeight: FontWeight.w600,
                               color: AppColors.chakra,
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: Responsive.h(8)),
                           Text(
                             'Los chakras son centros de energía en el cuerpo\nque regulan el flujo vital y el equilibrio mental,\nemocional y espiritual.',
                             style: GoogleFonts.urbanist(
-                              fontSize: 13,
+                              fontSize: Responsive.sp(13),
                               color: AppColors.textTertiary,
                               height: 1.6,
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 24),
+                          SizedBox(height: Responsive.h(24)),
 
                           // ── Chakra cards ─────────────────────────────────
                           ..._chakras.map((c) => Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: _ChakraCard(item: c),
-                          )),
-                          const SizedBox(height: 20),
+                                padding: EdgeInsets.only(
+                                    bottom: Responsive.h(8)),
+                                child: _ChakraCard(item: c),
+                              )),
+                          SizedBox(height: Responsive.h(20)),
 
                           // ── Stats ────────────────────────────────────────
                           Container(
                             width: double.infinity,
-                            padding: const EdgeInsets.all(16),
+                            padding: EdgeInsets.all(Responsive.w(16)),
                             decoration: BoxDecoration(
-                              color: AppColors.chakra.withValues(alpha: 0.08),
-                              borderRadius: BorderRadius.circular(14),
+                              color: AppColors.chakra
+                                  .withValues(alpha: 0.08),
+                              borderRadius: BorderRadius.circular(
+                                  Responsive.w(14)),
                               border: Border.all(
-                                color: AppColors.chakra.withValues(alpha: 0.2),
+                                color: AppColors.chakra
+                                    .withValues(alpha: 0.2),
                               ),
                             ),
                             child: Row(
@@ -179,14 +192,14 @@ class ChakrasScreen extends StatelessWidget {
                                 Icon(
                                   LucideIcons.users,
                                   color: AppColors.chakra,
-                                  size: 16,
+                                  size: Responsive.w(16),
                                 ),
-                                const SizedBox(width: 8),
+                                SizedBox(width: Responsive.w(8)),
                                 Flexible(
                                   child: Text(
                                     '12,847 sesiones de chakras completadas esta semana',
                                     style: GoogleFonts.urbanist(
-                                      fontSize: 12,
+                                      fontSize: Responsive.sp(12),
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.chakra,
                                     ),
@@ -196,14 +209,14 @@ class ChakrasScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: Responsive.h(20)),
 
                           // ── CTA ──────────────────────────────────────────
                           GestureDetector(
                             onTap: () => context.push('/player'),
                             child: Container(
                               width: double.infinity,
-                              height: 58,
+                              height: Responsive.h(58),
                               decoration: BoxDecoration(
                                 gradient: const LinearGradient(
                                   begin: Alignment.centerLeft,
@@ -213,14 +226,16 @@ class ChakrasScreen extends StatelessWidget {
                                     Color(0xFFA29BFE),
                                   ],
                                 ),
-                                borderRadius: BorderRadius.circular(16),
+                                borderRadius: BorderRadius.circular(
+                                    Responsive.w(16)),
                                 boxShadow: [
                                   BoxShadow(
                                     color: AppColors.chakra.withValues(
                                       alpha: 0.4,
                                     ),
-                                    blurRadius: 20,
-                                    offset: const Offset(0, 8),
+                                    blurRadius: Responsive.w(20),
+                                    offset:
+                                        Offset(0, Responsive.h(8)),
                                   ),
                                 ],
                               ),
@@ -228,7 +243,7 @@ class ChakrasScreen extends StatelessWidget {
                                 child: Text(
                                   'Iniciar alineación guiada',
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 16,
+                                    fontSize: Responsive.sp(16),
                                     fontWeight: FontWeight.w700,
                                     color: Colors.white,
                                   ),
@@ -277,31 +292,32 @@ class _ChakraCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      padding: EdgeInsets.symmetric(
+          horizontal: Responsive.w(16), vertical: Responsive.h(14)),
       decoration: BoxDecoration(
         color: AppColors.white.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(Responsive.w(14)),
         border: Border.all(color: AppColors.surfaceBorderLight),
       ),
       child: Row(
         children: [
           // Colored dot
           Container(
-            width: 12,
-            height: 12,
+            width: Responsive.w(12),
+            height: Responsive.w(12),
             decoration: BoxDecoration(
               color: item.dot,
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
                   color: item.dot.withValues(alpha: 0.5),
-                  blurRadius: 8,
-                  spreadRadius: 2,
+                  blurRadius: Responsive.w(8),
+                  spreadRadius: Responsive.w(2),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 14),
+          SizedBox(width: Responsive.w(14)),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -309,16 +325,16 @@ class _ChakraCard extends StatelessWidget {
                 Text(
                   item.name,
                   style: GoogleFonts.urbanist(
-                    fontSize: 14,
+                    fontSize: Responsive.sp(14),
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: Responsive.h(2)),
                 Text(
                   item.subtitle,
                   style: GoogleFonts.urbanist(
-                    fontSize: 12,
+                    fontSize: Responsive.sp(12),
                     color: AppColors.textTertiary,
                   ),
                 ),
@@ -327,25 +343,26 @@ class _ChakraCard extends StatelessWidget {
           ),
           if (item.isPro)
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+              padding: EdgeInsets.symmetric(
+                  horizontal: Responsive.w(8), vertical: Responsive.h(3)),
               decoration: BoxDecoration(
                 gradient: AppGradients.primaryButton,
-                borderRadius: BorderRadius.circular(50),
+                borderRadius: BorderRadius.circular(Responsive.w(50)),
               ),
               child: Text(
                 'PRO',
                 style: GoogleFonts.urbanist(
-                  fontSize: 10,
+                  fontSize: Responsive.sp(10),
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),
               ),
             ),
-          const SizedBox(width: 8),
+          SizedBox(width: Responsive.w(8)),
           Icon(
             LucideIcons.chevronRight,
             color: AppColors.textMuted,
-            size: 18,
+            size: Responsive.w(18),
           ),
         ],
       ),

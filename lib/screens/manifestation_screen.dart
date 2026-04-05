@@ -3,12 +3,14 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
+import '../utils/responsive.dart';
 
 class ManifestationScreen extends StatelessWidget {
   const ManifestationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundEnd,
       body: Container(
@@ -21,20 +23,19 @@ class ManifestationScreen extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            // Gold glow
             Positioned(
-              top: 50,
-              right: -40,
+              top: Responsive.h(50),
+              right: Responsive.w(-40),
               child: Container(
-                width: 260,
-                height: 260,
+                width: Responsive.w(260),
+                height: Responsive.w(260),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
                       color: AppColors.gold.withValues(alpha: 0.14),
-                      blurRadius: 140,
-                      spreadRadius: 70,
+                      blurRadius: Responsive.w(140),
+                      spreadRadius: Responsive.w(70),
                     ),
                   ],
                 ),
@@ -43,9 +44,10 @@ class ManifestationScreen extends StatelessWidget {
             SafeArea(
               child: Column(
                 children: [
-                  // ── Header ──────────────────────────────────────────────
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                    padding: EdgeInsets.fromLTRB(
+                      Responsive.w(20), Responsive.h(16), Responsive.w(20), 0,
+                    ),
                     child: Row(
                       children: [
                         GestureDetector(
@@ -55,8 +57,8 @@ class ManifestationScreen extends StatelessWidget {
                             }
                           },
                           child: Container(
-                            width: 36,
-                            height: 36,
+                            width: Responsive.w(36),
+                            height: Responsive.w(36),
                             decoration: BoxDecoration(
                               color: AppColors.white.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
@@ -64,10 +66,10 @@ class ManifestationScreen extends StatelessWidget {
                                 color: AppColors.surfaceBorderLight,
                               ),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               LucideIcons.chevronLeft,
                               color: Colors.white,
-                              size: 18,
+                              size: Responsive.w(18),
                             ),
                           ),
                         ),
@@ -76,7 +78,7 @@ class ManifestationScreen extends StatelessWidget {
                             'Manifestación',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.urbanist(
-                              fontSize: 17,
+                              fontSize: Responsive.sp(17),
                               fontWeight: FontWeight.w700,
                               color: Colors.white,
                             ),
@@ -85,8 +87,8 @@ class ManifestationScreen extends StatelessWidget {
                         GestureDetector(
                           onTap: () => context.push('/gratitude-journal'),
                           child: Container(
-                            width: 36,
-                            height: 36,
+                            width: Responsive.w(36),
+                            height: Responsive.w(36),
                             decoration: BoxDecoration(
                               color: AppColors.white.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
@@ -94,10 +96,10 @@ class ManifestationScreen extends StatelessWidget {
                                 color: AppColors.surfaceBorderLight,
                               ),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               LucideIcons.plus,
                               color: Colors.white,
-                              size: 18,
+                              size: Responsive.w(18),
                             ),
                           ),
                         ),
@@ -106,13 +108,14 @@ class ManifestationScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
+                      padding: EdgeInsets.fromLTRB(
+                        Responsive.w(20), Responsive.h(24), Responsive.w(20), Responsive.h(32),
+                      ),
                       child: Column(
                         children: [
-                          // ── Hero image ──────────────────────────────────
                           Container(
-                            width: 180,
-                            height: 180,
+                            width: Responsive.w(180),
+                            height: Responsive.w(180),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
@@ -122,8 +125,8 @@ class ManifestationScreen extends StatelessWidget {
                               boxShadow: [
                                 BoxShadow(
                                   color: AppColors.gold.withValues(alpha: 0.18),
-                                  blurRadius: 40,
-                                  spreadRadius: 8,
+                                  blurRadius: Responsive.w(40),
+                                  spreadRadius: Responsive.w(8),
                                 ),
                               ],
                             ),
@@ -134,27 +137,23 @@ class ManifestationScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 24),
-
-                          // ── Intention label ─────────────────────────────
+                          SizedBox(height: Responsive.h(24)),
                           Text(
                             'TU INTENCIÓN DE HOY',
                             style: GoogleFonts.urbanist(
-                              fontSize: 11,
+                              fontSize: Responsive.sp(11),
                               fontWeight: FontWeight.w700,
                               letterSpacing: 2.0,
                               color: AppColors.gold.withValues(alpha: 0.67),
                             ),
                           ),
-                          const SizedBox(height: 16),
-
-                          // ── Quote card ──────────────────────────────────
+                          SizedBox(height: Responsive.h(16)),
                           Container(
                             width: double.infinity,
-                            padding: const EdgeInsets.all(20),
+                            padding: EdgeInsets.all(Responsive.w(20)),
                             decoration: BoxDecoration(
                               color: AppColors.gold.withValues(alpha: 0.07),
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(Responsive.w(20)),
                               border: Border.all(
                                 color: AppColors.gold.withValues(alpha: 0.2),
                               ),
@@ -164,7 +163,7 @@ class ManifestationScreen extends StatelessWidget {
                                 Text(
                                   '"Soy merecedor de abundancia y todo lo bueno fluye hacia mí"',
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 20,
+                                    fontSize: Responsive.sp(20),
                                     fontWeight: FontWeight.w700,
                                     fontStyle: FontStyle.italic,
                                     color: Colors.white,
@@ -172,11 +171,11 @@ class ManifestationScreen extends StatelessWidget {
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
-                                const SizedBox(height: 12),
+                                SizedBox(height: Responsive.h(12)),
                                 Text(
                                   'Repite esta afirmación 3 veces con intención plena',
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 13,
+                                    fontSize: Responsive.sp(13),
                                     color: AppColors.white.withValues(
                                       alpha: 0.5,
                                     ),
@@ -186,23 +185,19 @@ class ManifestationScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 24),
-
-                          // ── Técnicas label ──────────────────────────────
+                          SizedBox(height: Responsive.h(24)),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
                               'Técnicas de manifestación',
                               style: GoogleFonts.urbanist(
-                                fontSize: 15,
+                                fontSize: Responsive.sp(15),
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white,
                               ),
                             ),
                           ),
-                          const SizedBox(height: 12),
-
-                          // ── Technique cards ─────────────────────────────
+                          SizedBox(height: Responsive.h(12)),
                           _TechniqueCard(
                             icon: LucideIcons.bookOpen,
                             iconColor: AppColors.mint,
@@ -211,7 +206,7 @@ class ManifestationScreen extends StatelessWidget {
                             isNew: true,
                             onTap: () => context.push('/gratitude-journal'),
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: Responsive.h(8)),
                           _TechniqueCard(
                             icon: LucideIcons.eye,
                             iconColor: AppColors.primaryLight,
@@ -220,7 +215,7 @@ class ManifestationScreen extends StatelessWidget {
                             isNew: false,
                             onTap: () => context.push('/player'),
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: Responsive.h(8)),
                           _TechniqueCard(
                             icon: LucideIcons.hash,
                             iconColor: AppColors.gold,
@@ -229,15 +224,13 @@ class ManifestationScreen extends StatelessWidget {
                             isNew: true,
                             onTap: () {},
                           ),
-                          const SizedBox(height: 20),
-
-                          // ── Stats ────────────────────────────────────────
+                          SizedBox(height: Responsive.h(20)),
                           Container(
                             width: double.infinity,
-                            padding: const EdgeInsets.all(16),
+                            padding: EdgeInsets.all(Responsive.w(16)),
                             decoration: BoxDecoration(
                               color: AppColors.gold.withValues(alpha: 0.08),
-                              borderRadius: BorderRadius.circular(14),
+                              borderRadius: BorderRadius.circular(Responsive.w(14)),
                               border: Border.all(
                                 color: AppColors.gold.withValues(alpha: 0.2),
                               ),
@@ -248,13 +241,13 @@ class ManifestationScreen extends StatelessWidget {
                                 Icon(
                                   LucideIcons.sparkles,
                                   color: AppColors.gold,
-                                  size: 16,
+                                  size: Responsive.w(16),
                                 ),
-                                const SizedBox(width: 8),
+                                SizedBox(width: Responsive.w(8)),
                                 Text(
                                   '3,456 intenciones manifestadas hoy',
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 13,
+                                    fontSize: Responsive.sp(13),
                                     fontWeight: FontWeight.w600,
                                     color: AppColors.gold,
                                   ),
@@ -262,22 +255,20 @@ class ManifestationScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 20),
-
-                          // ── Gold CTA ─────────────────────────────────────
+                          SizedBox(height: Responsive.h(20)),
                           GestureDetector(
                             onTap: () {},
                             child: Container(
                               width: double.infinity,
-                              height: 58,
+                              height: Responsive.h(58),
                               decoration: BoxDecoration(
                                 gradient: AppGradients.goldButton,
-                                borderRadius: BorderRadius.circular(16),
+                                borderRadius: BorderRadius.circular(Responsive.w(16)),
                                 boxShadow: [
                                   BoxShadow(
                                     color: AppColors.gold.withValues(alpha: 0.4),
-                                    blurRadius: 20,
-                                    offset: const Offset(0, 8),
+                                    blurRadius: Responsive.w(20),
+                                    offset: Offset(0, Responsive.h(8)),
                                   ),
                                 ],
                               ),
@@ -285,7 +276,7 @@ class ManifestationScreen extends StatelessWidget {
                                 child: Text(
                                   'Crear mi intención',
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 16,
+                                    fontSize: Responsive.sp(16),
                                     fontWeight: FontWeight.w700,
                                     color: const Color(0xFF1A0A00),
                                   ),
@@ -329,25 +320,25 @@ class _TechniqueCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(Responsive.w(16)),
         decoration: BoxDecoration(
           color: AppColors.white.withValues(alpha: 0.05),
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(Responsive.w(14)),
           border: Border.all(color: AppColors.surfaceBorderLight),
         ),
         child: Row(
           children: [
             Container(
-              width: 44,
-              height: 44,
+              width: Responsive.w(44),
+              height: Responsive.w(44),
               decoration: BoxDecoration(
                 color: iconColor.withValues(alpha: 0.15),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(Responsive.w(12)),
                 border: Border.all(color: iconColor.withValues(alpha: 0.3)),
               ),
-              child: Icon(icon, color: iconColor, size: 20),
+              child: Icon(icon, color: iconColor, size: Responsive.w(20)),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: Responsive.w(12)),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -355,16 +346,16 @@ class _TechniqueCard extends StatelessWidget {
                   Text(
                     title,
                     style: GoogleFonts.urbanist(
-                      fontSize: 14,
+                      fontSize: Responsive.sp(14),
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
                   ),
-                  const SizedBox(height: 3),
+                  SizedBox(height: Responsive.h(3)),
                   Text(
                     subtitle,
                     style: GoogleFonts.urbanist(
-                      fontSize: 12,
+                      fontSize: Responsive.sp(12),
                       color: AppColors.textTertiary,
                     ),
                   ),
@@ -373,11 +364,12 @@ class _TechniqueCard extends StatelessWidget {
             ),
             if (isNew)
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                padding: EdgeInsets.symmetric(
+                  horizontal: Responsive.w(8), vertical: Responsive.h(3),
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.mint.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(50),
+                  borderRadius: BorderRadius.circular(Responsive.w(50)),
                   border: Border.all(
                     color: AppColors.mint.withValues(alpha: 0.4),
                   ),
@@ -385,17 +377,17 @@ class _TechniqueCard extends StatelessWidget {
                 child: Text(
                   'Nuevo',
                   style: GoogleFonts.urbanist(
-                    fontSize: 10,
+                    fontSize: Responsive.sp(10),
                     fontWeight: FontWeight.w700,
                     color: AppColors.mint,
                   ),
                 ),
               ),
-            const SizedBox(width: 8),
+            SizedBox(width: Responsive.w(8)),
             Icon(
               LucideIcons.chevronRight,
               color: AppColors.textMuted,
-              size: 18,
+              size: Responsive.w(18),
             ),
           ],
         ),

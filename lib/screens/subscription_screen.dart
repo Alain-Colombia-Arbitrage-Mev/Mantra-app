@@ -5,6 +5,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import '../theme.dart';
 import '../services/revenuecat_service.dart';
+import '../utils/responsive.dart';
 
 class SubscriptionScreen extends StatefulWidget {
   const SubscriptionScreen({super.key});
@@ -173,6 +174,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundEnd,
       body: Container(
@@ -187,11 +189,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           children: [
             // Purple glow top-right
             Positioned(
-              top: -80,
-              right: -60,
+              top: Responsive.h(-80),
+              right: Responsive.w(-60),
               child: Container(
-                width: 300,
-                height: 300,
+                width: Responsive.w(300),
+                height: Responsive.w(300),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   boxShadow: [
@@ -209,7 +211,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 children: [
                   // ── Header ───────────────────────────────────────────────
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                    padding: EdgeInsets.fromLTRB(Responsive.pagePadding, Responsive.h(16), Responsive.pagePadding, 0),
                     child: Row(
                       children: [
                         GestureDetector(
@@ -219,8 +221,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             }
                           },
                           child: Container(
-                            width: 36,
-                            height: 36,
+                            width: Responsive.w(36),
+                            height: Responsive.w(36),
                             decoration: BoxDecoration(
                               color: AppColors.white.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
@@ -228,10 +230,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                 color: AppColors.surfaceBorderLight,
                               ),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               LucideIcons.chevronLeft,
                               color: Colors.white,
-                              size: 18,
+                              size: Responsive.w(18),
                             ),
                           ),
                         ),
@@ -240,7 +242,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             'Suscripción',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.urbanist(
-                              fontSize: 17,
+                              fontSize: Responsive.sp(17),
                               fontWeight: FontWeight.w700,
                               color: Colors.white,
                             ),
@@ -249,8 +251,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                         GestureDetector(
                           onTap: () => context.go('/home'),
                           child: Container(
-                            width: 36,
-                            height: 36,
+                            width: Responsive.w(36),
+                            height: Responsive.w(36),
                             decoration: BoxDecoration(
                               color: AppColors.white.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
@@ -258,10 +260,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                 color: AppColors.surfaceBorderLight,
                               ),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               LucideIcons.x,
                               color: Colors.white,
-                              size: 18,
+                              size: Responsive.w(18),
                             ),
                           ),
                         ),
@@ -271,14 +273,14 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
                   Expanded(
                     child: SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
+                      padding: EdgeInsets.fromLTRB(Responsive.pagePadding, Responsive.h(24), Responsive.pagePadding, Responsive.h(32)),
                       child: Column(
                         children: [
                           // ── PRO badge ────────────────────────────────────
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 8,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: Responsive.w(20),
+                              vertical: Responsive.h(8),
                             ),
                             decoration: BoxDecoration(
                               gradient: AppGradients.primaryButton,
@@ -296,32 +298,32 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             child: Text(
                               'PLAN PRO',
                               style: GoogleFonts.urbanist(
-                                fontSize: 13,
+                                fontSize: Responsive.sp(13),
                                 fontWeight: FontWeight.w800,
                                 letterSpacing: 2.0,
                                 color: Colors.white,
                               ),
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: Responsive.h(20)),
 
                           // ── Headline ──────────────────────────────────────
                           Text(
                             'Desbloquea la\nexperiencia completa',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.urbanist(
-                              fontSize: 32,
+                              fontSize: Responsive.sp(32),
                               fontWeight: FontWeight.w800,
                               color: Colors.white,
                               height: 1.15,
                             ),
                           ),
-                          const SizedBox(height: 28),
+                          SizedBox(height: Responsive.h(28)),
 
                           // ── Benefits list ─────────────────────────────────
                           Container(
                             width: double.infinity,
-                            padding: const EdgeInsets.all(20),
+                            padding: EdgeInsets.all(Responsive.w(20)),
                             decoration: BoxDecoration(
                               color: AppColors.white.withValues(alpha: 0.05),
                               borderRadius: BorderRadius.circular(20),
@@ -332,12 +334,12 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             child: Column(
                               children: _benefits.map((b) {
                                 return Padding(
-                                  padding: const EdgeInsets.only(bottom: 12),
+                                  padding: EdgeInsets.only(bottom: Responsive.h(12)),
                                   child: Row(
                                     children: [
                                       Container(
-                                        width: 22,
-                                        height: 22,
+                                        width: Responsive.w(22),
+                                        height: Responsive.w(22),
                                         decoration: BoxDecoration(
                                           color: AppColors.mint.withValues(
                                             alpha: 0.2,
@@ -352,14 +354,14 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                         child: Icon(
                                           LucideIcons.check,
                                           color: AppColors.mint,
-                                          size: 13,
+                                          size: Responsive.w(13),
                                         ),
                                       ),
-                                      const SizedBox(width: 12),
+                                      SizedBox(width: Responsive.w(12)),
                                       Text(
                                         b,
                                         style: GoogleFonts.urbanist(
-                                          fontSize: 14,
+                                          fontSize: Responsive.sp(14),
                                           fontWeight: FontWeight.w600,
                                           color: Colors.white,
                                         ),
@@ -370,11 +372,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                               }).toList(),
                             ),
                           ),
-                          const SizedBox(height: 24),
+                          SizedBox(height: Responsive.h(24)),
 
                           // ── Plan cards (loading / error / packages) ───────
                           _buildPackagesSection(),
-                          const SizedBox(height: 28),
+                          SizedBox(height: Responsive.h(28)),
 
                           // ── CTA ───────────────────────────────────────────
                           GestureDetector(
@@ -382,7 +384,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 150),
                               width: double.infinity,
-                              height: 58,
+                              height: Responsive.h(58),
                               decoration: BoxDecoration(
                                 gradient: _purchasing || _selectedPackage == null
                                     ? null
@@ -405,9 +407,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                               ),
                               child: Center(
                                 child: _purchasing
-                                    ? const SizedBox(
-                                        width: 22,
-                                        height: 22,
+                                    ? SizedBox(
+                                        width: Responsive.w(22),
+                                        height: Responsive.w(22),
                                         child: CircularProgressIndicator(
                                           strokeWidth: 2.5,
                                           color: Colors.white,
@@ -416,7 +418,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                     : Text(
                                         'Comenzar prueba gratis',
                                         style: GoogleFonts.urbanist(
-                                          fontSize: 17,
+                                          fontSize: Responsive.sp(17),
                                           fontWeight: FontWeight.w700,
                                           color: Colors.white,
                                         ),
@@ -424,7 +426,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: Responsive.h(16)),
 
                           // ── Restore purchases ─────────────────────────────
                           GestureDetector(
@@ -432,7 +434,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             child: Text(
                               'Restaurar compras',
                               style: GoogleFonts.urbanist(
-                                fontSize: 13,
+                                fontSize: Responsive.sp(13),
                                 color: AppColors.white.withValues(alpha: 0.55),
                                 decoration: TextDecoration.underline,
                                 decorationColor: AppColors.white.withValues(
@@ -441,7 +443,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: Responsive.h(10)),
 
                           // ── Native paywall link ───────────────────────────
                           GestureDetector(
@@ -449,7 +451,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             child: Text(
                               'Ver paywall nativo',
                               style: GoogleFonts.urbanist(
-                                fontSize: 13,
+                                fontSize: Responsive.sp(13),
                                 color: AppColors.primaryLight.withValues(
                                   alpha: 0.7,
                                 ),
@@ -460,7 +462,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: Responsive.h(10)),
 
                           // ── Legal ─────────────────────────────────────────
                           GestureDetector(
@@ -468,7 +470,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             child: Text(
                               'Política de privacidad y Términos de uso',
                               style: GoogleFonts.urbanist(
-                                fontSize: 12,
+                                fontSize: Responsive.sp(12),
                                 color: AppColors.white.withValues(alpha: 0.4),
                                 decoration: TextDecoration.underline,
                                 decorationColor: AppColors.white.withValues(
@@ -493,7 +495,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   Widget _buildPackagesSection() {
     if (_loading) {
       return Container(
-        height: 100,
+        height: Responsive.h(100),
         alignment: Alignment.center,
         child: const CircularProgressIndicator(
           color: AppColors.primary,
@@ -504,7 +506,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
     if (_error != null) {
       return Container(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(Responsive.w(20)),
         decoration: BoxDecoration(
           color: AppColors.danger.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(16),
@@ -516,15 +518,15 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               _error!,
               textAlign: TextAlign.center,
               style: GoogleFonts.urbanist(
-                fontSize: 14,
+                fontSize: Responsive.sp(14),
                 color: AppColors.danger,
               ),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: Responsive.h(12)),
             GestureDetector(
               onTap: _loadOfferings,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 9),
+                padding: EdgeInsets.symmetric(horizontal: Responsive.w(20), vertical: Responsive.h(9)),
                 decoration: BoxDecoration(
                   color: AppColors.primary.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(50),
@@ -535,7 +537,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 child: Text(
                   'Reintentar',
                   style: GoogleFonts.urbanist(
-                    fontSize: 13,
+                    fontSize: Responsive.sp(13),
                     fontWeight: FontWeight.w700,
                     color: AppColors.primaryLight,
                   ),
@@ -553,7 +555,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         'No hay planes disponibles en este momento.',
         textAlign: TextAlign.center,
         style: GoogleFonts.urbanist(
-          fontSize: 14,
+          fontSize: Responsive.sp(14),
           color: AppColors.textTertiary,
         ),
       );
@@ -595,8 +597,8 @@ class _PackageCard extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(16),
+        margin: EdgeInsets.only(bottom: Responsive.h(12)),
+        padding: EdgeInsets.all(Responsive.w(16)),
         decoration: BoxDecoration(
           color: isSelected
               ? AppColors.primary.withValues(alpha: 0.15)
@@ -612,8 +614,8 @@ class _PackageCard extends StatelessWidget {
             // Selection indicator
             AnimatedContainer(
               duration: const Duration(milliseconds: 200),
-              width: 20,
-              height: 20,
+              width: Responsive.w(20),
+              height: Responsive.w(20),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: isSelected ? AppColors.primary : Colors.transparent,
@@ -625,10 +627,10 @@ class _PackageCard extends StatelessWidget {
                 ),
               ),
               child: isSelected
-                  ? const Icon(Icons.check, color: Colors.white, size: 12)
+                  ? Icon(Icons.check, color: Colors.white, size: Responsive.w(12))
                   : null,
             ),
-            const SizedBox(width: 14),
+            SizedBox(width: Responsive.w(14)),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -638,17 +640,17 @@ class _PackageCard extends StatelessWidget {
                       Text(
                         periodLabel,
                         style: GoogleFonts.urbanist(
-                          fontSize: 15,
+                          fontSize: Responsive.sp(15),
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                         ),
                       ),
                       if (isRecommended) ...[
-                        const SizedBox(width: 8),
+                        SizedBox(width: Responsive.w(8)),
                         Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 2,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: Responsive.w(8),
+                            vertical: Responsive.h(2),
                           ),
                           decoration: BoxDecoration(
                             gradient: AppGradients.primaryButton,
@@ -657,7 +659,7 @@ class _PackageCard extends StatelessWidget {
                           child: Text(
                             'Recomendado',
                             style: GoogleFonts.urbanist(
-                              fontSize: 10,
+                              fontSize: Responsive.sp(10),
                               fontWeight: FontWeight.w700,
                               color: Colors.white,
                             ),
@@ -667,11 +669,11 @@ class _PackageCard extends StatelessWidget {
                     ],
                   ),
                   if (perWeekNote != null) ...[
-                    const SizedBox(height: 2),
+                    SizedBox(height: Responsive.h(2)),
                     Text(
                       perWeekNote!,
                       style: GoogleFonts.urbanist(
-                        fontSize: 12,
+                        fontSize: Responsive.sp(12),
                         color: AppColors.textTertiary,
                       ),
                     ),
@@ -682,7 +684,7 @@ class _PackageCard extends StatelessWidget {
             Text(
               package.storeProduct.priceString,
               style: GoogleFonts.urbanist(
-                fontSize: 20,
+                fontSize: Responsive.sp(20),
                 fontWeight: FontWeight.w800,
                 color: isSelected ? AppColors.primaryLight : Colors.white,
               ),

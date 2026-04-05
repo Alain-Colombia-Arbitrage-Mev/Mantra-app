@@ -5,6 +5,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
 import '../widgets/screen_bg.dart';
 import '../services/revenuecat_service.dart';
+import '../utils/responsive.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({super.key});
@@ -15,51 +16,51 @@ class ProfileTab extends StatelessWidget {
       child: SafeArea(
         bottom: false,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+          padding: EdgeInsets.fromLTRB(Responsive.pagePadding, Responsive.h(20), Responsive.pagePadding, Responsive.bottomNavPadding),
           child: Column(
             children: [
               // ── Nav ─────────────────────────────────────────────────
               const ScreenNav(title: 'Yo'),
-              const SizedBox(height: 32),
+              SizedBox(height: Responsive.h(32)),
 
               // ── Avatar ──────────────────────────────────────────────
               Container(
-                width: 90,
-                height: 90,
+                width: Responsive.w(90),
+                height: Responsive.w(90),
                 decoration: BoxDecoration(
                   gradient: AppGradients.primaryButton,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
                       color: AppColors.primary.withValues(alpha: 0.4),
-                      blurRadius: 20,
-                      offset: const Offset(0, 8),
+                      blurRadius: Responsive.w(20),
+                      offset: Offset(0, Responsive.h(8)),
                     ),
                   ],
                 ),
-                child: const Icon(LucideIcons.user, color: Colors.white, size: 40),
+                child: Icon(LucideIcons.user, color: Colors.white, size: Responsive.w(40)),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: Responsive.h(16)),
 
               Text(
                 'Tu Nombre',
                 style: GoogleFonts.urbanist(
-                  fontSize: 24,
+                  fontSize: Responsive.sp(24),
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),
               ),
-              const SizedBox(height: 6),
+              SizedBox(height: Responsive.h(6)),
               Text(
                 RevenueCatService.instance.isPro
                     ? 'Plan Pro · 🔥 47 días de racha'
                     : 'Plan Gratuito · 🔥 47 días de racha',
                 style: GoogleFonts.urbanist(
-                  fontSize: 14,
+                  fontSize: Responsive.sp(14),
                   color: const Color(0xCCFFFFFF),
                 ),
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: Responsive.h(32)),
 
               // ── Plan section ─────────────────────────────────────────
               _SectionBlock(
@@ -75,15 +76,15 @@ class ProfileTab extends StatelessWidget {
                         ? 'Gestionar tu suscripción'
                         : 'Actualizar a Pro',
                     onTap: () => context.push('/customer-center'),
-                    trailing: const Icon(
+                    trailing: Icon(
                       LucideIcons.chevronRight,
                       color: AppColors.textTertiary,
-                      size: 18,
+                      size: Responsive.w(18),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: Responsive.h(20)),
 
               // ── Settings section ─────────────────────────────────────
               _SectionBlock(
@@ -103,14 +104,14 @@ class ProfileTab extends StatelessWidget {
                         backgroundColor: AppColors.primary,
                         behavior: SnackBarBehavior.floating,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(Responsive.w(12)),
                         ),
                       ),
                     ),
-                    trailing: const Icon(
+                    trailing: Icon(
                       LucideIcons.chevronRight,
                       color: AppColors.textTertiary,
-                      size: 18,
+                      size: Responsive.w(18),
                     ),
                   ),
                   const _Divider(),
@@ -120,10 +121,10 @@ class ProfileTab extends StatelessWidget {
                     title: 'Mi Voz Clonada',
                     subtitle: 'Entrenando · 82% calidad',
                     onTap: () => context.push('/alchemist'),
-                    trailing: const Icon(
+                    trailing: Icon(
                       LucideIcons.chevronRight,
                       color: AppColors.textTertiary,
-                      size: 18,
+                      size: Responsive.w(18),
                     ),
                   ),
                   const _Divider(),
@@ -135,10 +136,10 @@ class ProfileTab extends StatelessWidget {
                         ? 'Gestionar tu plan Pro'
                         : 'Actualizar a Pro',
                     onTap: () => context.push('/customer-center'),
-                    trailing: const Icon(
+                    trailing: Icon(
                       LucideIcons.chevronRight,
                       color: AppColors.textTertiary,
-                      size: 18,
+                      size: Responsive.w(18),
                     ),
                   ),
                   const _Divider(),
@@ -148,25 +149,25 @@ class ProfileTab extends StatelessWidget {
                     title: 'Ajustes',
                     subtitle: 'Notificaciones, idioma y más',
                     onTap: () => context.push('/my-profile'),
-                    trailing: const Icon(
+                    trailing: Icon(
                       LucideIcons.chevronRight,
                       color: AppColors.textTertiary,
-                      size: 18,
+                      size: Responsive.w(18),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: Responsive.h(24)),
 
               // ── Sign out ─────────────────────────────────────────────
               GestureDetector(
                 onTap: () => context.go('/'),
                 child: Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: EdgeInsets.symmetric(vertical: Responsive.h(16)),
                   decoration: BoxDecoration(
                     color: AppColors.danger.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(Responsive.w(50)),
                     border: Border.all(
                       color: AppColors.danger.withValues(alpha: 0.35),
                     ),
@@ -174,16 +175,16 @@ class ProfileTab extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(
+                      Icon(
                         LucideIcons.logOut,
                         color: AppColors.danger,
-                        size: 18,
+                        size: Responsive.w(18),
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: Responsive.w(10)),
                       Text(
                         'Cerrar sesión',
                         style: GoogleFonts.urbanist(
-                          fontSize: 16,
+                          fontSize: Responsive.sp(16),
                           fontWeight: FontWeight.w700,
                           color: AppColors.danger,
                         ),
@@ -212,11 +213,11 @@ class _SectionBlock extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SectionLabel(label),
-        const SizedBox(height: 10),
+        SizedBox(height: Responsive.h(10)),
         Container(
           decoration: BoxDecoration(
             color: AppColors.surfaceLight,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(Responsive.w(16)),
             border: Border.all(color: AppColors.surfaceBorderLight),
           ),
           child: Column(children: children),
@@ -248,19 +249,19 @@ class _SettingsRow extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      padding: EdgeInsets.symmetric(horizontal: Responsive.w(16), vertical: Responsive.h(14)),
       child: Row(
         children: [
           Container(
-            width: 38,
-            height: 38,
+            width: Responsive.w(38),
+            height: Responsive.w(38),
             decoration: BoxDecoration(
               color: iconColor.withValues(alpha: 0.18),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: iconColor, size: 18),
+            child: Icon(icon, color: iconColor, size: Responsive.w(18)),
           ),
-          const SizedBox(width: 14),
+          SizedBox(width: Responsive.w(14)),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -268,7 +269,7 @@ class _SettingsRow extends StatelessWidget {
                 Text(
                   title,
                   style: GoogleFonts.urbanist(
-                    fontSize: 15,
+                    fontSize: Responsive.sp(15),
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
                   ),
@@ -276,7 +277,7 @@ class _SettingsRow extends StatelessWidget {
                 Text(
                   subtitle,
                   style: GoogleFonts.urbanist(
-                    fontSize: 12,
+                    fontSize: Responsive.sp(12),
                     color: AppColors.textTertiary,
                   ),
                 ),
@@ -298,7 +299,7 @@ class _Divider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 1,
-      margin: const EdgeInsets.only(left: 68),
+      margin: EdgeInsets.only(left: Responsive.w(68)),
       color: AppColors.white.withValues(alpha: 0.07),
     );
   }

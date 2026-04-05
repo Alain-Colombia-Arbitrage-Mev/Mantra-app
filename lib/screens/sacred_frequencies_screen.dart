@@ -3,12 +3,14 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
+import '../utils/responsive.dart';
 
 class SacredFrequenciesScreen extends StatelessWidget {
   const SacredFrequenciesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundEnd,
       body: Container(
@@ -23,18 +25,18 @@ class SacredFrequenciesScreen extends StatelessWidget {
           children: [
             // Mint glow
             Positioned(
-              top: 60,
-              left: -60,
+              top: Responsive.h(60),
+              left: Responsive.w(-60),
               child: Container(
-                width: 280,
-                height: 280,
+                width: Responsive.w(280),
+                height: Responsive.w(280),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
                       color: AppColors.mint.withValues(alpha: 0.14),
-                      blurRadius: 140,
-                      spreadRadius: 70,
+                      blurRadius: Responsive.w(140),
+                      spreadRadius: Responsive.w(70),
                     ),
                   ],
                 ),
@@ -45,7 +47,8 @@ class SacredFrequenciesScreen extends StatelessWidget {
                 children: [
                   // ── Header ──────────────────────────────────────────────
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                    padding: EdgeInsets.fromLTRB(
+                        Responsive.w(20), Responsive.h(16), Responsive.w(20), 0),
                     child: Row(
                       children: [
                         GestureDetector(
@@ -55,8 +58,8 @@ class SacredFrequenciesScreen extends StatelessWidget {
                             }
                           },
                           child: Container(
-                            width: 36,
-                            height: 36,
+                            width: Responsive.w(36),
+                            height: Responsive.w(36),
                             decoration: BoxDecoration(
                               color: AppColors.white.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
@@ -64,10 +67,10 @@ class SacredFrequenciesScreen extends StatelessWidget {
                                 color: AppColors.surfaceBorderLight,
                               ),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               LucideIcons.chevronLeft,
                               color: Colors.white,
-                              size: 18,
+                              size: Responsive.w(18),
                             ),
                           ),
                         ),
@@ -76,15 +79,15 @@ class SacredFrequenciesScreen extends StatelessWidget {
                             'Frecuencias Sagradas',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.urbanist(
-                              fontSize: 17,
+                              fontSize: Responsive.sp(17),
                               fontWeight: FontWeight.w700,
                               color: Colors.white,
                             ),
                           ),
                         ),
                         Container(
-                          width: 36,
-                          height: 36,
+                          width: Responsive.w(36),
+                          height: Responsive.w(36),
                           decoration: BoxDecoration(
                             color: AppColors.white.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
@@ -92,10 +95,10 @@ class SacredFrequenciesScreen extends StatelessWidget {
                               color: AppColors.surfaceBorderLight,
                             ),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             LucideIcons.slidersHorizontal,
                             color: Colors.white,
-                            size: 17,
+                            size: Responsive.w(17),
                           ),
                         ),
                       ],
@@ -103,13 +106,17 @@ class SacredFrequenciesScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
+                      padding: EdgeInsets.fromLTRB(
+                          Responsive.w(20),
+                          Responsive.h(24),
+                          Responsive.w(20),
+                          Responsive.h(32)),
                       child: Column(
                         children: [
                           // ── Hero image ──────────────────────────────────
                           Container(
-                            width: 180,
-                            height: 180,
+                            width: Responsive.w(180),
+                            height: Responsive.w(180),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
@@ -118,9 +125,10 @@ class SacredFrequenciesScreen extends StatelessWidget {
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: AppColors.mint.withValues(alpha: 0.2),
-                                  blurRadius: 40,
-                                  spreadRadius: 8,
+                                  color:
+                                      AppColors.mint.withValues(alpha: 0.2),
+                                  blurRadius: Responsive.w(40),
+                                  spreadRadius: Responsive.w(8),
                                 ),
                               ],
                             ),
@@ -131,29 +139,30 @@ class SacredFrequenciesScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: Responsive.h(16)),
 
                           // ── Section label ───────────────────────────────
                           Text(
                             'SOLFEGGIO & BINAURALES',
                             style: GoogleFonts.urbanist(
-                              fontSize: 11,
+                              fontSize: Responsive.sp(11),
                               fontWeight: FontWeight.w700,
                               letterSpacing: 2.0,
-                              color: AppColors.mint.withValues(alpha: 0.67),
+                              color:
+                                  AppColors.mint.withValues(alpha: 0.67),
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: Responsive.h(8)),
                           Text(
                             'Frecuencias sagradas utilizadas durante siglos\npara sanar, despertar y elevar la consciencia\na través del sonido.',
                             style: GoogleFonts.urbanist(
-                              fontSize: 13,
+                              fontSize: Responsive.sp(13),
                               color: AppColors.textTertiary,
                               height: 1.6,
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 24),
+                          SizedBox(height: Responsive.h(24)),
 
                           // ── Frecuencias label ───────────────────────────
                           Align(
@@ -161,30 +170,34 @@ class SacredFrequenciesScreen extends StatelessWidget {
                             child: Text(
                               'Frecuencias Solfeggio',
                               style: GoogleFonts.urbanist(
-                                fontSize: 15,
+                                fontSize: Responsive.sp(15),
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white,
                               ),
                             ),
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: Responsive.h(12)),
 
                           // ── Frequency cards ─────────────────────────────
                           ..._frequencies.map((f) => Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: _FrequencyCard(item: f),
-                          )),
-                          const SizedBox(height: 20),
+                                padding: EdgeInsets.only(
+                                    bottom: Responsive.h(8)),
+                                child: _FrequencyCard(item: f),
+                              )),
+                          SizedBox(height: Responsive.h(20)),
 
                           // ── Stats ────────────────────────────────────────
                           Container(
                             width: double.infinity,
-                            padding: const EdgeInsets.all(16),
+                            padding: EdgeInsets.all(Responsive.w(16)),
                             decoration: BoxDecoration(
-                              color: AppColors.mint.withValues(alpha: 0.08),
-                              borderRadius: BorderRadius.circular(14),
+                              color:
+                                  AppColors.mint.withValues(alpha: 0.08),
+                              borderRadius: BorderRadius.circular(
+                                  Responsive.w(14)),
                               border: Border.all(
-                                color: AppColors.mint.withValues(alpha: 0.2),
+                                color: AppColors.mint
+                                    .withValues(alpha: 0.2),
                               ),
                             ),
                             child: Row(
@@ -193,14 +206,14 @@ class SacredFrequenciesScreen extends StatelessWidget {
                                 Icon(
                                   LucideIcons.trendingUp,
                                   color: AppColors.mint,
-                                  size: 16,
+                                  size: Responsive.w(16),
                                 ),
-                                const SizedBox(width: 8),
+                                SizedBox(width: Responsive.w(8)),
                                 Flexible(
                                   child: Text(
                                     '528 Hz es la frecuencia más escuchada este mes',
                                     style: GoogleFonts.urbanist(
-                                      fontSize: 13,
+                                      fontSize: Responsive.sp(13),
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.mint,
                                     ),
@@ -210,14 +223,14 @@ class SacredFrequenciesScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: Responsive.h(20)),
 
                           // ── Mint CTA ─────────────────────────────────────
                           GestureDetector(
                             onTap: () => context.push('/healing'),
                             child: Container(
                               width: double.infinity,
-                              height: 58,
+                              height: Responsive.h(58),
                               decoration: BoxDecoration(
                                 gradient: const LinearGradient(
                                   begin: Alignment.centerLeft,
@@ -227,12 +240,15 @@ class SacredFrequenciesScreen extends StatelessWidget {
                                     Color(0xFF00CEC9),
                                   ],
                                 ),
-                                borderRadius: BorderRadius.circular(16),
+                                borderRadius: BorderRadius.circular(
+                                    Responsive.w(16)),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: AppColors.mint.withValues(alpha: 0.4),
-                                    blurRadius: 20,
-                                    offset: const Offset(0, 8),
+                                    color: AppColors.mint
+                                        .withValues(alpha: 0.4),
+                                    blurRadius: Responsive.w(20),
+                                    offset:
+                                        Offset(0, Responsive.h(8)),
                                   ),
                                 ],
                               ),
@@ -240,7 +256,7 @@ class SacredFrequenciesScreen extends StatelessWidget {
                                 child: Text(
                                   'Crear mezcla personalizada',
                                   style: GoogleFonts.urbanist(
-                                    fontSize: 16,
+                                    fontSize: Responsive.sp(16),
                                     fontWeight: FontWeight.w700,
                                     color: const Color(0xFF001A17),
                                   ),
@@ -300,12 +316,12 @@ class _FrequencyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final accentColor = item.isHighlighted ? AppColors.mint : AppColors.white;
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(Responsive.w(16)),
       decoration: BoxDecoration(
         color: item.isHighlighted
             ? AppColors.mint.withValues(alpha: 0.1)
             : AppColors.white.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(Responsive.w(14)),
         border: Border.all(
           color: item.isHighlighted
               ? AppColors.mint.withValues(alpha: 0.3)
@@ -317,10 +333,11 @@ class _FrequencyCard extends StatelessWidget {
         children: [
           // Hz badge
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            padding: EdgeInsets.symmetric(
+                horizontal: Responsive.w(10), vertical: Responsive.h(6)),
             decoration: BoxDecoration(
               color: AppColors.mint.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(Responsive.w(10)),
               border: Border.all(
                 color: AppColors.mint.withValues(alpha: 0.3),
               ),
@@ -328,13 +345,13 @@ class _FrequencyCard extends StatelessWidget {
             child: Text(
               item.hz,
               style: GoogleFonts.urbanist(
-                fontSize: 12,
+                fontSize: Responsive.sp(12),
                 fontWeight: FontWeight.w800,
                 color: AppColors.mint,
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: Responsive.w(12)),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -342,16 +359,16 @@ class _FrequencyCard extends StatelessWidget {
                 Text(
                   item.name,
                   style: GoogleFonts.urbanist(
-                    fontSize: 14,
+                    fontSize: Responsive.sp(14),
                     fontWeight: FontWeight.w700,
                     color: accentColor,
                   ),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: Responsive.h(2)),
                 Text(
                   item.description,
                   style: GoogleFonts.urbanist(
-                    fontSize: 12,
+                    fontSize: Responsive.sp(12),
                     color: AppColors.textTertiary,
                   ),
                 ),
@@ -360,16 +377,17 @@ class _FrequencyCard extends StatelessWidget {
           ),
           if (item.isPro)
             Container(
-              margin: const EdgeInsets.only(right: 8),
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+              margin: EdgeInsets.only(right: Responsive.w(8)),
+              padding: EdgeInsets.symmetric(
+                  horizontal: Responsive.w(8), vertical: Responsive.h(3)),
               decoration: BoxDecoration(
                 gradient: AppGradients.primaryButton,
-                borderRadius: BorderRadius.circular(50),
+                borderRadius: BorderRadius.circular(Responsive.w(50)),
               ),
               child: Text(
                 'PRO',
                 style: GoogleFonts.urbanist(
-                  fontSize: 10,
+                  fontSize: Responsive.sp(10),
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),
@@ -378,8 +396,8 @@ class _FrequencyCard extends StatelessWidget {
           GestureDetector(
             onTap: () => context.push('/player'),
             child: Container(
-              width: 36,
-              height: 36,
+              width: Responsive.w(36),
+              height: Responsive.w(36),
               decoration: BoxDecoration(
                 color: AppColors.mint.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
@@ -387,10 +405,10 @@ class _FrequencyCard extends StatelessWidget {
                   color: AppColors.mint.withValues(alpha: 0.3),
                 ),
               ),
-              child: const Icon(
+              child: Icon(
                 LucideIcons.play,
                 color: AppColors.mint,
-                size: 15,
+                size: Responsive.w(15),
               ),
             ),
           ),

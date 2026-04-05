@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../theme.dart';
+import '../utils/responsive.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -80,6 +81,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundEnd,
       body: Stack(
@@ -115,12 +117,12 @@ class _SplashScreenState extends State<SplashScreen>
                     opacity: _logoOpacity,
                     child: Image.asset(
                       'assets/images/logomantra.png',
-                      width: 200,
-                      height: 200,
+                      width: Responsive.w(200),
+                      height: Responsive.w(200),
                     ),
                   ),
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: Responsive.h(32)),
                 // "Mantras" wordmark with slide + fade
                 SlideTransition(
                   position: _textSlide,
@@ -129,7 +131,7 @@ class _SplashScreenState extends State<SplashScreen>
                     child: Text(
                       'Mantras',
                       style: GoogleFonts.urbanist(
-                        fontSize: 70,
+                        fontSize: Responsive.sp(70),
                         fontWeight: FontWeight.w700,
                         color: AppColors.white,
                         height: 1.0,

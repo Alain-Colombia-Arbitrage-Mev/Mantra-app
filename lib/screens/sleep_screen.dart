@@ -4,12 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../theme.dart';
 import '../widgets/screen_bg.dart';
+import '../utils/responsive.dart';
 
 class SleepScreen extends StatelessWidget {
   const SleepScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       extendBody: true,
       body: Container(
@@ -25,36 +27,33 @@ class SleepScreen extends StatelessWidget {
         child: SafeArea(
           bottom: false,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 48),
+            padding: EdgeInsets.fromLTRB(
+              Responsive.w(20), Responsive.h(20), Responsive.w(20), Responsive.h(48),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ── Nav ─────────────────────────────────────────────────
                 ScreenNav(
                   title: 'Duerme · Delta',
                   showBack: true,
                   trailing: Container(
-                    width: 36,
-                    height: 36,
+                    width: Responsive.w(36),
+                    height: Responsive.w(36),
                     decoration: BoxDecoration(
                       color: AppColors.white.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                       border: Border.all(color: AppColors.surfaceBorderLight),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       LucideIcons.settings,
                       color: Colors.white,
-                      size: 18,
+                      size: Responsive.w(18),
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
-
-                // ── Section label ────────────────────────────────────────
+                SizedBox(height: Responsive.h(24)),
                 const SectionLabel('SESIÓN DE SUEÑO BIO-HAK'),
-                const SizedBox(height: 14),
-
-                // ── 3 stat cards ─────────────────────────────────────────
+                SizedBox(height: Responsive.h(14)),
                 Row(
                   children: [
                     Expanded(
@@ -68,7 +67,7 @@ class SleepScreen extends StatelessWidget {
                         isSelected: false,
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    SizedBox(width: Responsive.w(10)),
                     Expanded(
                       child: _StatCard(
                         icon: LucideIcons.zap,
@@ -80,7 +79,7 @@ class SleepScreen extends StatelessWidget {
                         isSelected: true,
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    SizedBox(width: Responsive.w(10)),
                     Expanded(
                       child: _StatCard(
                         icon: LucideIcons.star,
@@ -94,16 +93,14 @@ class SleepScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
-
-                // ── Brain waves chart card ───────────────────────────────
+                SizedBox(height: Responsive.h(20)),
                 Container(
                   width: double.infinity,
-                  height: 160,
-                  padding: const EdgeInsets.all(16),
+                  height: Responsive.h(160),
+                  padding: EdgeInsets.all(Responsive.w(16)),
                   decoration: BoxDecoration(
                     color: AppColors.white.withValues(alpha: 0.05),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(Responsive.w(20)),
                     border: Border.all(
                       color: AppColors.white.withValues(alpha: 0.1),
                     ),
@@ -112,37 +109,35 @@ class SleepScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SectionLabel('ONDAS CEREBRALES · ESTA NOCHE'),
-                      const SizedBox(height: 16),
-                      // Progress bar
+                      SizedBox(height: Responsive.h(16)),
                       Stack(
                         alignment: Alignment.centerLeft,
                         children: [
                           Container(
                             width: double.infinity,
-                            height: 6,
+                            height: Responsive.h(6),
                             decoration: BoxDecoration(
                               color: AppColors.white.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(3),
+                              borderRadius: BorderRadius.circular(Responsive.w(3)),
                             ),
                           ),
                           FractionallySizedBox(
                             widthFactor: 0.67,
                             child: Container(
-                              height: 6,
+                              height: Responsive.h(6),
                               decoration: BoxDecoration(
                                 gradient: AppGradients.primaryButton,
-                                borderRadius: BorderRadius.circular(3),
+                                borderRadius: BorderRadius.circular(Responsive.w(3)),
                               ),
                             ),
                           ),
-                          // Glowing dot at 67%
                           FractionallySizedBox(
                             widthFactor: 0.67,
                             child: Align(
                               alignment: Alignment.centerRight,
                               child: Container(
-                                width: 14,
-                                height: 14,
+                                width: Responsive.w(14),
+                                height: Responsive.w(14),
                                 decoration: BoxDecoration(
                                   color: AppColors.primaryLight,
                                   shape: BoxShape.circle,
@@ -150,8 +145,8 @@ class SleepScreen extends StatelessWidget {
                                     BoxShadow(
                                       color: AppColors.primaryLight
                                           .withValues(alpha: 0.6),
-                                      blurRadius: 8,
-                                      spreadRadius: 2,
+                                      blurRadius: Responsive.w(8),
+                                      spreadRadius: Responsive.w(2),
                                     ),
                                   ],
                                 ),
@@ -160,8 +155,7 @@ class SleepScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 12),
-                      // Time labels
+                      SizedBox(height: Responsive.h(12)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -174,13 +168,9 @@ class SleepScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
-
-                // ── Program label ────────────────────────────────────────
+                SizedBox(height: Responsive.h(24)),
                 const SectionLabel('PROGRAMA ESTA NOCHE'),
-                const SizedBox(height: 12),
-
-                // Program card 1 — active
+                SizedBox(height: Responsive.h(12)),
                 _ProgramCard(
                   icon: LucideIcons.moon,
                   iconColor: AppColors.primaryLight,
@@ -190,9 +180,7 @@ class SleepScreen extends StatelessWidget {
                   borderColor: AppColors.primary,
                   isActive: true,
                 ),
-                const SizedBox(height: 8),
-
-                // Program card 2 — inactive
+                SizedBox(height: Responsive.h(8)),
                 _ProgramCard(
                   icon: LucideIcons.brain,
                   iconColor: AppColors.white.withValues(alpha: 0.5),
@@ -214,7 +202,7 @@ class SleepScreen extends StatelessWidget {
     return Text(
       text,
       style: GoogleFonts.urbanist(
-        fontSize: 11,
+        fontSize: Responsive.sp(11),
         color: AppColors.textTertiary,
       ),
     );
@@ -243,22 +231,24 @@ class _StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 88,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+      height: Responsive.h(88),
+      padding: EdgeInsets.symmetric(
+        horizontal: Responsive.w(12), vertical: Responsive.h(14),
+      ),
       decoration: BoxDecoration(
         color: fillColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(Responsive.w(16)),
         border: Border.all(color: borderColor),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: iconColor, size: 20),
-          const SizedBox(height: 6),
+          Icon(icon, color: iconColor, size: Responsive.w(20)),
+          SizedBox(height: Responsive.h(6)),
           Text(
             value,
             style: GoogleFonts.urbanist(
-              fontSize: 14,
+              fontSize: Responsive.sp(14),
               fontWeight: FontWeight.w700,
               color: Colors.white,
             ),
@@ -266,7 +256,7 @@ class _StatCard extends StatelessWidget {
           Text(
             label,
             style: GoogleFonts.urbanist(
-              fontSize: 11,
+              fontSize: Responsive.sp(11),
               color: AppColors.textTertiary,
             ),
           ),
@@ -300,68 +290,70 @@ class _ProgramCard extends StatelessWidget {
     return GestureDetector(
       onTap: () => context.push('/player'),
       child: Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: fillColor,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: borderColor),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: iconColor.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(12),
+        padding: EdgeInsets.all(Responsive.w(16)),
+        decoration: BoxDecoration(
+          color: fillColor,
+          borderRadius: BorderRadius.circular(Responsive.w(16)),
+          border: Border.all(color: borderColor),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: Responsive.w(44),
+              height: Responsive.w(44),
+              decoration: BoxDecoration(
+                color: iconColor.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(Responsive.w(12)),
+              ),
+              child: Icon(icon, color: iconColor, size: Responsive.w(22)),
             ),
-            child: Icon(icon, color: iconColor, size: 22),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
+            SizedBox(width: Responsive.w(14)),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: GoogleFonts.urbanist(
+                      fontSize: Responsive.sp(14),
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(height: Responsive.h(3)),
+                  Text(
+                    subtitle,
+                    style: GoogleFonts.urbanist(
+                      fontSize: Responsive.sp(12),
+                      color: AppColors.textTertiary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (isActive) ...[
+              SizedBox(width: Responsive.w(10)),
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: Responsive.w(10), vertical: Responsive.h(4),
+                ),
+                decoration: BoxDecoration(
+                  gradient: AppGradients.primaryButton,
+                  borderRadius: BorderRadius.circular(Responsive.w(20)),
+                ),
+                child: Text(
+                  'ON',
                   style: GoogleFonts.urbanist(
-                    fontSize: 14,
+                    fontSize: Responsive.sp(11),
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 3),
-                Text(
-                  subtitle,
-                  style: GoogleFonts.urbanist(
-                    fontSize: 12,
-                    color: AppColors.textTertiary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          if (isActive) ...[
-            const SizedBox(width: 10),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                gradient: AppGradients.primaryButton,
-                borderRadius: BorderRadius.circular(20),
               ),
-              child: Text(
-                'ON',
-                style: GoogleFonts.urbanist(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+            ],
           ],
-        ],
+        ),
       ),
-    ),
     );
   }
 }
