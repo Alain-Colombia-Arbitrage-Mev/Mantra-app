@@ -2,43 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 abstract final class AppColors {
-  static const Color backgroundStart = Color(0xFF0F0A2A);
-  static const Color backgroundEnd = Color(0xFF0A0A1A);
-  static const Color primary = Color(0xFF6C5CE7);
-  static const Color primaryLight = Color(0xFFA29BFE);
-  static const Color gold = Color(0xFFFFD700);
-  static const Color goldBg = Color(0x15FFD700);
-  static const Color goldBorder = Color(0x60FFD700);
-  static const Color mint = Color(0xFF55EFC4);
-  static const Color amber = Color(0xFFF9A826);
+  static const Color backgroundStart = Color(0xFF060608);
+  static const Color backgroundMid = Color(0xFF0C0D17);
+  static const Color backgroundEnd = Color(0xFF060608);
+  static const Color primary = Color(0xFF8D8FF8);
+  static const Color primaryLight = Color(0xFFC9CAFF);
+  static const Color gold = Color(0xFFFFC96B);
+  static const Color goldBg = Color(0x1AFFC96B);
+  static const Color goldBorder = Color(0x33FFC96B);
+  static const Color mint = Color(0xFF61E8C8);
+  static const Color amber = Color(0xFFFFA93E);
   static const Color danger = Color(0xFFFF6B6B);
-  static const Color chakra = Color(0xFFDDA0DD);
-  static const Color lunar = Color(0xFFC0C0FF);
-  static const Color tealStart = Color(0xFF008180);
-  static const Color tealMid = Color(0xFF00B1A6);
-  static const Color tealEnd = Color(0xFFE5F3EE);
-  static const Color surface = Color(0x10FFFFFF);
-  static const Color surfaceBorder = Color(0x15FFFFFF);
+  static const Color chakra = Color(0xFFDAA2F9);
+  static const Color lunar = Color(0xFF9DABFF);
+  static const Color tealStart = Color(0xFF1B7C72);
+  static const Color tealMid = Color(0xFF35B9A7);
+  static const Color tealEnd = Color(0xFFE7F7F4);
+  static const Color surface = Color(0x0AFFFFFF);
+  static const Color surfaceBorder = Color(0x12FFFFFF);
   static const Color surfaceLight = Color(0x0AFFFFFF);
-  static const Color surfaceBorderLight = Color(0x20FFFFFF);
-  static const Color textSecondary = Color(0x60FFFFFF);
-  static const Color textTertiary = Color(0x80FFFFFF);
-  static const Color textMuted = Color(0x40FFFFFF);
-  static const Color textSubtle = Color(0x35FFFFFF);
-  static const Color white = Color(0xFFFFFFFF);
+  static const Color surfaceBorderLight = Color(0x18FFFFFF);
+  static const Color textSecondary = Color(0xFFB3B1BA);
+  static const Color textTertiary = Color(0xFFD6D3DD);
+  static const Color textMuted = Color(0xFF6E6D7C);
+  static const Color textSubtle = Color(0xFF4C4B58);
+  static const Color white = Color(0xFFF4F1EC);
 }
 
 abstract final class AppGradients {
   static const LinearGradient background = LinearGradient(
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-    colors: [AppColors.backgroundStart, AppColors.backgroundEnd],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      AppColors.backgroundStart,
+      AppColors.backgroundMid,
+      AppColors.backgroundEnd,
+    ],
   );
 
   static const LinearGradient primaryButton = LinearGradient(
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
-    colors: [AppColors.primary, AppColors.primaryLight],
+    colors: [Color(0xFFCFB3FF), Color(0xFFFFE9B3)],
   );
 
   static const LinearGradient goldButton = LinearGradient(
@@ -76,6 +81,10 @@ abstract final class AppGradients {
 abstract final class AppTheme {
   static ThemeData get dark {
     final base = ThemeData.dark(useMaterial3: true);
+    final bodyTextTheme = GoogleFonts.manropeTextTheme(base.textTheme);
+    final displayTextTheme = GoogleFonts.bricolageGrotesqueTextTheme(
+      base.textTheme,
+    );
     return base.copyWith(
       scaffoldBackgroundColor: AppColors.backgroundEnd,
       colorScheme: const ColorScheme.dark(
@@ -83,10 +92,25 @@ abstract final class AppTheme {
         secondary: AppColors.primaryLight,
         surface: AppColors.backgroundEnd,
       ),
-      textTheme: GoogleFonts.urbanistTextTheme(base.textTheme).apply(
-        bodyColor: AppColors.white,
-        displayColor: AppColors.white,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        centerTitle: false,
       ),
+      dividerColor: AppColors.surfaceBorder,
+      iconTheme: const IconThemeData(color: AppColors.textSecondary),
+      textTheme: bodyTextTheme
+          .copyWith(
+            displayLarge: displayTextTheme.displayLarge,
+            displayMedium: displayTextTheme.displayMedium,
+            displaySmall: displayTextTheme.displaySmall,
+            headlineLarge: displayTextTheme.headlineLarge,
+            headlineMedium: displayTextTheme.headlineMedium,
+            headlineSmall: displayTextTheme.headlineSmall,
+            titleLarge: displayTextTheme.titleLarge,
+          )
+          .apply(bodyColor: AppColors.white, displayColor: AppColors.white),
     );
   }
 }

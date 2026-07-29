@@ -94,9 +94,7 @@ class RevenueCatService {
   /// Purchase a specific package using the current API.
   Future<bool> purchasePackage(Package package) async {
     try {
-      final result = await Purchases.purchase(
-        PurchaseParams.package(package),
-      );
+      final result = await Purchases.purchase(PurchaseParams.package(package));
       _customerInfo = result.customerInfo;
       return isPro;
     } on PurchasesErrorCode catch (e) {

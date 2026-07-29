@@ -1,69 +1,9 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lucide_icons/lucide_icons.dart';
-import '../theme.dart';
-import '../utils/responsive.dart';
-import '../widgets/cta_button.dart';
 
-// ─── Slide data matching .pen design exactly ─────────────────────────────────
+import '../widgets/pencil_surface.dart';
 
-final List<_SlideData> _slides = [
-  // 02 · Splash Intro 1 — woman meditating on mountain
-  _SlideData(
-    image: 'assets/images/intro1_bg.jpg',
-    overlayOpacity: 0.0,
-    // Bottom gradient for text readability
-    bottomGradient: true,
-    text: 'Tu santuario personal te espera',
-    fontWeight: FontWeight.w400,
-  ),
-  // 03 · Splash Intro 2 — man meditating at window
-  _SlideData(
-    image: 'assets/images/intro2_bg.jpg',
-    overlayOpacity: 0.45,
-    bottomGradient: true,
-    text: 'La mejor medicina no se compra en ninguna farmacia',
-    fontWeight: FontWeight.w400,
-  ),
-  // 04 · Splash Intro 3 — balancing stones
-  _SlideData(
-    image: 'assets/images/intro3_bg.jpg',
-    overlayOpacity: 0.33,
-    bottomGradient: true,
-    text: '5 minutos al día que lo cambian todo',
-    fontWeight: FontWeight.w700,
-  ),
-  // 05 · Splash Intro 4 — 3D spheres
-  _SlideData(
-    image: 'assets/images/intro4_bg.jpg',
-    overlayOpacity: 0.54,
-    bottomGradient: true,
-    text: 'Existe una mejor versión de ti, Conócela',
-    fontWeight: FontWeight.w700,
-  ),
-];
-
-class _SlideData {
-  final String image;
-  final double overlayOpacity;
-  final bool bottomGradient;
-  final String text;
-  final FontWeight fontWeight;
-
-  const _SlideData({
-    required this.image,
-    required this.overlayOpacity,
-    required this.bottomGradient,
-    required this.text,
-    required this.fontWeight,
-  });
-}
-
-// ─── Intro Screen ────────────────────────────────────────────────────────────
-
+/// The six editorial introduction frames approved in mandala2.pen.
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
 
@@ -72,383 +12,43 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
-  final PageController _pageController = PageController();
-  int _currentPage = 0;
-  static const int _totalPages = 5; // 4 intros + 1 final
+  static const _nodes = ['WldAS', '9nJKL'];
+  final _controller = PageController();
+  int _page = 0;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   void _next() {
-    if (_currentPage < _totalPages - 1) {
-      _pageController.nextPage(
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.easeInOut,
+    if (_page == _nodes.length - 1) {
+      context.go('/onboarding');
+    } else {
+      _controller.nextPage(
+        duration: const Duration(milliseconds: 260),
+        curve: Curves.easeOutCubic,
       );
     }
   }
 
   @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Responsive.init(context);
-    return Scaffold(
-      backgroundColor: AppColors.backgroundEnd,
-      body: PageView.builder(
-        controller: _pageController,
-        onPageChanged: (page) => setState(() => _currentPage = page),
-        itemCount: _totalPages,
-        itemBuilder: (context, index) {
-          if (index < 4) {
-            return _IntroPage(
-              slide: _slides[index],
-              pageIndex: index,
-              totalPages: _totalPages,
-              onNext: _next,
-            );
-          }
-          return _FinalPage(totalPages: _totalPages);
-        },
-      ),
-    );
-  }
-}
-
-// ─── Intro Slide Pages 02–05 ─────────────────────────────────────────────────
-
-class _IntroPage extends StatelessWidget {
-  final _SlideData slide;
-  final int pageIndex;
-  final int totalPages;
-  final VoidCallback onNext;
-
-  const _IntroPage({
-    required this.slide,
-    required this.pageIndex,
-    required this.totalPages,
-    required this.onNext,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        // ── Background image ──
-        Image.asset(slide.image, fit: BoxFit.cover),
-
-        // ── Dark tint overlay ──
-        if (slide.overlayOpacity > 0)
-          Container(
-            color: Colors.black.withValues(alpha: slide.overlayOpacity),
-          ),
-
-        // ── Bottom gradient for text readability ──
-        if (slide.bottomGradient)
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: Responsive.h(500),
-            child: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0x00000000),
-                    Color(0x80000000),
-                    Color(0xDD000000),
-                  ],
-                  stops: [0.0, 0.4, 1.0],
-                ),
-              ),
-            ),
-          ),
-
-        // ── Text content ──
-        Positioned(
-          left: Responsive.w(16),
-          right: Responsive.w(16),
-          bottom: Responsive.h(140),
-          child: Text(
-            slide.text,
-            style: GoogleFonts.urbanist(
-              fontSize: Responsive.sp(64),
-              fontWeight: slide.fontWeight,
-              color: AppColors.white,
-              height: 1.0,
-              letterSpacing: -1,
-            ),
-          ),
-        ),
-
-        // ── Bottom bar: dots + next button ──
-        Positioned(
-          left: Responsive.w(16),
-          right: Responsive.w(16),
-          bottom: Responsive.h(40),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _ProgressDots(
-                current: pageIndex,
-                total: totalPages,
-                activeWidth: Responsive.w(25),
-                inactiveWidth: Responsive.w(14),
-                height: Responsive.h(5),
-              ),
-              _NextButton(onTap: onNext),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-// ─── Final Page 06 ───────────────────────────────────────────────────────────
-
-class _FinalPage extends StatelessWidget {
-  final int totalPages;
-
-  const _FinalPage({required this.totalPages});
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        // ── Background image ──
-        Image.asset('assets/images/intro4_bg.jpg', fit: BoxFit.cover),
-
-        // ── Heavy dark overlay ──
-        Container(color: const Color(0x9A000000)),
-
-        // ── Dark solid gradient from bottom ──
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: Responsive.h(500),
-          child: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0x000A0A1A),
-                  Color(0xFF0A0A1A),
-                ],
-                stops: [0.0, 0.25],
-              ),
-            ),
-          ),
-        ),
-
-        // ── Content ──
-        SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: Responsive.w(25)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Spacer(flex: 2),
-
-                // MANTRAS tagline
-                Text(
-                  'MANTRAS',
-                  style: GoogleFonts.urbanist(
-                    fontSize: Responsive.sp(14),
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryLight,
-                    letterSpacing: 4,
-                  ),
-                ),
-                SizedBox(height: Responsive.h(12)),
-
-                // Main title
-                Text(
-                  'Tu mejor versión\ncomienza hoy',
-                  style: GoogleFonts.urbanist(
-                    fontSize: Responsive.sp(52),
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.white,
-                    height: 1.05,
-                    letterSpacing: -0.5,
-                  ),
-                ),
-
-                const Spacer(),
-
-                // Features subtitle
-                Text(
-                  'Alarmas biológicas · Frecuencias sagradas\nRituales personales',
-                  style: GoogleFonts.urbanist(
-                    fontSize: Responsive.sp(15),
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.white.withValues(alpha: 0.93),
-                    height: 1.5,
-                  ),
-                ),
-                SizedBox(height: Responsive.h(32)),
-
-                // CTA Button
-                CtaButton(
-                  label: 'Comenzar mi viaje',
-                  onTap: () => context.go('/onboarding'),
-                ),
-                SizedBox(height: Responsive.h(18)),
-
-                // Login link
-                Center(
-                  child: GestureDetector(
-                    onTap: () => context.go('/home'),
-                    child: Text.rich(
-                      TextSpan(
-                        text: '¿Ya tienes cuenta? ',
-                        style: GoogleFonts.urbanist(
-                          fontSize: Responsive.sp(13),
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.white.withValues(alpha: 0.87),
-                        ),
-                        children: [
-                          TextSpan(
-                            text: 'Iniciar sesión',
-                            style: GoogleFonts.urbanist(
-                              fontSize: Responsive.sp(13),
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.primaryLight,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: Responsive.h(28)),
-
-                // Progress dots (5 dots, last active)
-                _ProgressDots(
-                  current: 4,
-                  total: totalPages,
-                  activeWidth: Responsive.w(25),
-                  inactiveWidth: Responsive.w(14),
-                  height: Responsive.h(5),
-                ),
-                SizedBox(height: Responsive.h(28)),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-// ─── Progress Dots ───────────────────────────────────────────────────────────
-
-class _ProgressDots extends StatelessWidget {
-  final int current;
-  final int total;
-  final double activeWidth;
-  final double inactiveWidth;
-  final double height;
-
-  const _ProgressDots({
-    required this.current,
-    required this.total,
-    required this.activeWidth,
-    required this.inactiveWidth,
-    required this.height,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: List.generate(total, (i) {
-        final isActive = i == current;
-        return AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-          margin: EdgeInsets.only(right: i < total - 1 ? 3 : 0),
-          width: isActive ? activeWidth : inactiveWidth,
-          height: height,
-          decoration: BoxDecoration(
-            color: isActive
-                ? AppColors.white
-                : AppColors.white.withValues(alpha: 0.5),
-            borderRadius: BorderRadius.circular(100),
-          ),
-        );
-      }),
-    );
-  }
-}
-
-// ─── Next Button ─────────────────────────────────────────────────────────────
-
-class _NextButton extends StatelessWidget {
-  final VoidCallback onTap;
-  const _NextButton({required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(100),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 13, sigmaY: 13),
-          child: Container(
-            width: Responsive.w(126),
-            height: Responsive.h(64),
-            decoration: BoxDecoration(
-              color: AppColors.white.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(100),
-            ),
-            child: Row(
-              children: [
-                SizedBox(width: Responsive.w(8)),
-                // Arrow circle button
-                Container(
-                  width: Responsive.w(48),
-                  height: Responsive.w(48),
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.04),
-                        blurRadius: 12,
-                        offset: const Offset(5, 0),
-                        spreadRadius: 9,
-                      ),
-                    ],
-                  ),
-                  child: Icon(
-                    LucideIcons.arrowRight,
-                    color: AppColors.backgroundEnd,
-                    size: Responsive.w(22),
-                  ),
-                ),
-                SizedBox(width: Responsive.w(12)),
-                // Triple chevrons (decreasing opacity)
-                Icon(LucideIcons.chevronRight,
-                    color: AppColors.white.withValues(alpha: 0.4), size: Responsive.w(14)),
-                Icon(LucideIcons.chevronRight,
-                    color: AppColors.white.withValues(alpha: 0.6), size: Responsive.w(14)),
-                Icon(LucideIcons.chevronRight,
-                    color: AppColors.white, size: Responsive.w(14)),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => PageView.builder(
+    controller: _controller,
+    onPageChanged: (page) => setState(() => _page = page),
+    itemCount: _nodes.length,
+    itemBuilder: (context, index) => PencilSurface(
+      nodeId: _nodes[index],
+      showNavigation: false,
+      respectSafeArea: false,
+      onTap: (point) {
+        if (index == 1 && point.dy > .90) {
+          context.go('/login');
+          return;
+        }
+        if (index == 0 || point.dy > .76) _next();
+      },
+    ),
+  );
 }

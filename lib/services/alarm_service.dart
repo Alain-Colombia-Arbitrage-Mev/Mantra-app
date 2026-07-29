@@ -22,21 +22,41 @@ class AlarmService {
 
   Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
+    if (kIsWeb) {
+      _loadAlarms();
+      return;
+    }
 
     tz.initializeTimeZones();
     try {
-      final tzName = await FlutterTimezone.getLocalTimezone();
-      tz.setLocalLocation(tz.getLocation(tzName));
+      final localTimezone = await FlutterTimezone.getLocalTimezone();
+      tz.setLocalLocation(tz.getLocation(localTimezone.identifier));
     } catch (_) {
       tz.setLocalLocation(tz.getLocation('America/Bogota'));
     }
 
     _notifications = FlutterLocalNotificationsPlugin();
     const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
-    const initSettings = InitializationSettings(android: androidInit);
-    await _notifications.initialize(initSettings);
+    const iosInit = IOSInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+    );
+    const macosInit = DarwinInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+    );
+    const initSettings = InitializationSettings(
+      android: androidInit,
+      iOS: iosInit,
+      macOS: macosInit,
+    );
+    await _notifications.initialize(settings: initSettings);
 
-    await AndroidAlarmManager.initialize();
+    if (Platform.isAndroid) {
+      await AndroidAlarmManager.initialize();
+    }
 
     _loadAlarms();
   }
@@ -44,12 +64,32 @@ class AlarmService {
   // ── Permissions ──────────────────────────────────────────────────
 
   Future<bool> requestNotificationPermission() async {
-    if (!Platform.isAndroid) return true;
-    final status = await Permission.notification.request();
-    return status.isGranted;
+    if (kIsWeb) return true;
+    if (Platform.isIOS) {
+      return await _notifications
+              .resolvePlatformSpecificImplementation<
+                IOSFlutterLocalNotificationsPlugin
+              >()
+              ?.requestPermissions(alert: true, badge: true, sound: true) ??
+          false;
+    }
+    if (Platform.isMacOS) {
+      return await _notifications
+              .resolvePlatformSpecificImplementation<
+                MacOSFlutterLocalNotificationsPlugin
+              >()
+              ?.requestPermissions(alert: true, badge: true, sound: true) ??
+          false;
+    }
+    if (Platform.isAndroid) {
+      final status = await Permission.notification.request();
+      return status.isGranted;
+    }
+    return true;
   }
 
   Future<bool> requestExactAlarmPermission() async {
+    if (kIsWeb) return true;
     if (!Platform.isAndroid) return true;
     final status = await Permission.scheduleExactAlarm.status;
     if (status.isGranted) return true;
@@ -78,7 +118,9 @@ class AlarmService {
 
   Future<void> _saveAlarms() async {
     await _prefs.setString(
-        _storageKey, AlarmData.listToJsonString(alarms.value));
+      _storageKey,
+      AlarmData.listToJsonString(alarms.value),
+    );
   }
 
   Future<AlarmData> createAlarm({
@@ -130,6 +172,7 @@ class AlarmService {
 
   Future<void> _scheduleAlarm(AlarmData alarm) async {
     if (!alarm.active) return;
+    if (kIsWeb) return;
 
     final now = tz.TZDateTime.now(tz.local);
     var scheduled = tz.TZDateTime(
@@ -144,18 +187,41 @@ class AlarmService {
       scheduled = scheduled.add(const Duration(days: 1));
     }
 
-    await AndroidAlarmManager.oneShotAt(
-      scheduled,
-      alarm.id,
-      _alarmCallback,
-      exact: true,
-      wakeup: true,
-      rescheduleOnReboot: true,
+    if (Platform.isAndroid) {
+      await AndroidAlarmManager.oneShotAt(
+        scheduled,
+        alarm.id,
+        _alarmCallback,
+        exact: true,
+        wakeup: true,
+        rescheduleOnReboot: true,
+      );
+      return;
+    }
+
+    const notificationDetails = NotificationDetails(
+      iOS: DarwinNotificationDetails(),
+      macOS: DarwinNotificationDetails(),
+    );
+    await _notifications.zonedSchedule(
+      id: alarm.id,
+      title: 'Mantras',
+      body: alarm.name,
+      scheduledDate: scheduled,
+      notificationDetails: notificationDetails,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      matchDateTimeComponents: alarm.frequency == 'daily'
+          ? DateTimeComponents.time
+          : null,
     );
   }
 
   Future<void> _cancelAlarm(int id) async {
-    await AndroidAlarmManager.cancel(id);
+    if (kIsWeb) return;
+    await _notifications.cancel(id: id);
+    if (Platform.isAndroid) {
+      await AndroidAlarmManager.cancel(id);
+    }
   }
 
   @pragma('vm:entry-point')
@@ -163,7 +229,7 @@ class AlarmService {
     final plugin = FlutterLocalNotificationsPlugin();
     const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
     const initSettings = InitializationSettings(android: androidInit);
-    await plugin.initialize(initSettings);
+    await plugin.initialize(settings: initSettings);
 
     const androidDetails = AndroidNotificationDetails(
       'mantras_alarms',
@@ -178,10 +244,10 @@ class AlarmService {
     const details = NotificationDetails(android: androidDetails);
 
     await plugin.show(
-      id,
-      'Mantras',
-      'Tu alarma está sonando',
-      details,
+      id: id,
+      title: 'Mantras',
+      body: 'Tu alarma está sonando',
+      notificationDetails: details,
     );
   }
 }
