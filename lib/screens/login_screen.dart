@@ -121,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   child: Text.rich(
                                     TextSpan(
-                                      text: '¿Nuevo en mantralia? ',
+                                      text: '¿Nuevo en Mantralia? ',
                                       style: GoogleFonts.manrope(
                                         fontSize: Responsive.sp(13),
                                         color: AppColors.white.withValues(
@@ -174,7 +174,7 @@ class _TopBar extends StatelessWidget {
         ),
         const Spacer(),
         Text(
-          'mantralia',
+          'Mantralia',
           style: GoogleFonts.manrope(
             fontSize: Responsive.sp(15),
             fontWeight: FontWeight.w900,

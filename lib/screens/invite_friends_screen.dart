@@ -223,7 +223,7 @@ class InviteFriendsScreen extends StatelessWidget {
                 SizedBox(height: Responsive.h(10)),
                 _StepCard(
                   number: 2,
-                  text: 'Tu amigo descarga mantralia y se registra',
+                  text: 'Tu amigo descarga Mantralia y se registra',
                 ),
                 SizedBox(height: Responsive.h(10)),
                 _StepCard(number: 3, text: '¡Ambos reciben 7 días gratis!'),

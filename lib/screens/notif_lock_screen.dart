@@ -114,7 +114,7 @@ class NotifLockScreen extends StatelessWidget {
                       Color(0xFF2D1B69),
                       Color(0xFF1A0F40),
                     ],
-                    appLabel: 'mantralia ahora',
+                    appLabel: 'Mantralia ahora',
                     title: 'Hora Espejo 11:11 · Pide un deseo',
                     subtitle:
                         'Puerta de manifestación abierta. Tu afirmación te espera.',
@@ -130,7 +130,7 @@ class NotifLockScreen extends StatelessWidget {
                       Color(0xFF2D1A00),
                       Color(0xFF1A0F00),
                     ],
-                    appLabel: 'mantralia hace 2 min',
+                    appLabel: 'Mantralia hace 2 min',
                     title: 'Júpiter · Ventana de poder abierta',
                     subtitle:
                         '14:14 – 15:30 · Máximo poder para manifestar ahora',
@@ -146,7 +146,7 @@ class NotifLockScreen extends StatelessWidget {
                       Color(0xFF001A12),
                       Color(0xFF000F09),
                     ],
-                    appLabel: 'mantralia 06:28',
+                    appLabel: 'Mantralia 06:28',
                     title: 'Tehilim 27 · Tu protección diaria',
                     subtitle:
                         'KD Señor es mi luz y mi salvación · Shajarit en 2 min',
@@ -162,7 +162,7 @@ class NotifLockScreen extends StatelessWidget {
                       Color(0xFF2D2000),
                       Color(0xFF1A1400),
                     ],
-                    appLabel: 'mantralia',
+                    appLabel: 'Mantralia',
                     title: 'Mantra de Abundancia · Repite ahora',
                     subtitle: 'Yo atraigo prosperidad y riqueza a mi vida',
                     iconColor: const Color(0xFFFFEAA7),

@@ -125,7 +125,7 @@ class _SplashScreenState extends State<SplashScreen>
                   child: FadeTransition(
                     opacity: _textOpacity,
                     child: Text(
-                      'mantralia',
+                      'Mantralia',
                       style: GoogleFonts.manrope(
                         fontSize: Responsive.isCompact
                             ? Responsive.sp(52)

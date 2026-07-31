@@ -196,7 +196,7 @@ class PlaylistDetailScreen extends StatelessWidget {
                           ),
                           SizedBox(width: Responsive.w(6)),
                           Text(
-                            'mantralia',
+                            'Mantralia',
                             style: GoogleFonts.manrope(
                               fontSize: Responsive.sp(13),
                               color: AppColors.textTertiary,

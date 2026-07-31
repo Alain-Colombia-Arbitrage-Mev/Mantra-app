@@ -75,7 +75,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                 ),
                 SizedBox(height: Responsive.h(8)),
                 Text(
-                  'Elige tu idioma preferido para mantralia',
+                  'Elige tu idioma preferido para Mantralia',
                   style: GoogleFonts.manrope(
                     fontSize: Responsive.sp(14),
                     color: AppColors.textTertiary,

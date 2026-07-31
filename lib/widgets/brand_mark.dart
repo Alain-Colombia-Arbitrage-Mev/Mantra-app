@@ -72,7 +72,7 @@ class BrandLockup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final text = Text(
-      'mantralia',
+      'Mantralia',
       style: GoogleFonts.manrope(
         fontSize: titleSize,
         fontWeight: FontWeight.w800,
