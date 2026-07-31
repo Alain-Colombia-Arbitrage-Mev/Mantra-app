@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../widgets/pencil_surface.dart';
 
-/// The six editorial introduction frames approved in mandala2.pen.
+/// The two introduction frames approved in mandala2.pen.
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
 
@@ -12,7 +12,7 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
-  static const _nodes = ['WldAS', '9nJKL'];
+  static const _nodes = ['oEGyR', '9nJKL'];
   final _controller = PageController();
   int _page = 0;
 

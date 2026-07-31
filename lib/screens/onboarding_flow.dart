@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../widgets/pencil_surface.dart';
 
-/// Nine production frames exported from mandala2.pen. The controls are native
+/// Production frames exported from mandala2.pen. The controls are native
 /// and the screen artwork remains the Pencil-approved composition.
 class OnboardingFlow extends StatefulWidget {
   const OnboardingFlow({super.key});
@@ -17,7 +17,6 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   static const _nodes = [
     'TTLH4',
     'x36zX',
-    'mAtQG',
     '1DHid',
     'CqnJW',
     '3fTTR',
@@ -71,13 +70,13 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   List<Widget> _choiceOverlays(int index, Size size) {
     final horizontalInset = size.width * (24 / PencilSurface.canvasSize.width);
     switch (index) {
-      case 6:
+      case 5:
         return [
           Positioned(
             left: horizontalInset,
             right: horizontalInset,
-            top: size.height * (380 / 956),
-            height: size.height * (206 / 956),
+            top: size.height * (373 / 956),
+            height: size.height * (222 / 956),
             child: _MultiChoiceList(
               values: const [
                 ('Sentir calma', Icons.spa_outlined),
@@ -90,12 +89,12 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
             ),
           ),
         ];
-      case 7:
+      case 6:
         return [
           Positioned(
             left: horizontalInset,
             right: horizontalInset,
-            top: size.height * (376 / 956),
+            top: size.height * (411 / 956),
             height: size.height * (210 / 956),
             child: _MultiChoiceGrid(
               values: const [
@@ -109,13 +108,13 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
             ),
           ),
         ];
-      case 8:
+      case 7:
         return [
           Positioned(
             left: horizontalInset,
             right: horizontalInset,
-            top: size.height * .43,
-            height: size.height * .15,
+            top: size.height * (368 / 956),
+            height: size.height * (192 / 956),
             child: _MultiChoiceList(
               values: const [
                 ('Guíame paso a paso', Icons.psychology_alt_outlined),
@@ -146,24 +145,24 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         respectSafeArea: false,
         overlays: _choiceOverlays(index, size),
         onTap: (point) {
-          if (index == 10 && point.dy > .38 && point.dy < .66) {
+          if (index == 9 && point.dy > .32 && point.dy < .69) {
             context.push('/register');
             return;
           }
           // POST · Prueba activada → práctica lista → Home.
-          if (index == 12 && point.dy > .72 && point.dy < .88) {
+          if (index == 11 && point.dy > .80 && point.dy < .90) {
             _next();
             return;
           }
-          if (index == 13 && point.dy > .74 && point.dy < .90) {
+          if (index == 12 && point.dy > .87 && point.dy < .96) {
             _startPractice();
             return;
           }
-          if (index == 5 && point.dy > .70) {
+          if (index == 4 && point.dy > .78 && point.dy < .90) {
             _next();
             return;
           }
-          if (point.dy >= .80) _next();
+          if (point.dy >= .79) _next();
         },
       ),
     );
