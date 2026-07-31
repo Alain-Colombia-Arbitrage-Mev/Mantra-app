@@ -304,11 +304,17 @@ class _VideoStoryPageState extends State<_VideoStoryPage> {
           await _videoControllers.last.setLooping(false);
           _videoControllers.last.addListener(_monitorSeamlessLoop);
           _seamlessReady = true;
-        } on PlatformException {
-          await _videoControllers.first.setLooping(true);
+        } catch (error) {
+          debugPrint('Secondary onboarding video failed: $error');
+          try {
+            await _videoControllers.first.setLooping(true);
+          } catch (_) {
+            // The poster remains available when playback is unsupported.
+          }
         }
       }
-    } on PlatformException {
+    } catch (error) {
+      debugPrint('Onboarding video failed: $error');
       // The poster remains visible if the platform cannot decode the video.
     }
   }
