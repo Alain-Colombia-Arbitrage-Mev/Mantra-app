@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -33,9 +35,38 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   ];
   final _controller = PageController();
   int _page = 0;
+  bool _precacheStarted = false;
   final Set<String> _needs = {'Dormir mejor'};
   final Set<String> _times = {'5 minutos'};
   final Set<String> _guidance = {'Guíame paso a paso'};
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_precacheStarted) return;
+    _precacheStarted = true;
+
+    for (final nodeId in _nodes) {
+      if (nodeId == 'TTLH4' || nodeId == 'CqnJW') continue;
+      unawaited(
+        precacheImage(AssetImage('assets/pencil/$nodeId.png'), context),
+      );
+    }
+    unawaited(
+      precacheImage(
+        const AssetImage('assets/images/onboarding_story_01_poster.png'),
+        context,
+      ),
+    );
+    unawaited(
+      precacheImage(
+        const AssetImage(
+          'assets/images/onboarding_story_05_intention_poster.png',
+        ),
+        context,
+      ),
+    );
+  }
 
   @override
   void dispose() {
