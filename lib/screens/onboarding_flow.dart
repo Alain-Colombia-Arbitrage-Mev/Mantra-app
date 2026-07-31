@@ -183,6 +183,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
             copy: const _StoryOneCopy(),
             progress: const _StoryProgress(activeStep: 0, stepCount: 3),
             intentionOverlay: false,
+            seamlessLoop: false,
           );
         }
 
@@ -197,6 +198,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
             copy: const _IntentionStoryCopy(),
             progress: const _StoryProgress(activeStep: 4, stepCount: 6),
             intentionOverlay: true,
+            seamlessLoop: true,
           );
         }
 
@@ -246,6 +248,7 @@ class _VideoStoryPage extends StatefulWidget {
   final Widget copy;
   final Widget progress;
   final bool intentionOverlay;
+  final bool seamlessLoop;
 
   const _VideoStoryPage({
     required this.active,
@@ -256,6 +259,7 @@ class _VideoStoryPage extends StatefulWidget {
     required this.copy,
     required this.progress,
     required this.intentionOverlay,
+    required this.seamlessLoop,
   });
 
   @override
@@ -263,46 +267,146 @@ class _VideoStoryPage extends StatefulWidget {
 }
 
 class _VideoStoryPageState extends State<_VideoStoryPage> {
-  late final VideoPlayerController _videoController;
+  static const _crossfadeDuration = Duration(milliseconds: 850);
+
+  late final List<VideoPlayerController> _videoControllers;
+  Timer? _crossfadeTimer;
+  int _activeVideo = 0;
+  int _visibleVideo = 0;
+  bool _seamlessReady = false;
+  bool _transitioning = false;
 
   @override
   void initState() {
     super.initState();
-    _videoController = VideoPlayerController.asset(widget.videoAsset);
+    _videoControllers = List.generate(
+      widget.seamlessLoop ? 2 : 1,
+      (_) => VideoPlayerController.asset(widget.videoAsset),
+    );
     _initializeVideo();
   }
 
   Future<void> _initializeVideo() async {
     try {
-      await _videoController.initialize();
+      await _videoControllers.first.initialize();
       if (!mounted) return;
-      await _videoController.setLooping(true);
-      await _videoController.setVolume(0);
-      if (widget.active) await _videoController.play();
+      await _videoControllers.first.setVolume(0);
+      await _videoControllers.first.setLooping(!widget.seamlessLoop);
+      _videoControllers.first.addListener(_monitorSeamlessLoop);
       if (mounted) setState(() {});
+      if (widget.active) await _videoControllers.first.play();
+
+      if (widget.seamlessLoop) {
+        try {
+          await _videoControllers.last.initialize();
+          if (!mounted) return;
+          await _videoControllers.last.setVolume(0);
+          await _videoControllers.last.setLooping(false);
+          _videoControllers.last.addListener(_monitorSeamlessLoop);
+          _seamlessReady = true;
+        } on PlatformException {
+          await _videoControllers.first.setLooping(true);
+        }
+      }
     } on PlatformException {
       // The poster remains visible if the platform cannot decode the video.
     }
+  }
+
+  void _monitorSeamlessLoop() {
+    if (!mounted || !widget.active || !_seamlessReady || _transitioning) {
+      return;
+    }
+
+    final value = _videoControllers[_activeVideo].value;
+    if (!value.isInitialized ||
+        !value.isPlaying ||
+        value.duration == Duration.zero) {
+      return;
+    }
+
+    final remaining = value.duration - value.position;
+    if (remaining <= _crossfadeDuration && value.position > Duration.zero) {
+      unawaited(_startCrossfade());
+    }
+  }
+
+  Future<void> _startCrossfade() async {
+    if (_transitioning || !widget.active) return;
+    _transitioning = true;
+
+    final outgoing = _activeVideo;
+    final incoming = outgoing == 0 ? 1 : 0;
+    final incomingController = _videoControllers[incoming];
+
+    await incomingController.seekTo(Duration.zero);
+    if (!mounted || !widget.active) {
+      _transitioning = false;
+      return;
+    }
+    await incomingController.play();
+    if (!mounted) return;
+    setState(() => _visibleVideo = incoming);
+
+    _crossfadeTimer?.cancel();
+    _crossfadeTimer = Timer(_crossfadeDuration, () {
+      if (!mounted) return;
+      _activeVideo = incoming;
+      _transitioning = false;
+      unawaited(_videoControllers[outgoing].pause());
+      unawaited(_videoControllers[outgoing].seekTo(Duration.zero));
+    });
   }
 
   @override
   void didUpdateWidget(covariant _VideoStoryPage oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.active == widget.active ||
-        !_videoController.value.isInitialized) {
+        !_videoControllers.first.value.isInitialized) {
       return;
     }
     if (widget.active) {
-      _videoController.play();
+      unawaited(_videoControllers[_activeVideo].play());
     } else {
-      _videoController.pause();
+      _crossfadeTimer?.cancel();
+      for (final controller in _videoControllers) {
+        unawaited(controller.pause());
+      }
+      _activeVideo = _visibleVideo;
+      _transitioning = false;
     }
   }
 
   @override
   void dispose() {
-    _videoController.dispose();
+    _crossfadeTimer?.cancel();
+    for (final controller in _videoControllers) {
+      controller.removeListener(_monitorSeamlessLoop);
+      controller.dispose();
+    }
     super.dispose();
+  }
+
+  Widget _buildVideo() {
+    if (!_videoControllers.first.value.isInitialized) {
+      return const SizedBox.shrink();
+    }
+
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        for (var index = 0; index < _videoControllers.length; index++)
+          if (_videoControllers[index].value.isInitialized)
+            AnimatedOpacity(
+              opacity: index == _visibleVideo ? 1 : 0,
+              duration: widget.seamlessLoop
+                  ? _crossfadeDuration
+                  : Duration.zero,
+              curve: Curves.easeInOut,
+              child: _CoverVideo(controller: _videoControllers[index]),
+            ),
+      ],
+    );
   }
 
   @override
@@ -336,8 +440,7 @@ class _VideoStoryPageState extends State<_VideoStoryPage> {
                         fit: BoxFit.cover,
                         alignment: Alignment.center,
                       ),
-                      if (_videoController.value.isInitialized)
-                        _CoverVideo(controller: _videoController),
+                      _buildVideo(),
                       DecoratedBox(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
