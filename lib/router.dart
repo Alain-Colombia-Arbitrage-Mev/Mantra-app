@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'screens/splash_screen.dart';
 import 'screens/intro_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
@@ -15,12 +14,11 @@ import 'screens/gratitude_journal_screen.dart';
 import 'screens/tehilim_screen.dart';
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/intro',
   routes: [
     GoRoute(
       path: '/',
-      builder: (BuildContext context, GoRouterState state) =>
-          const SplashScreen(),
+      redirect: (BuildContext context, GoRouterState state) => '/intro',
     ),
     GoRoute(
       path: '/intro',
