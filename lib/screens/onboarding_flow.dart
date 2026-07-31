@@ -143,7 +143,30 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
       onPageChanged: (value) => setState(() => _page = value),
       itemBuilder: (context, index) {
         if (index == 0) {
-          return _VideoStoryPage(active: _page == index, onContinue: _next);
+          return _VideoStoryPage(
+            active: _page == index,
+            onContinue: _next,
+            videoAsset: 'assets/videos/onboarding_story_01.mp4',
+            posterAsset: 'assets/images/onboarding_story_01_poster.png',
+            copyTop: 408,
+            copy: const _StoryOneCopy(),
+            progress: const _StoryProgress(activeStep: 0, stepCount: 3),
+            intentionOverlay: false,
+          );
+        }
+
+        if (index == 3) {
+          return _VideoStoryPage(
+            active: _page == index,
+            onContinue: _next,
+            videoAsset: 'assets/videos/onboarding_story_05_intention.mp4',
+            posterAsset:
+                'assets/images/onboarding_story_05_intention_poster.png',
+            copyTop: 369,
+            copy: const _IntentionStoryCopy(),
+            progress: const _StoryProgress(activeStep: 4, stepCount: 6),
+            intentionOverlay: true,
+          );
         }
 
         return PencilSurface(
@@ -186,8 +209,23 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
 class _VideoStoryPage extends StatefulWidget {
   final bool active;
   final VoidCallback onContinue;
+  final String videoAsset;
+  final String posterAsset;
+  final double copyTop;
+  final Widget copy;
+  final Widget progress;
+  final bool intentionOverlay;
 
-  const _VideoStoryPage({required this.active, required this.onContinue});
+  const _VideoStoryPage({
+    required this.active,
+    required this.onContinue,
+    required this.videoAsset,
+    required this.posterAsset,
+    required this.copyTop,
+    required this.copy,
+    required this.progress,
+    required this.intentionOverlay,
+  });
 
   @override
   State<_VideoStoryPage> createState() => _VideoStoryPageState();
@@ -199,9 +237,7 @@ class _VideoStoryPageState extends State<_VideoStoryPage> {
   @override
   void initState() {
     super.initState();
-    _videoController = VideoPlayerController.asset(
-      'assets/videos/onboarding_story_01.mp4',
-    );
+    _videoController = VideoPlayerController.asset(widget.videoAsset);
     _initializeVideo();
   }
 
@@ -265,38 +301,43 @@ class _VideoStoryPageState extends State<_VideoStoryPage> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/onboarding_story_01_poster.png',
+                        widget.posterAsset,
                         fit: BoxFit.cover,
                         alignment: Alignment.center,
                       ),
                       if (_videoController.value.isInitialized)
                         _CoverVideo(controller: _videoController),
-                      const DecoratedBox(
+                      DecoratedBox(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
-                            stops: [0, .3, .62, 1],
-                            colors: [
-                              Color(0x12080711),
-                              Color(0x36080711),
-                              Color(0xB8080711),
-                              Color(0xF7080711),
-                            ],
+                            stops: widget.intentionOverlay
+                                ? const [0, .38, .8, 1]
+                                : const [0, .3, .62, 1],
+                            colors: widget.intentionOverlay
+                                ? const [
+                                    Color(0x0009080E),
+                                    Color(0x4209080E),
+                                    Color(0xE809080E),
+                                    Color(0xFF09080E),
+                                  ]
+                                : const [
+                                    Color(0x12080711),
+                                    Color(0x36080711),
+                                    Color(0xB8080711),
+                                    Color(0xF7080711),
+                                  ],
                           ),
                         ),
                       ),
-                      const Positioned(
+                      Positioned(
                         left: 27,
-                        top: 408,
+                        top: widget.copyTop,
                         width: 386,
-                        child: _StoryCopy(),
+                        child: widget.copy,
                       ),
-                      const Positioned(
-                        left: 18,
-                        top: 873,
-                        child: _StoryProgress(),
-                      ),
+                      Positioned(left: 18, top: 873, child: widget.progress),
                       const Positioned(
                         left: 364,
                         top: 847,
@@ -335,8 +376,8 @@ class _CoverVideo extends StatelessWidget {
   }
 }
 
-class _StoryCopy extends StatelessWidget {
-  const _StoryCopy();
+class _StoryOneCopy extends StatelessWidget {
+  const _StoryOneCopy();
 
   @override
   Widget build(BuildContext context) {
@@ -380,34 +421,77 @@ class _StoryCopy extends StatelessWidget {
   }
 }
 
+class _IntentionStoryCopy extends StatelessWidget {
+  const _IntentionStoryCopy();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          '05 · PEDIR TAMBIÉN ES ELEGIR',
+          style: GoogleFonts.notoSans(
+            color: const Color(0xFFDCD6E0),
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 1.6,
+          ),
+        ),
+        const SizedBox(height: 14),
+        Text(
+          'Manifestar no es esperar.\n'
+          'Es darle dirección a tu atención.',
+          style: GoogleFonts.notoSans(
+            color: Colors.white,
+            fontSize: 36,
+            fontWeight: FontWeight.w700,
+            height: 1.06,
+            letterSpacing: -.5,
+          ),
+        ),
+        const SizedBox(height: 14),
+        Text(
+          'Escribe tu petición al universo, visualiza cómo quieres sentirte '
+          'y elige una acción que dependa de ti.',
+          style: GoogleFonts.notoSans(
+            color: const Color(0xFFDCD6E0),
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+            height: 1.5,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _StoryProgress extends StatelessWidget {
-  const _StoryProgress();
+  final int activeStep;
+  final int stepCount;
+
+  const _StoryProgress({required this.activeStep, required this.stepCount});
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: [
-        Container(
-          width: 30,
-          height: 5,
-          decoration: BoxDecoration(
-            color: const Color(0xFFF5F2F7),
-            borderRadius: BorderRadius.circular(3),
-          ),
-        ),
-        const SizedBox(width: 5),
-        for (var index = 0; index < 2; index++) ...[
-          Container(
-            width: 8,
+      children: List.generate(
+        stepCount,
+        (index) => Padding(
+          padding: EdgeInsets.only(right: index == stepCount - 1 ? 0 : 5),
+          child: Container(
+            width: index == activeStep ? 30 : 8,
             height: 5,
             decoration: BoxDecoration(
-              color: const Color(0x55FFFFFF),
+              color: index == activeStep
+                  ? const Color(0xFFF5F2F7)
+                  : const Color(0x55FFFFFF),
               borderRadius: BorderRadius.circular(3),
             ),
           ),
-          if (index == 0) const SizedBox(width: 5),
-        ],
-      ],
+        ),
+      ),
     );
   }
 }
