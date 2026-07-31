@@ -28,9 +28,11 @@ class _LanguageScreenState extends State<LanguageScreen> {
     if (_query.isEmpty) return _languages;
     final q = _query.toLowerCase();
     return _languages
-        .where((l) =>
-            l.name.toLowerCase().contains(q) ||
-            l.label.toLowerCase().contains(q))
+        .where(
+          (l) =>
+              l.name.toLowerCase().contains(q) ||
+              l.label.toLowerCase().contains(q),
+        )
         .toList();
   }
 
@@ -43,7 +45,12 @@ class _LanguageScreenState extends State<LanguageScreen> {
         child: SafeArea(
           bottom: false,
           child: SingleChildScrollView(
-            padding: EdgeInsets.fromLTRB(Responsive.w(20), Responsive.h(20), Responsive.w(20), Responsive.h(40)),
+            padding: EdgeInsets.fromLTRB(
+              Responsive.w(20),
+              Responsive.h(20),
+              Responsive.w(20),
+              Responsive.h(40),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -68,8 +75,8 @@ class _LanguageScreenState extends State<LanguageScreen> {
                 ),
                 SizedBox(height: Responsive.h(8)),
                 Text(
-                  'Elige tu idioma preferido para MANTRAS',
-                  style: GoogleFonts.urbanist(
+                  'Elige tu idioma preferido para mantralia',
+                  style: GoogleFonts.manrope(
                     fontSize: Responsive.sp(14),
                     color: AppColors.textTertiary,
                   ),
@@ -98,20 +105,21 @@ class _LanguageScreenState extends State<LanguageScreen> {
                       Expanded(
                         child: TextField(
                           onChanged: (v) => setState(() => _query = v),
-                          style: GoogleFonts.urbanist(
+                          style: GoogleFonts.manrope(
                             fontSize: Responsive.sp(14),
                             color: Colors.white,
                           ),
                           decoration: InputDecoration(
                             hintText: 'Buscar idioma...',
-                            hintStyle: GoogleFonts.urbanist(
+                            hintStyle: GoogleFonts.manrope(
                               fontSize: Responsive.sp(14),
                               color: AppColors.textTertiary,
                             ),
                             border: InputBorder.none,
                             isDense: true,
-                            contentPadding:
-                                EdgeInsets.symmetric(vertical: Responsive.h(12)),
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: Responsive.h(12),
+                            ),
                           ),
                         ),
                       ),
@@ -186,7 +194,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                         SizedBox(width: Responsive.w(10)),
                         Text(
                           'Aplicar Idioma',
-                          style: GoogleFonts.urbanist(
+                          style: GoogleFonts.manrope(
                             fontSize: Responsive.sp(16),
                             fontWeight: FontWeight.w700,
                             color: Colors.white,
@@ -233,7 +241,10 @@ class _LangCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: Responsive.w(16), vertical: Responsive.h(14)),
+        padding: EdgeInsets.symmetric(
+          horizontal: Responsive.w(16),
+          vertical: Responsive.h(14),
+        ),
         decoration: BoxDecoration(
           color: selected
               ? AppColors.primary.withValues(alpha: 0.12)
@@ -257,7 +268,9 @@ class _LangCard extends StatelessWidget {
               ),
               child: Icon(
                 LucideIcons.globe,
-                color: selected ? AppColors.primaryLight : AppColors.textTertiary,
+                color: selected
+                    ? AppColors.primaryLight
+                    : AppColors.textTertiary,
                 size: Responsive.w(16),
               ),
             ),
@@ -268,7 +281,7 @@ class _LangCard extends StatelessWidget {
                 children: [
                   Text(
                     name,
-                    style: GoogleFonts.urbanist(
+                    style: GoogleFonts.manrope(
                       fontSize: Responsive.sp(15),
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
@@ -276,7 +289,7 @@ class _LangCard extends StatelessWidget {
                   ),
                   Text(
                     label,
-                    style: GoogleFonts.urbanist(
+                    style: GoogleFonts.manrope(
                       fontSize: Responsive.sp(12),
                       color: AppColors.textTertiary,
                     ),

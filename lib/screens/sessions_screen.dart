@@ -347,7 +347,7 @@ class _PulsingDotState extends State<_PulsingDot>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _anim,
-      builder: (_, __) => Container(
+      builder: (_, _) => Container(
         width: Responsive.w(8),
         height: Responsive.w(8),
         decoration: BoxDecoration(

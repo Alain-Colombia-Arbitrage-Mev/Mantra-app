@@ -17,7 +17,12 @@ class InviteFriendsScreen extends StatelessWidget {
         child: SafeArea(
           bottom: false,
           child: SingleChildScrollView(
-            padding: EdgeInsets.fromLTRB(Responsive.w(20), Responsive.h(20), Responsive.w(20), Responsive.h(40)),
+            padding: EdgeInsets.fromLTRB(
+              Responsive.w(20),
+              Responsive.h(20),
+              Responsive.w(20),
+              Responsive.h(40),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -92,7 +97,7 @@ class InviteFriendsScreen extends StatelessWidget {
                 Center(
                   child: Text(
                     'Semana gratis',
-                    style: GoogleFonts.urbanist(
+                    style: GoogleFonts.manrope(
                       fontSize: Responsive.sp(28),
                       fontWeight: FontWeight.w800,
                       color: Colors.white,
@@ -103,7 +108,7 @@ class InviteFriendsScreen extends StatelessWidget {
                 Center(
                   child: Text(
                     'por cada amigo que se una',
-                    style: GoogleFonts.urbanist(
+                    style: GoogleFonts.manrope(
                       fontSize: Responsive.sp(15),
                       color: const Color(0xCCFFFFFF),
                     ),
@@ -128,7 +133,7 @@ class InviteFriendsScreen extends StatelessWidget {
                       children: [
                         Text(
                           '0 / 1 amigos se han unido',
-                          style: GoogleFonts.urbanist(
+                          style: GoogleFonts.manrope(
                             fontSize: Responsive.sp(13),
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
@@ -137,7 +142,7 @@ class InviteFriendsScreen extends StatelessWidget {
                         SizedBox(width: Responsive.w(10)),
                         Text(
                           '+7 días gratis',
-                          style: GoogleFonts.urbanist(
+                          style: GoogleFonts.manrope(
                             fontSize: Responsive.sp(13),
                             fontWeight: FontWeight.w700,
                             color: AppColors.mint,
@@ -171,8 +176,8 @@ class InviteFriendsScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'MANTRAS-XK29M',
-                            style: GoogleFonts.urbanist(
+                            'MANTRALIA-XK29M',
+                            style: GoogleFonts.manrope(
                               fontSize: Responsive.sp(22),
                               fontWeight: FontWeight.w800,
                               color: Colors.white,
@@ -201,7 +206,7 @@ class InviteFriendsScreen extends StatelessWidget {
                       SizedBox(height: Responsive.h(4)),
                       Text(
                         'Toca para copiar',
-                        style: GoogleFonts.urbanist(
+                        style: GoogleFonts.manrope(
                           fontSize: Responsive.sp(12),
                           color: const Color(0x50FFFFFF),
                         ),
@@ -214,20 +219,14 @@ class InviteFriendsScreen extends StatelessWidget {
                 // ── How it works ─────────────────────────────────────────
                 const SectionLabel('¿CÓMO FUNCIONA?'),
                 SizedBox(height: Responsive.h(14)),
-                _StepCard(
-                  number: 1,
-                  text: 'Comparte tu código con un amigo',
-                ),
+                _StepCard(number: 1, text: 'Comparte tu código con un amigo'),
                 SizedBox(height: Responsive.h(10)),
                 _StepCard(
                   number: 2,
-                  text: 'Tu amigo descarga MANTRAS y se registra',
+                  text: 'Tu amigo descarga mantralia y se registra',
                 ),
                 SizedBox(height: Responsive.h(10)),
-                _StepCard(
-                  number: 3,
-                  text: '¡Ambos reciben 7 días gratis!',
-                ),
+                _StepCard(number: 3, text: '¡Ambos reciben 7 días gratis!'),
                 SizedBox(height: Responsive.h(32)),
 
                 // ── CTA ───────────────────────────────────────────────────
@@ -258,7 +257,7 @@ class InviteFriendsScreen extends StatelessWidget {
                         SizedBox(width: Responsive.w(10)),
                         Text(
                           'Compartir en WhatsApp · Telegram',
-                          style: GoogleFonts.urbanist(
+                          style: GoogleFonts.manrope(
                             fontSize: Responsive.sp(15),
                             fontWeight: FontWeight.w700,
                             color: Colors.white,
@@ -308,7 +307,10 @@ class _StepCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: Responsive.w(16), vertical: Responsive.h(14)),
+      padding: EdgeInsets.symmetric(
+        horizontal: Responsive.w(16),
+        vertical: Responsive.h(14),
+      ),
       decoration: BoxDecoration(
         color: AppColors.surfaceLight,
         borderRadius: BorderRadius.circular(14),
@@ -326,7 +328,7 @@ class _StepCard extends StatelessWidget {
             child: Center(
               child: Text(
                 '$number',
-                style: GoogleFonts.urbanist(
+                style: GoogleFonts.manrope(
                   fontSize: Responsive.sp(14),
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
@@ -338,7 +340,7 @@ class _StepCard extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: GoogleFonts.urbanist(
+              style: GoogleFonts.manrope(
                 fontSize: Responsive.sp(14),
                 fontWeight: FontWeight.w500,
                 color: Colors.white,

@@ -34,7 +34,10 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
           bottom: false,
           child: SingleChildScrollView(
             padding: EdgeInsets.fromLTRB(
-              Responsive.w(20), Responsive.h(20), Responsive.w(20), Responsive.h(40),
+              Responsive.w(20),
+              Responsive.h(20),
+              Responsive.w(20),
+              Responsive.h(40),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,96 +65,99 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                 ),
                 SizedBox(height: Responsive.h(24)),
                 GestureDetector(
-                onTap: () => context.push('/alchemist'),
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(Responsive.w(20)),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Color(0xFF2D1B69), Color(0xFF0D0730)],
-                    ),
-                    borderRadius: BorderRadius.circular(Responsive.w(20)),
-                    border: Border.all(
-                      color: AppColors.primary.withValues(alpha: 0.4),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.primary.withValues(alpha: 0.25),
-                        blurRadius: Responsive.w(24),
-                        offset: Offset(0, Responsive.h(10)),
+                  onTap: () => context.push('/alchemist'),
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(Responsive.w(20)),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [Color(0xFF2D1B69), Color(0xFF0D0730)],
                       ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: Responsive.w(10), vertical: Responsive.h(4),
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppColors.gold.withValues(alpha: 0.2),
-                                borderRadius: BorderRadius.circular(Responsive.w(20)),
-                              ),
-                              child: Text(
-                                'EXCLUSIVO MANTRAS',
-                                style: GoogleFonts.urbanist(
-                                  fontSize: Responsive.sp(9),
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: 1.5,
-                                  color: AppColors.gold,
+                      borderRadius: BorderRadius.circular(Responsive.w(20)),
+                      border: Border.all(
+                        color: AppColors.primary.withValues(alpha: 0.4),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.primary.withValues(alpha: 0.25),
+                          blurRadius: Responsive.w(24),
+                          offset: Offset(0, Responsive.h(10)),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: Responsive.w(10),
+                                  vertical: Responsive.h(4),
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.gold.withValues(alpha: 0.2),
+                                  borderRadius: BorderRadius.circular(
+                                    Responsive.w(20),
+                                  ),
+                                ),
+                                child: Text(
+                                  'EXCLUSIVO MANTRALIA',
+                                  style: GoogleFonts.manrope(
+                                    fontSize: Responsive.sp(9),
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 1.5,
+                                    color: AppColors.gold,
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(height: Responsive.h(10)),
-                            Text(
-                              'El Alquimista',
-                              style: GoogleFonts.urbanist(
-                                fontSize: Responsive.sp(22),
-                                fontWeight: FontWeight.w800,
-                                color: Colors.white,
+                              SizedBox(height: Responsive.h(10)),
+                              Text(
+                                'El Alquimista',
+                                style: GoogleFonts.manrope(
+                                  fontSize: Responsive.sp(22),
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'Crea tu Audio IA',
-                              style: GoogleFonts.urbanist(
-                                fontSize: Responsive.sp(16),
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.primaryLight,
+                              Text(
+                                'Crea tu Audio IA',
+                                style: GoogleFonts.manrope(
+                                  fontSize: Responsive.sp(16),
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.primaryLight,
+                                ),
                               ),
-                            ),
-                            SizedBox(height: Responsive.h(6)),
-                            Text(
-                              '528Hz · Theta · Tu voz · Sin límites',
-                              style: GoogleFonts.urbanist(
-                                fontSize: Responsive.sp(12),
-                                color: AppColors.textTertiary,
+                              SizedBox(height: Responsive.h(6)),
+                              Text(
+                                '528Hz · Theta · Tu voz · Sin límites',
+                                style: GoogleFonts.manrope(
+                                  fontSize: Responsive.sp(12),
+                                  color: AppColors.textTertiary,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        width: Responsive.w(64),
-                        height: Responsive.w(64),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.25),
-                          shape: BoxShape.circle,
+                        Container(
+                          width: Responsive.w(64),
+                          height: Responsive.w(64),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withValues(alpha: 0.25),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            LucideIcons.mic,
+                            color: AppColors.primaryLight,
+                            size: Responsive.w(30),
+                          ),
                         ),
-                        child: Icon(
-                          LucideIcons.mic,
-                          color: AppColors.primaryLight,
-                          size: Responsive.w(30),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
                 ),
                 SizedBox(height: Responsive.h(20)),
                 SizedBox(
@@ -159,7 +165,8 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemCount: _categories.length,
-                    separatorBuilder: (_, __) => SizedBox(width: Responsive.w(8)),
+                    separatorBuilder: (_, _) =>
+                        SizedBox(width: Responsive.w(8)),
                     itemBuilder: (context, i) {
                       final active = i == _selectedCategory;
                       return GestureDetector(
@@ -167,13 +174,16 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 200),
                           padding: EdgeInsets.symmetric(
-                            horizontal: Responsive.w(18), vertical: Responsive.h(9),
+                            horizontal: Responsive.w(18),
+                            vertical: Responsive.h(9),
                           ),
                           decoration: BoxDecoration(
                             color: active
                                 ? AppColors.primary
                                 : AppColors.surfaceLight,
-                            borderRadius: BorderRadius.circular(Responsive.w(50)),
+                            borderRadius: BorderRadius.circular(
+                              Responsive.w(50),
+                            ),
                             border: Border.all(
                               color: active
                                   ? AppColors.primary
@@ -182,7 +192,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                           ),
                           child: Text(
                             _categories[i],
-                            style: GoogleFonts.urbanist(
+                            style: GoogleFonts.manrope(
                               fontSize: Responsive.sp(13),
                               fontWeight: FontWeight.w600,
                               color: active
@@ -270,7 +280,11 @@ class _ProductCard extends StatelessWidget {
                 color: accentColor.withValues(alpha: 0.18),
                 borderRadius: BorderRadius.circular(Responsive.w(14)),
               ),
-              child: Icon(LucideIcons.headphones, color: accentColor, size: Responsive.w(24)),
+              child: Icon(
+                LucideIcons.headphones,
+                color: accentColor,
+                size: Responsive.w(24),
+              ),
             ),
             SizedBox(width: Responsive.w(14)),
             Expanded(
@@ -279,7 +293,7 @@ class _ProductCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: GoogleFonts.urbanist(
+                    style: GoogleFonts.manrope(
                       fontSize: Responsive.sp(14),
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
@@ -288,7 +302,7 @@ class _ProductCard extends StatelessWidget {
                   SizedBox(height: Responsive.h(3)),
                   Text(
                     meta,
-                    style: GoogleFonts.urbanist(
+                    style: GoogleFonts.manrope(
                       fontSize: Responsive.sp(12),
                       color: AppColors.textTertiary,
                     ),
@@ -296,7 +310,8 @@ class _ProductCard extends StatelessWidget {
                   SizedBox(height: Responsive.h(6)),
                   Container(
                     padding: EdgeInsets.symmetric(
-                      horizontal: Responsive.w(8), vertical: Responsive.h(3),
+                      horizontal: Responsive.w(8),
+                      vertical: Responsive.h(3),
                     ),
                     decoration: BoxDecoration(
                       color: badgeColor.withValues(alpha: 0.15),
@@ -304,7 +319,7 @@ class _ProductCard extends StatelessWidget {
                     ),
                     child: Text(
                       badge,
-                      style: GoogleFonts.urbanist(
+                      style: GoogleFonts.manrope(
                         fontSize: Responsive.sp(11),
                         fontWeight: FontWeight.w600,
                         color: badgeColor,
@@ -320,7 +335,7 @@ class _ProductCard extends StatelessWidget {
               children: [
                 Text(
                   price,
-                  style: GoogleFonts.urbanist(
+                  style: GoogleFonts.manrope(
                     fontSize: Responsive.sp(18),
                     fontWeight: FontWeight.w800,
                     color: Colors.white,
@@ -329,7 +344,8 @@ class _ProductCard extends StatelessWidget {
                 SizedBox(height: Responsive.h(6)),
                 Container(
                   padding: EdgeInsets.symmetric(
-                    horizontal: Responsive.w(12), vertical: Responsive.h(6),
+                    horizontal: Responsive.w(12),
+                    vertical: Responsive.h(6),
                   ),
                   decoration: BoxDecoration(
                     gradient: AppGradients.primaryButton,
@@ -337,7 +353,7 @@ class _ProductCard extends StatelessWidget {
                   ),
                   child: Text(
                     'Obtener',
-                    style: GoogleFonts.urbanist(
+                    style: GoogleFonts.manrope(
                       fontSize: Responsive.sp(12),
                       fontWeight: FontWeight.w700,
                       color: Colors.white,

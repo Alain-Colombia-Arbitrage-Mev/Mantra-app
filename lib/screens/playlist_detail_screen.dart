@@ -35,7 +35,12 @@ class PlaylistDetailScreen extends StatelessWidget {
             children: [
               // ── Back header ──────────────────────────────────────────
               Padding(
-                padding: EdgeInsets.fromLTRB(Responsive.w(20), Responsive.h(16), Responsive.w(20), 0),
+                padding: EdgeInsets.fromLTRB(
+                  Responsive.w(20),
+                  Responsive.h(16),
+                  Responsive.w(20),
+                  0,
+                ),
                 child: Row(
                   children: [
                     GestureDetector(
@@ -65,7 +70,7 @@ class PlaylistDetailScreen extends StatelessWidget {
                       child: Text(
                         'Colección',
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.urbanist(
+                        style: GoogleFonts.manrope(
                           fontSize: Responsive.sp(17),
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
@@ -91,7 +96,12 @@ class PlaylistDetailScreen extends StatelessWidget {
               ),
               Expanded(
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.fromLTRB(Responsive.w(20), Responsive.h(24), Responsive.w(20), Responsive.h(32)),
+                  padding: EdgeInsets.fromLTRB(
+                    Responsive.w(20),
+                    Responsive.h(24),
+                    Responsive.w(20),
+                    Responsive.h(32),
+                  ),
                   child: Column(
                     children: [
                       // ── Cover image ────────────────────────────────────
@@ -140,7 +150,7 @@ class PlaylistDetailScreen extends StatelessWidget {
                       // ── Playlist info ──────────────────────────────────
                       Text(
                         'Activaciones Theta',
-                        style: GoogleFonts.urbanist(
+                        style: GoogleFonts.manrope(
                           fontSize: Responsive.sp(24),
                           fontWeight: FontWeight.w800,
                           color: Colors.white,
@@ -159,7 +169,7 @@ class PlaylistDetailScreen extends StatelessWidget {
                           SizedBox(width: Responsive.w(6)),
                           Text(
                             '6 pistas',
-                            style: GoogleFonts.urbanist(
+                            style: GoogleFonts.manrope(
                               fontSize: Responsive.sp(13),
                               color: AppColors.textTertiary,
                             ),
@@ -173,7 +183,7 @@ class PlaylistDetailScreen extends StatelessWidget {
                           SizedBox(width: Responsive.w(6)),
                           Text(
                             '1h 26min',
-                            style: GoogleFonts.urbanist(
+                            style: GoogleFonts.manrope(
                               fontSize: Responsive.sp(13),
                               color: AppColors.textTertiary,
                             ),
@@ -186,8 +196,8 @@ class PlaylistDetailScreen extends StatelessWidget {
                           ),
                           SizedBox(width: Responsive.w(6)),
                           Text(
-                            'Mantras App',
-                            style: GoogleFonts.urbanist(
+                            'mantralia',
+                            style: GoogleFonts.manrope(
                               fontSize: Responsive.sp(13),
                               color: AppColors.textTertiary,
                             ),
@@ -228,7 +238,7 @@ class PlaylistDetailScreen extends StatelessWidget {
                                     SizedBox(width: Responsive.w(8)),
                                     Text(
                                       'Reproducir todo',
-                                      style: GoogleFonts.urbanist(
+                                      style: GoogleFonts.manrope(
                                         fontSize: Responsive.sp(14),
                                         fontWeight: FontWeight.w700,
                                         color: Colors.white,
@@ -285,7 +295,7 @@ class PlaylistDetailScreen extends StatelessWidget {
                                     width: Responsive.w(24),
                                     child: Text(
                                       '${t.number}',
-                                      style: GoogleFonts.urbanist(
+                                      style: GoogleFonts.manrope(
                                         fontSize: Responsive.sp(13),
                                         color: AppColors.textMuted,
                                       ),
@@ -314,7 +324,7 @@ class PlaylistDetailScreen extends StatelessWidget {
                                       children: [
                                         Text(
                                           t.title,
-                                          style: GoogleFonts.urbanist(
+                                          style: GoogleFonts.manrope(
                                             fontSize: Responsive.sp(13),
                                             fontWeight: FontWeight.w600,
                                             color: Colors.white,
@@ -322,7 +332,7 @@ class PlaylistDetailScreen extends StatelessWidget {
                                         ),
                                         Text(
                                           t.meta,
-                                          style: GoogleFonts.urbanist(
+                                          style: GoogleFonts.manrope(
                                             fontSize: Responsive.sp(11),
                                             color: AppColors.textTertiary,
                                           ),

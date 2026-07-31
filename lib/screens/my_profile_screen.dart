@@ -19,7 +19,12 @@ class MyProfileScreen extends StatelessWidget {
         child: SafeArea(
           bottom: false,
           child: SingleChildScrollView(
-            padding: EdgeInsets.fromLTRB(Responsive.w(20), Responsive.h(20), Responsive.w(20), Responsive.h(40)),
+            padding: EdgeInsets.fromLTRB(
+              Responsive.w(20),
+              Responsive.h(20),
+              Responsive.w(20),
+              Responsive.h(40),
+            ),
             child: Column(
               children: [
                 // ── Header ──────────────────────────────────────────────
@@ -62,12 +67,16 @@ class MyProfileScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Icon(LucideIcons.user, color: Colors.white, size: Responsive.w(42)),
+                  child: Icon(
+                    LucideIcons.user,
+                    color: Colors.white,
+                    size: Responsive.w(42),
+                  ),
                 ),
                 SizedBox(height: Responsive.h(16)),
                 Text(
                   'Tu Nombre',
-                  style: GoogleFonts.urbanist(
+                  style: GoogleFonts.manrope(
                     fontSize: Responsive.sp(24),
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
@@ -75,8 +84,8 @@ class MyProfileScreen extends StatelessWidget {
                 ),
                 SizedBox(height: Responsive.h(4)),
                 Text(
-                  'Exploradora de frecuencias · MANTRAS Pro',
-                  style: GoogleFonts.urbanist(
+                  'Exploradora de frecuencias · MANTRALIA Pro',
+                  style: GoogleFonts.manrope(
                     fontSize: Responsive.sp(13),
                     color: const Color(0xCCFFFFFF),
                   ),
@@ -104,7 +113,7 @@ class MyProfileScreen extends StatelessWidget {
                     RevenueCatService.instance.isPro
                         ? 'Plan Pro · Activo'
                         : 'Plan Gratuito',
-                    style: GoogleFonts.urbanist(
+                    style: GoogleFonts.manrope(
                       fontSize: Responsive.sp(13),
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
@@ -168,8 +177,10 @@ class MyProfileScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          RevenueCatService.instance.isPro ? 'Activo' : 'Gratis',
-                          style: GoogleFonts.urbanist(
+                          RevenueCatService.instance.isPro
+                              ? 'Activo'
+                              : 'Gratis',
+                          style: GoogleFonts.manrope(
                             fontSize: Responsive.sp(11),
                             fontWeight: FontWeight.w700,
                             color: RevenueCatService.instance.isPro
@@ -215,7 +226,7 @@ class MyProfileScreen extends StatelessWidget {
                         SizedBox(width: Responsive.w(10)),
                         Text(
                           'Cerrar Sesión',
-                          style: GoogleFonts.urbanist(
+                          style: GoogleFonts.manrope(
                             fontSize: Responsive.sp(16),
                             fontWeight: FontWeight.w700,
                             color: AppColors.danger,
@@ -254,7 +265,7 @@ class _StatCard extends StatelessWidget {
           children: [
             Text(
               value,
-              style: GoogleFonts.urbanist(
+              style: GoogleFonts.manrope(
                 fontSize: Responsive.sp(22),
                 fontWeight: FontWeight.w800,
                 color: Colors.white,
@@ -263,7 +274,7 @@ class _StatCard extends StatelessWidget {
             SizedBox(height: Responsive.h(2)),
             Text(
               label,
-              style: GoogleFonts.urbanist(
+              style: GoogleFonts.manrope(
                 fontSize: Responsive.sp(11),
                 color: const Color(0x60FFFFFF),
               ),
@@ -321,7 +332,10 @@ class _ProfileRow extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: Responsive.w(16), vertical: Responsive.h(14)),
+        padding: EdgeInsets.symmetric(
+          horizontal: Responsive.w(16),
+          vertical: Responsive.h(14),
+        ),
         child: Row(
           children: [
             Container(
@@ -337,7 +351,7 @@ class _ProfileRow extends StatelessWidget {
             Expanded(
               child: Text(
                 title,
-                style: GoogleFonts.urbanist(
+                style: GoogleFonts.manrope(
                   fontSize: Responsive.sp(15),
                   fontWeight: FontWeight.w600,
                   color: Colors.white,

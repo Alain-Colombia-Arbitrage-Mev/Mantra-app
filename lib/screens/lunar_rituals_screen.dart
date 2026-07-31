@@ -327,7 +327,7 @@ class _LunarRitualsScreenState extends State<LunarRitualsScreen>
                               children: [
                                 AnimatedBuilder(
                                   animation: _pulseAnim,
-                                  builder: (_, __) => Container(
+                                  builder: (_, _) => Container(
                                     width: Responsive.w(8),
                                     height: Responsive.w(8),
                                     decoration: BoxDecoration(

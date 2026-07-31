@@ -205,7 +205,7 @@ class AlarmService {
     );
     await _notifications.zonedSchedule(
       id: alarm.id,
-      title: 'Mantras',
+      title: 'mantralia',
       body: alarm.name,
       scheduledDate: scheduled,
       notificationDetails: notificationDetails,
@@ -233,8 +233,8 @@ class AlarmService {
 
     const androidDetails = AndroidNotificationDetails(
       'mantras_alarms',
-      'Alarmas Mantras',
-      channelDescription: 'Alarmas de la app Mantras',
+      'Alarmas mantralia',
+      channelDescription: 'Alarmas de la app mantralia',
       importance: Importance.max,
       priority: Priority.high,
       playSound: true,
@@ -245,7 +245,7 @@ class AlarmService {
 
     await plugin.show(
       id: id,
-      title: 'Mantras',
+      title: 'mantralia',
       body: 'Tu alarma está sonando',
       notificationDetails: details,
     );

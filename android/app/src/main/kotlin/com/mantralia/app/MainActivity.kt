@@ -1,4 +1,4 @@
-package com.mantras.app.mandala_app
+package com.mantralia.app
 
 import io.flutter.embedding.android.FlutterActivity
 

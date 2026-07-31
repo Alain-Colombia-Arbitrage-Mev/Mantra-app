@@ -45,8 +45,10 @@ class NotifLockScreen extends StatelessWidget {
                   SizedBox(height: Responsive.h(80)),
                   Text(
                     '11:11',
-                    style: GoogleFonts.urbanist(
-                      fontSize: Responsive.sp(88),
+                    style: GoogleFonts.manrope(
+                      fontSize: Responsive.isCompact
+                          ? Responsive.sp(64)
+                          : Responsive.sp(88),
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                       height: 1.0,
@@ -56,7 +58,7 @@ class NotifLockScreen extends StatelessWidget {
                   SizedBox(height: Responsive.h(20)),
                   Text(
                     'Sábado 21 de Febrero',
-                    style: GoogleFonts.urbanist(
+                    style: GoogleFonts.manrope(
                       fontSize: Responsive.sp(16),
                       color: const Color(0xAAFFFFFF),
                     ),
@@ -87,7 +89,7 @@ class NotifLockScreen extends StatelessWidget {
                         SizedBox(width: Responsive.w(12)),
                         Text(
                           'Mantra protección · Sonando',
-                          style: GoogleFonts.urbanist(
+                          style: GoogleFonts.manrope(
                             fontSize: Responsive.sp(13),
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
@@ -108,8 +110,11 @@ class NotifLockScreen extends StatelessWidget {
                   SizedBox(height: Responsive.h(28)),
                   _NotifCard(
                     borderColor: const Color(0x55A29BFE),
-                    gradientColors: const [Color(0xFF2D1B69), Color(0xFF1A0F40)],
-                    appLabel: 'MANTRAS ahora',
+                    gradientColors: const [
+                      Color(0xFF2D1B69),
+                      Color(0xFF1A0F40),
+                    ],
+                    appLabel: 'mantralia ahora',
                     title: 'Hora Espejo 11:11 · Pide un deseo',
                     subtitle:
                         'Puerta de manifestación abierta. Tu afirmación te espera.',
@@ -121,8 +126,11 @@ class NotifLockScreen extends StatelessWidget {
                   SizedBox(height: Responsive.h(12)),
                   _NotifCard(
                     borderColor: const Color(0x55F9A826),
-                    gradientColors: const [Color(0xFF2D1A00), Color(0xFF1A0F00)],
-                    appLabel: 'MANTRAS hace 2 min',
+                    gradientColors: const [
+                      Color(0xFF2D1A00),
+                      Color(0xFF1A0F00),
+                    ],
+                    appLabel: 'mantralia hace 2 min',
                     title: 'Júpiter · Ventana de poder abierta',
                     subtitle:
                         '14:14 – 15:30 · Máximo poder para manifestar ahora',
@@ -134,8 +142,11 @@ class NotifLockScreen extends StatelessWidget {
                   SizedBox(height: Responsive.h(12)),
                   _NotifCard(
                     borderColor: const Color(0x5555EFC4),
-                    gradientColors: const [Color(0xFF001A12), Color(0xFF000F09)],
-                    appLabel: 'MANTRAS 06:28',
+                    gradientColors: const [
+                      Color(0xFF001A12),
+                      Color(0xFF000F09),
+                    ],
+                    appLabel: 'mantralia 06:28',
                     title: 'Tehilim 27 · Tu protección diaria',
                     subtitle:
                         'KD Señor es mi luz y mi salvación · Shajarit en 2 min',
@@ -147,8 +158,11 @@ class NotifLockScreen extends StatelessWidget {
                   SizedBox(height: Responsive.h(12)),
                   _NotifCard(
                     borderColor: const Color(0x55FFEAA7),
-                    gradientColors: const [Color(0xFF2D2000), Color(0xFF1A1400)],
-                    appLabel: 'MANTRAS',
+                    gradientColors: const [
+                      Color(0xFF2D2000),
+                      Color(0xFF1A1400),
+                    ],
+                    appLabel: 'mantralia',
                     title: 'Mantra de Abundancia · Repite ahora',
                     subtitle: 'Yo atraigo prosperidad y riqueza a mi vida',
                     iconColor: const Color(0xFFFFEAA7),
@@ -167,7 +181,9 @@ class NotifLockScreen extends StatelessWidget {
                             }
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(vertical: Responsive.h(14)),
+                            padding: EdgeInsets.symmetric(
+                              vertical: Responsive.h(14),
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.white.withValues(alpha: 0.08),
                               borderRadius: BorderRadius.circular(50),
@@ -180,18 +196,16 @@ class NotifLockScreen extends StatelessWidget {
                               children: [
                                 Icon(
                                   LucideIcons.x,
-                                  color:
-                                      Colors.white.withValues(alpha: 0.66),
+                                  color: Colors.white.withValues(alpha: 0.66),
                                   size: Responsive.w(16),
                                 ),
                                 SizedBox(width: Responsive.w(8)),
                                 Text(
                                   'Descartar',
-                                  style: GoogleFonts.urbanist(
+                                  style: GoogleFonts.manrope(
                                     fontSize: Responsive.sp(14),
                                     fontWeight: FontWeight.w600,
-                                    color: Colors.white
-                                        .withValues(alpha: 0.66),
+                                    color: Colors.white.withValues(alpha: 0.66),
                                   ),
                                 ),
                               ],
@@ -204,7 +218,9 @@ class NotifLockScreen extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () => context.push('/notif-modal'),
                           child: Container(
-                            padding: EdgeInsets.symmetric(vertical: Responsive.h(14)),
+                            padding: EdgeInsets.symmetric(
+                              vertical: Responsive.h(14),
+                            ),
                             decoration: BoxDecoration(
                               color: AppColors.primary,
                               borderRadius: BorderRadius.circular(50),
@@ -214,7 +230,7 @@ class NotifLockScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   'Abrir ritual',
-                                  style: GoogleFonts.urbanist(
+                                  style: GoogleFonts.manrope(
                                     fontSize: Responsive.sp(14),
                                     fontWeight: FontWeight.w700,
                                     color: Colors.white,
@@ -344,7 +360,7 @@ class _NotifCard extends StatelessWidget {
                   children: [
                     Text(
                       appLabel,
-                      style: GoogleFonts.urbanist(
+                      style: GoogleFonts.manrope(
                         fontSize: Responsive.sp(11),
                         fontWeight: FontWeight.w700,
                         letterSpacing: 0.5,
@@ -354,7 +370,7 @@ class _NotifCard extends StatelessWidget {
                     SizedBox(height: Responsive.h(3)),
                     Text(
                       title,
-                      style: GoogleFonts.urbanist(
+                      style: GoogleFonts.manrope(
                         fontSize: Responsive.sp(14),
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
@@ -363,7 +379,7 @@ class _NotifCard extends StatelessWidget {
                     SizedBox(height: Responsive.h(3)),
                     Text(
                       subtitle,
-                      style: GoogleFonts.urbanist(
+                      style: GoogleFonts.manrope(
                         fontSize: Responsive.sp(12),
                         color: Colors.white.withValues(alpha: 0.66),
                         height: 1.3,
