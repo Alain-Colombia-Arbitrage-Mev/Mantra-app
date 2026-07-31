@@ -156,6 +156,12 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
               context.push('/register');
               return;
             }
+            // The refreshed paywall exposes both the trial CTA and the
+            // continue-with-free-version action.
+            if (index == 10 && point.dy > .70 && point.dy < .90) {
+              _next();
+              return;
+            }
             // POST · Prueba activada → práctica lista → Home.
             if (index == 11 && point.dy > .80 && point.dy < .90) {
               _next();

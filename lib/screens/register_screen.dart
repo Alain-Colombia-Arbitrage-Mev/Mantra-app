@@ -38,8 +38,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
       showNavigation: false,
       respectSafeArea: false,
       onTap: (point) {
-        if (point.dy > .84 && point.dy < .93) _complete();
-        if (point.dy > .93) context.go('/login');
+        // The current Pencil frame places the primary action just below the
+        // terms checkbox and the existing-account action below social login.
+        if (point.dy > .57 && point.dy < .65) {
+          _complete();
+          return;
+        }
+        if (point.dy > .76 && point.dy < .82) context.go('/login');
       },
       overlays: [
         Positioned(
