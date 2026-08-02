@@ -36,7 +36,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   final _controller = PageController();
   int _page = 0;
   bool _precacheStarted = false;
-  final Set<String> _needs = {'Dormir mejor'};
+  final Set<String> _needs = {'Calma y protección'};
   final Set<String> _times = {'5 minutos'};
   final Set<String> _guidance = {'Guíame paso a paso'};
 
@@ -100,6 +100,20 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     });
   }
 
+  void _toggleIntention(String value) {
+    setState(() {
+      if (_needs.contains(value)) {
+        // Keep one clear primary intention at all times.
+        if (_needs.length > 1) _needs.remove(value);
+        return;
+      }
+
+      // The first selection is primary; the next two are secondary.
+      if (_needs.length == 3) _needs.remove(_needs.last);
+      _needs.add(value);
+    });
+  }
+
   List<Widget> _choiceOverlays(int index, Size size) {
     final horizontalInset = size.width * (24 / PencilSurface.canvasSize.width);
     switch (index) {
@@ -112,13 +126,14 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
             height: size.height * (222 / 956),
             child: _MultiChoiceList(
               values: const [
-                ('Sentir calma', Icons.spa_outlined),
-                ('Dormir mejor', Icons.bedtime_outlined),
-                ('Enfoque y confianza', Icons.center_focus_strong_outlined),
-                ('Soltar una etapa', Icons.auto_awesome_outlined),
+                ('Calma y protección', Icons.shield_outlined),
+                ('Bienestar', Icons.spa_outlined),
+                ('Prosperidad y trabajo', Icons.trending_up_rounded),
+                ('Amor y propósito', Icons.favorite_border_rounded),
               ],
               selected: _needs,
-              onToggle: (value) => _toggle(_needs, value),
+              showPrimary: true,
+              onToggle: _toggleIntention,
             ),
           ),
         ];
@@ -526,7 +541,7 @@ class _StoryOneCopy extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          '01 · MIRAS AL UNIVERSO BUSCANDO UNA SEÑAL',
+          'MIRAS AL UNIVERSO BUSCANDO UNA SEÑAL',
           style: GoogleFonts.inter(
             color: const Color(0xFFD6B1D8),
             fontSize: 11.5,
@@ -680,30 +695,38 @@ class _MultiChoiceList extends StatelessWidget {
   final List<_Choice> values;
   final Set<String> selected;
   final ValueChanged<String> onToggle;
+  final bool showPrimary;
 
   const _MultiChoiceList({
     required this.values,
     required this.selected,
     required this.onToggle,
+    this.showPrimary = false,
   });
 
   @override
-  Widget build(BuildContext context) => Column(
-    children: values
-        .map(
-          (value) => Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 5),
-              child: _ChoiceCard(
-                label: value.$1,
-                active: selected.contains(value.$1),
-                onTap: () => onToggle(value.$1),
+  Widget build(BuildContext context) {
+    final selectedOrder = selected.toList();
+    return Column(
+      children: values
+          .map(
+            (value) => Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: _ChoiceCard(
+                  label: value.$1,
+                  active: selected.contains(value.$1),
+                  badgeText: showPrimary && selectedOrder.indexOf(value.$1) == 0
+                      ? 'P'
+                      : null,
+                  onTap: () => onToggle(value.$1),
+                ),
               ),
             ),
-          ),
-        )
-        .toList(),
-  );
+          )
+          .toList(),
+    );
+  }
 }
 
 class _MultiChoiceGrid extends StatelessWidget {
@@ -741,6 +764,7 @@ class _ChoiceCard extends StatelessWidget {
   final String label;
   final bool active;
   final bool compact;
+  final String? badgeText;
   final VoidCallback onTap;
 
   const _ChoiceCard({
@@ -748,6 +772,7 @@ class _ChoiceCard extends StatelessWidget {
     required this.active,
     required this.onTap,
     this.compact = false,
+    this.badgeText,
   });
 
   @override
@@ -771,11 +796,22 @@ class _ChoiceCard extends StatelessWidget {
               color: Color(0xFF9897F5),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              Icons.check_rounded,
-              size: compact ? 12 : 14,
-              color: const Color(0xFF09080D),
-            ),
+            child: badgeText == null
+                ? Icon(
+                    Icons.check_rounded,
+                    size: compact ? 12 : 14,
+                    color: const Color(0xFF09080D),
+                  )
+                : Center(
+                    child: Text(
+                      badgeText!,
+                      style: const TextStyle(
+                        color: Color(0xFF09080D),
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ),
           ),
         ),
       ),
