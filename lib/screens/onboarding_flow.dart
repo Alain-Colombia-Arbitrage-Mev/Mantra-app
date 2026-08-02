@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:video_player/video_player.dart';
 
+import '../services/revenuecat_service.dart';
 import '../widgets/pencil_surface.dart';
 
 /// Production frames exported from mandala2.pen. The controls are native
@@ -40,6 +42,9 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   final Set<String> _needs = {'Calma y protección'};
   final Set<String> _times = {'5 minutos'};
   final Set<String> _guidance = {'Guíame paso a paso'};
+  _PaywallPlan _selectedPaywallPlan = _PaywallPlan.annual;
+  bool _paywallActionInProgress = false;
+  bool _restoreInProgress = false;
 
   @override
   void didChangeDependencies() {
@@ -113,6 +118,186 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
       if (_needs.length == 3) _needs.remove(_needs.last);
       _needs.add(value);
     });
+  }
+
+  Package? _packageForPlan(Offerings offerings) {
+    final packages = offerings.current?.availablePackages ?? const <Package>[];
+    final wantedType = _selectedPaywallPlan == _PaywallPlan.annual
+        ? PackageType.annual
+        : PackageType.monthly;
+
+    for (final package in packages) {
+      if (package.packageType == wantedType) return package;
+    }
+    return packages.isEmpty ? null : packages.first;
+  }
+
+  Future<void> _continueWithRitualPlus() async {
+    if (_paywallActionInProgress || _restoreInProgress) return;
+    HapticFeedback.mediumImpact();
+    setState(() => _paywallActionInProgress = true);
+
+    var success = false;
+    try {
+      final offerings = await RevenueCatService.instance.getOfferings();
+      final package = offerings == null ? null : _packageForPlan(offerings);
+      if (package != null) {
+        success = await RevenueCatService.instance.purchasePackage(package);
+      } else {
+        await RevenueCatService.instance.presentPaywall();
+        success = await RevenueCatService.instance.checkProStatus();
+      }
+    } catch (error) {
+      debugPrint('Onboarding paywall failed: $error');
+    }
+
+    if (!mounted) return;
+    setState(() => _paywallActionInProgress = false);
+    if (success) {
+      _next();
+      return;
+    }
+    _showPaywallMessage(
+      'La compra no se completó. Puedes intentarlo de nuevo o seguir gratis.',
+    );
+  }
+
+  Future<void> _restorePurchase() async {
+    if (_paywallActionInProgress || _restoreInProgress) return;
+    HapticFeedback.selectionClick();
+    setState(() => _restoreInProgress = true);
+    final success = await RevenueCatService.instance.restorePurchases();
+    if (!mounted) return;
+    setState(() => _restoreInProgress = false);
+    if (success) {
+      _next();
+      return;
+    }
+    _showPaywallMessage('No encontramos una compra activa para restaurar.');
+  }
+
+  void _showPaywallMessage(String message) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(message, style: GoogleFonts.manrope()),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: const Color(0xFF211B3B),
+        ),
+      );
+  }
+
+  void _selectPaywallPlan(_PaywallPlan plan) {
+    HapticFeedback.selectionClick();
+    setState(() => _selectedPaywallPlan = plan);
+  }
+
+  List<Widget> _paywallOverlays(String nodeId, Size size) {
+    if (nodeId != 'IEgGc') return const [];
+
+    double x(double value) => size.width * (value / 440);
+    double y(double value) => size.height * (value / 956);
+
+    return [
+      Positioned(
+        left: x(384),
+        top: y(6),
+        width: x(48),
+        height: y(48),
+        child: _PaywallTapTarget(
+          key: const Key('paywall_close'),
+          label: 'Cerrar y seguir con la versión gratuita',
+          onTap: _next,
+        ),
+      ),
+      Positioned(
+        left: x(24),
+        top: y(341),
+        width: x(392),
+        height: y(76),
+        child: _PaywallPlanTarget(
+          key: const Key('paywall_plan_monthly'),
+          label: 'Plan mensual, 9 dólares con 99 al mes',
+          selected: _selectedPaywallPlan == _PaywallPlan.monthly,
+          radioTop: y(27),
+          onTap: () => _selectPaywallPlan(_PaywallPlan.monthly),
+        ),
+      ),
+      Positioned(
+        left: x(24),
+        top: y(427),
+        width: x(392),
+        height: y(92),
+        child: _PaywallPlanTarget(
+          key: const Key('paywall_plan_annual'),
+          label: 'Plan anual recomendado, 79 dólares al año',
+          selected: _selectedPaywallPlan == _PaywallPlan.annual,
+          radioTop: y(35),
+          onTap: () => _selectPaywallPlan(_PaywallPlan.annual),
+        ),
+      ),
+      Positioned(
+        left: x(24),
+        top: y(820),
+        width: x(392),
+        height: y(58),
+        child: _PaywallTapTarget(
+          key: const Key('paywall_continue'),
+          label: _selectedPaywallPlan == _PaywallPlan.annual
+              ? 'Continuar con Ritual Plus, plan anual'
+              : 'Continuar con Ritual Plus, plan mensual',
+          enabled: !_restoreInProgress,
+          loading: _paywallActionInProgress,
+          onTap: _continueWithRitualPlus,
+        ),
+      ),
+      Positioned(
+        left: x(24),
+        top: y(882),
+        width: x(392),
+        height: y(32),
+        child: _PaywallTapTarget(
+          key: const Key('paywall_continue_free'),
+          label: 'Seguir con la versión gratuita',
+          enabled: !_paywallActionInProgress && !_restoreInProgress,
+          onTap: _next,
+        ),
+      ),
+      Positioned(
+        left: x(24),
+        top: y(910),
+        width: x(392),
+        height: y(38),
+        child: Row(
+          children: [
+            Expanded(
+              child: _PaywallTapTarget(
+                key: const Key('paywall_terms'),
+                label: 'Términos de uso',
+                onTap: () => context.push('/terms'),
+              ),
+            ),
+            Expanded(
+              child: _PaywallTapTarget(
+                key: const Key('paywall_privacy'),
+                label: 'Política de privacidad',
+                onTap: () => context.push('/terms'),
+              ),
+            ),
+            Expanded(
+              child: _PaywallTapTarget(
+                key: const Key('paywall_restore'),
+                label: 'Restaurar compra',
+                enabled: !_paywallActionInProgress,
+                loading: _restoreInProgress,
+                onTap: _restorePurchase,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ];
   }
 
   List<Widget> _choiceOverlays(String nodeId, Size size) {
@@ -224,18 +409,18 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
           nodeId: nodeId,
           showNavigation: false,
           respectSafeArea: false,
-          overlays: _choiceOverlays(nodeId, size),
+          overlays: [
+            ..._choiceOverlays(nodeId, size),
+            ..._paywallOverlays(nodeId, size),
+          ],
           onTap: (point) {
             if (nodeId == 'wecjl' && point.dy > .32 && point.dy < .69) {
               context.push('/register');
               return;
             }
-            // The refreshed paywall exposes both the trial CTA and the
-            // continue-with-free-version action.
-            if (nodeId == 'IEgGc' && point.dy > .70 && point.dy < .90) {
-              _next();
-              return;
-            }
+            // IEgGc is fully controlled by precise native overlays. Do not let
+            // the generic bottom-of-screen fallback advance the paywall.
+            if (nodeId == 'IEgGc') return;
             // POST · Prueba activada → práctica lista → Home.
             if (nodeId == 'w4GjPh' && point.dy > .80 && point.dy < .90) {
               _next();
@@ -255,6 +440,138 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
       },
     );
   }
+}
+
+enum _PaywallPlan { monthly, annual }
+
+class _PaywallTapTarget extends StatelessWidget {
+  final String label;
+  final VoidCallback onTap;
+  final bool enabled;
+  final bool loading;
+
+  const _PaywallTapTarget({
+    super.key,
+    required this.label,
+    required this.onTap,
+    this.enabled = true,
+    this.loading = false,
+  });
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    button: true,
+    label: label,
+    enabled: enabled && !loading,
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: enabled && !loading ? onTap : null,
+        borderRadius: BorderRadius.circular(18),
+        splashColor: const Color(0x33D7B56D),
+        highlightColor: const Color(0x1FD7B56D),
+        child: loading
+            ? const Center(
+                child: SizedBox.square(
+                  dimension: 22,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.2,
+                    color: Color(0xFFD7B56D),
+                  ),
+                ),
+              )
+            : const SizedBox.expand(),
+      ),
+    ),
+  );
+}
+
+class _PaywallPlanTarget extends StatelessWidget {
+  final String label;
+  final bool selected;
+  final double radioTop;
+  final VoidCallback onTap;
+
+  const _PaywallPlanTarget({
+    super.key,
+    required this.label,
+    required this.selected,
+    required this.radioTop,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    button: true,
+    selected: selected,
+    label: label,
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        splashColor: const Color(0x26D7B56D),
+        highlightColor: const Color(0x14D7B56D),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: IgnorePointer(
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 180),
+                  decoration: BoxDecoration(
+                    color: selected
+                        ? const Color(0x0FD7B56D)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      width: selected ? 2 : 1,
+                      color: selected
+                          ? const Color(0xFFD7B56D)
+                          : Colors.transparent,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              left: 16,
+              top: radioTop,
+              child: IgnorePointer(
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 180),
+                  width: 22,
+                  height: 22,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF171329),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: selected
+                          ? const Color(0xFFD7B56D)
+                          : const Color(0xFF8D879F),
+                      width: selected ? 2 : 1.4,
+                    ),
+                  ),
+                  child: selected
+                      ? const Center(
+                          child: SizedBox.square(
+                            dimension: 10,
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: Color(0xFFD7B56D),
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ),
+                        )
+                      : null,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }
 
 class _VideoStoryPage extends StatefulWidget {

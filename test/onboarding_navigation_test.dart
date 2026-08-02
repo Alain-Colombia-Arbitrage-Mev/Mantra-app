@@ -31,4 +31,45 @@ void main() {
     await tester.pump(const Duration(milliseconds: 300));
     expect(controller().page, closeTo(4, .01));
   });
+
+  testWidgets('paywall supports plan selection and the free continuation', (
+    WidgetTester tester,
+  ) async {
+    tester.view.physicalSize = const Size(440, 956);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(const MaterialApp(home: OnboardingFlow()));
+    await tester.pump();
+
+    final controller = tester
+        .widget<PageView>(find.byType(PageView))
+        .controller!;
+    controller.jumpToPage(11);
+    await tester.pump();
+
+    final monthly = find.byKey(const Key('paywall_plan_monthly'));
+    final annual = find.byKey(const Key('paywall_plan_annual'));
+    bool isSelected(Finder target) => tester
+        .widget<Semantics>(
+          find.descendant(of: target, matching: find.byType(Semantics)).first,
+        )
+        .properties
+        .selected!;
+    expect(monthly, findsOneWidget);
+    expect(annual, findsOneWidget);
+    expect(isSelected(monthly), isFalse);
+    expect(isSelected(annual), isTrue);
+
+    await tester.tap(monthly);
+    await tester.pump(const Duration(milliseconds: 200));
+    expect(isSelected(monthly), isTrue);
+    expect(isSelected(annual), isFalse);
+
+    await tester.tap(find.byKey(const Key('paywall_continue_free')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(controller.page, closeTo(12, .01));
+  });
 }
