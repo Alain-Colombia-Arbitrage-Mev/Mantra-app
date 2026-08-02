@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mantralia/screens/onboarding_flow.dart';
 
 void main() {
-  testWidgets('third onboarding screen advances to intention story', (
+  testWidgets('manifestation story advances to the intention story', (
     WidgetTester tester,
   ) async {
     tester.view.physicalSize = const Size(440, 956);
@@ -25,5 +25,10 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
     expect(controller().page, closeTo(3, .01));
+
+    await tester.tapAt(const Offset(392, 876));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(controller().page, closeTo(4, .01));
   });
 }

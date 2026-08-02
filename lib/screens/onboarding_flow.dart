@@ -21,6 +21,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   static const _nodes = [
     'TTLH4',
     'x36zX',
+    'bFUOx',
     '1DHid',
     'CqnJW',
     '3fTTR',
@@ -114,10 +115,10 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     });
   }
 
-  List<Widget> _choiceOverlays(int index, Size size) {
+  List<Widget> _choiceOverlays(String nodeId, Size size) {
     final horizontalInset = size.width * (24 / PencilSurface.canvasSize.width);
-    switch (index) {
-      case 5:
+    switch (nodeId) {
+      case 'tkH7u':
         return [
           Positioned(
             left: horizontalInset,
@@ -137,7 +138,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
             ),
           ),
         ];
-      case 6:
+      case 'l5Vlq':
         return [
           Positioned(
             left: horizontalInset,
@@ -156,7 +157,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
             ),
           ),
         ];
-      case 7:
+      case 'yBsgB':
         return [
           Positioned(
             left: horizontalInset,
@@ -188,7 +189,9 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
       itemCount: _nodes.length,
       onPageChanged: (value) => setState(() => _page = value),
       itemBuilder: (context, index) {
-        if (index == 0) {
+        final nodeId = _nodes[index];
+
+        if (nodeId == 'TTLH4') {
           return _VideoStoryPage(
             active: _page == index,
             onContinue: _next,
@@ -202,7 +205,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
           );
         }
 
-        if (index == 3) {
+        if (nodeId == 'CqnJW') {
           return _VideoStoryPage(
             active: _page == index,
             onContinue: _next,
@@ -218,31 +221,31 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         }
 
         return PencilSurface(
-          nodeId: _nodes[index],
+          nodeId: nodeId,
           showNavigation: false,
           respectSafeArea: false,
-          overlays: _choiceOverlays(index, size),
+          overlays: _choiceOverlays(nodeId, size),
           onTap: (point) {
-            if (index == 9 && point.dy > .32 && point.dy < .69) {
+            if (nodeId == 'wecjl' && point.dy > .32 && point.dy < .69) {
               context.push('/register');
               return;
             }
             // The refreshed paywall exposes both the trial CTA and the
             // continue-with-free-version action.
-            if (index == 10 && point.dy > .70 && point.dy < .90) {
+            if (nodeId == 'IEgGc' && point.dy > .70 && point.dy < .90) {
               _next();
               return;
             }
             // POST · Prueba activada → práctica lista → Home.
-            if (index == 11 && point.dy > .80 && point.dy < .90) {
+            if (nodeId == 'w4GjPh' && point.dy > .80 && point.dy < .90) {
               _next();
               return;
             }
-            if (index == 12 && point.dy > .87 && point.dy < .96) {
+            if (nodeId == 'D4A7Y' && point.dy > .87 && point.dy < .96) {
               _startPractice();
               return;
             }
-            if (index == 4 && point.dy > .78 && point.dy < .90) {
+            if (nodeId == '3fTTR' && point.dy > .78 && point.dy < .90) {
               _next();
               return;
             }
