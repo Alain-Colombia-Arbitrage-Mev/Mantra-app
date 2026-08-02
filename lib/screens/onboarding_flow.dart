@@ -37,6 +37,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     'D4A7Y',
   ];
   final _controller = PageController();
+  final _paywallScrollController = ScrollController(keepScrollOffset: false);
   int _page = 0;
   bool _precacheStarted = false;
   final Set<String> _needs = {'Calma y protección'};
@@ -79,6 +80,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   @override
   void dispose() {
     _controller.dispose();
+    _paywallScrollController.dispose();
     super.dispose();
   }
 
@@ -300,7 +302,14 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
       itemCount: _nodes.length,
       onPageChanged: (value) {
         setState(() => _page = value);
-        if (_nodes[value] == 'IEgGc') unawaited(_loadPaywallOfferings());
+        if (_nodes[value] == 'IEgGc') {
+          unawaited(_loadPaywallOfferings());
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (_paywallScrollController.hasClients) {
+              _paywallScrollController.jumpTo(0);
+            }
+          });
+        }
       },
       itemBuilder: (context, index) {
         final nodeId = _nodes[index];
@@ -337,6 +346,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         if (nodeId == 'IEgGc') {
           return _OnboardingPaywallPage(
             currencyCode: _paywallCurrency,
+            scrollController: _paywallScrollController,
             monthlyPrice: _paywallPrice(_PaywallPlan.monthly, r'$9.99'),
             annualPrice: _paywallPrice(_PaywallPlan.annual, r'$79.00'),
             selectedPlan: _selectedPaywallPlan,
@@ -394,6 +404,7 @@ class _OnboardingPaywallPage extends StatelessWidget {
   static const _muted = Color(0xFFAAA3B0);
 
   final String currencyCode;
+  final ScrollController scrollController;
   final String monthlyPrice;
   final String annualPrice;
   final _PaywallPlan selectedPlan;
@@ -409,6 +420,7 @@ class _OnboardingPaywallPage extends StatelessWidget {
 
   const _OnboardingPaywallPage({
     required this.currencyCode,
+    required this.scrollController,
     required this.monthlyPrice,
     required this.annualPrice,
     required this.selectedPlan,
@@ -427,7 +439,13 @@ class _OnboardingPaywallPage extends StatelessWidget {
   Widget build(BuildContext context) => AnnotatedRegion<SystemUiOverlayStyle>(
     value: SystemUiOverlayStyle.light.copyWith(
       statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.dark,
+      systemStatusBarContrastEnforced: false,
       systemNavigationBarColor: _background,
+      systemNavigationBarIconBrightness: Brightness.light,
+      systemNavigationBarDividerColor: Colors.transparent,
+      systemNavigationBarContrastEnforced: false,
     ),
     child: Scaffold(
       backgroundColor: _background,
@@ -450,11 +468,12 @@ class _OnboardingPaywallPage extends StatelessWidget {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        Color(0x26000000),
+                        Color(0xB8000000),
+                        Color(0x52000000),
                         Colors.transparent,
                         _background,
                       ],
-                      stops: [0, .56, 1],
+                      stops: [0, .23, .58, 1],
                     ),
                   ),
                 ),
@@ -518,171 +537,194 @@ class _OnboardingPaywallPage extends StatelessWidget {
           Expanded(
             child: SafeArea(
               top: false,
-              child: SingleChildScrollView(
-                physics: const ClampingScrollPhysics(),
-                padding: const EdgeInsets.fromLTRB(24, 6, 24, 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const _PaywallBadge(),
-                    const SizedBox(height: 7),
-                    Text(
-                      'Una práctica que sí cabe en tu vida',
-                      style: GoogleFonts.manrope(
-                        color: _text,
-                        fontSize: 27,
-                        height: 1.08,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: -.7,
-                      ),
+              minimum: const EdgeInsets.only(bottom: 4),
+              child: LayoutBuilder(
+                builder: (context, constraints) => SingleChildScrollView(
+                  controller: scrollController,
+                  primary: false,
+                  physics: const ClampingScrollPhysics(),
+                  padding: const EdgeInsets.fromLTRB(24, 6, 24, 6),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight - 12,
                     ),
-                    const SizedBox(height: 7),
-                    Row(
-                      children: [
-                        const Text(
-                          '★★★★★',
-                          style: TextStyle(color: _text, fontSize: 12),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            'Precio claro · renovación visible · cancela cuando quieras',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                    child: IntrinsicHeight(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const _PaywallBadge(),
+                          const SizedBox(height: 7),
+                          Text(
+                            'Una práctica que sí cabe en tu vida',
                             style: GoogleFonts.manrope(
-                              color: _muted,
-                              fontSize: 10.5,
-                              fontWeight: FontWeight.w500,
+                              color: _text,
+                              fontSize: 27,
+                              height: 1.08,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: -.7,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    _PaywallPlanCard(
-                      key: const Key('paywall_plan_monthly'),
-                      title: 'Mensual',
-                      subtitle: '$monthlyPrice al mes · cancela cuando quieras',
-                      price: monthlyPrice,
-                      period: '/mes',
-                      selected: selectedPlan == _PaywallPlan.monthly,
-                      onTap: () => onSelectPlan(_PaywallPlan.monthly),
-                    ),
-                    const SizedBox(height: 8),
-                    _PaywallPlanCard(
-                      key: const Key('paywall_plan_annual'),
-                      title: 'Anual',
-                      subtitle: 'Facturación anual · mayor ahorro',
-                      price: annualPrice,
-                      period: '/año',
-                      recommended: true,
-                      selected: selectedPlan == _PaywallPlan.annual,
-                      onTap: () => onSelectPlan(_PaywallPlan.annual),
-                    ),
-                    const SizedBox(height: 10),
-                    const _PaywallBenefits(),
-                    const SizedBox(height: 9),
-                    _PaywallInfoRow(
-                      icon: Icons.notifications_none_rounded,
-                      text:
-                          'Después, $annualPrice/año. Te avisaremos antes de renovar.',
-                    ),
-                    const SizedBox(height: 5),
-                    const _PaywallInfoRow(
-                      icon: Icons.shield_outlined,
-                      text: 'Sin permanencia · cancela cuando quieras',
-                    ),
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 58,
-                      child: FilledButton(
-                        key: const Key('paywall_continue'),
-                        onPressed: purchasing || restoring ? null : onContinue,
-                        style: FilledButton.styleFrom(
-                          backgroundColor: _text,
-                          disabledBackgroundColor: const Color(0xFFB8B0BA),
-                          foregroundColor: const Color(0xFF17121A),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          textStyle: GoogleFonts.manrope(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        child: purchasing
-                            ? const SizedBox.square(
-                                dimension: 22,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2.2,
-                                  color: Color(0xFF17121A),
-                                ),
-                              )
-                            : const FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text('Continuar con Ritual+'),
-                                    SizedBox(width: 10),
-                                    Icon(Icons.arrow_forward_rounded, size: 20),
-                                  ],
+                          const SizedBox(height: 7),
+                          Row(
+                            children: [
+                              const Text(
+                                '★★★★★',
+                                style: TextStyle(color: _text, fontSize: 12),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  'Precio claro · renovación visible · cancela cuando quieras',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.manrope(
+                                    color: _muted,
+                                    fontSize: 10.5,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 34,
-                      child: TextButton(
-                        key: const Key('paywall_continue_free'),
-                        onPressed: purchasing || restoring
-                            ? null
-                            : onContinueFree,
-                        style: TextButton.styleFrom(
-                          foregroundColor: _muted,
-                          textStyle: GoogleFonts.manrope(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
+                            ],
                           ),
-                        ),
-                        child: const Text('Seguir con la versión gratuita'),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 34,
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: _PaywallLegalButton(
-                              key: const Key('paywall_terms'),
-                              label: 'Términos',
-                              onPressed: onTerms,
-                            ),
+                          const SizedBox(height: 10),
+                          _PaywallPlanCard(
+                            key: const Key('paywall_plan_monthly'),
+                            title: 'Mensual',
+                            subtitle:
+                                '$monthlyPrice al mes · cancela cuando quieras',
+                            price: monthlyPrice,
+                            period: '/mes',
+                            selected: selectedPlan == _PaywallPlan.monthly,
+                            onTap: () => onSelectPlan(_PaywallPlan.monthly),
                           ),
-                          Expanded(
-                            child: _PaywallLegalButton(
-                              key: const Key('paywall_privacy'),
-                              label: 'Privacidad',
-                              onPressed: onPrivacy,
-                            ),
+                          const SizedBox(height: 8),
+                          _PaywallPlanCard(
+                            key: const Key('paywall_plan_annual'),
+                            title: 'Anual',
+                            subtitle: 'Facturación anual · mayor ahorro',
+                            price: annualPrice,
+                            period: '/año',
+                            recommended: true,
+                            selected: selectedPlan == _PaywallPlan.annual,
+                            onTap: () => onSelectPlan(_PaywallPlan.annual),
                           ),
-                          Expanded(
-                            child: _PaywallLegalButton(
-                              key: const Key('paywall_restore'),
-                              label: restoring
-                                  ? 'Restaurando…'
-                                  : 'Restaurar compra',
+                          const SizedBox(height: 10),
+                          const _PaywallBenefits(),
+                          const SizedBox(height: 9),
+                          _PaywallInfoRow(
+                            icon: Icons.notifications_none_rounded,
+                            text:
+                                'Después, $annualPrice/año. Te avisaremos antes de renovar.',
+                          ),
+                          const SizedBox(height: 5),
+                          const _PaywallInfoRow(
+                            icon: Icons.shield_outlined,
+                            text: 'Sin permanencia · cancela cuando quieras',
+                          ),
+                          const Spacer(),
+                          const SizedBox(height: 8),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 58,
+                            child: FilledButton(
+                              key: const Key('paywall_continue'),
                               onPressed: purchasing || restoring
                                   ? null
-                                  : onRestore,
+                                  : onContinue,
+                              style: FilledButton.styleFrom(
+                                backgroundColor: _text,
+                                disabledBackgroundColor: const Color(
+                                  0xFFB8B0BA,
+                                ),
+                                foregroundColor: const Color(0xFF17121A),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18),
+                                ),
+                                textStyle: GoogleFonts.manrope(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              child: purchasing
+                                  ? const SizedBox.square(
+                                      dimension: 22,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2.2,
+                                        color: Color(0xFF17121A),
+                                      ),
+                                    )
+                                  : const FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text('Continuar con Ritual+'),
+                                          SizedBox(width: 10),
+                                          Icon(
+                                            Icons.arrow_forward_rounded,
+                                            size: 20,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 34,
+                            child: TextButton(
+                              key: const Key('paywall_continue_free'),
+                              onPressed: purchasing || restoring
+                                  ? null
+                                  : onContinueFree,
+                              style: TextButton.styleFrom(
+                                foregroundColor: _muted,
+                                textStyle: GoogleFonts.manrope(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              child: const Text(
+                                'Seguir con la versión gratuita',
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 34,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: _PaywallLegalButton(
+                                    key: const Key('paywall_terms'),
+                                    label: 'Términos',
+                                    onPressed: onTerms,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: _PaywallLegalButton(
+                                    key: const Key('paywall_privacy'),
+                                    label: 'Privacidad',
+                                    onPressed: onPrivacy,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: _PaywallLegalButton(
+                                    key: const Key('paywall_restore'),
+                                    label: restoring
+                                        ? 'Restaurando…'
+                                        : 'Restaurar compra',
+                                    onPressed: purchasing || restoring
+                                        ? null
+                                        : onRestore,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),

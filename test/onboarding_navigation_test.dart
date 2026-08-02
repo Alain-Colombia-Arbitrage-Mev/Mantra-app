@@ -72,4 +72,39 @@ void main() {
     await tester.pump(const Duration(milliseconds: 300));
     expect(controller.page, closeTo(12, .01));
   });
+
+  testWidgets('paywall keeps controls inside iPhone safe areas', (
+    WidgetTester tester,
+  ) async {
+    tester.view.physicalSize = const Size(440, 956);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: MediaQuery(
+          data: MediaQueryData(
+            size: Size(440, 956),
+            padding: EdgeInsets.only(top: 62, bottom: 34),
+          ),
+          child: OnboardingFlow(),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    final controller = tester
+        .widget<PageView>(find.byType(PageView))
+        .controller!;
+    controller.jumpToPage(11);
+    await tester.pump(const Duration(milliseconds: 300));
+
+    final close = find.byKey(const Key('paywall_close'));
+    final cta = find.byKey(const Key('paywall_continue'));
+    final restore = find.byKey(const Key('paywall_restore'));
+    expect(tester.getTopLeft(close).dy, greaterThanOrEqualTo(62));
+    expect(tester.getTopLeft(cta).dy, greaterThan(650));
+    expect(tester.getBottomRight(restore).dy, lessThanOrEqualTo(922));
+  });
 }
