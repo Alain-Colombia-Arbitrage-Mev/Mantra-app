@@ -45,6 +45,8 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   _PaywallPlan _selectedPaywallPlan = _PaywallPlan.annual;
   bool _paywallActionInProgress = false;
   bool _restoreInProgress = false;
+  bool _paywallOfferingsRequested = false;
+  Offerings? _paywallOfferings;
 
   @override
   void didChangeDependencies() {
@@ -132,6 +134,33 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     return packages.isEmpty ? null : packages.first;
   }
 
+  Package? _packageOfType(_PaywallPlan plan) {
+    final wantedType = plan == _PaywallPlan.annual
+        ? PackageType.annual
+        : PackageType.monthly;
+    for (final package
+        in _paywallOfferings?.current?.availablePackages ?? const <Package>[]) {
+      if (package.packageType == wantedType) return package;
+    }
+    return null;
+  }
+
+  String _paywallPrice(_PaywallPlan plan, String fallback) =>
+      _packageOfType(plan)?.storeProduct.priceString ?? fallback;
+
+  String get _paywallCurrency =>
+      _packageOfType(_PaywallPlan.annual)?.storeProduct.currencyCode ??
+      _packageOfType(_PaywallPlan.monthly)?.storeProduct.currencyCode ??
+      'USD';
+
+  Future<void> _loadPaywallOfferings() async {
+    if (_paywallOfferingsRequested) return;
+    _paywallOfferingsRequested = true;
+    final offerings = await RevenueCatService.instance.getOfferings();
+    if (!mounted || offerings == null) return;
+    setState(() => _paywallOfferings = offerings);
+  }
+
   Future<void> _continueWithRitualPlus() async {
     if (_paywallActionInProgress || _restoreInProgress) return;
     HapticFeedback.mediumImpact();
@@ -139,7 +168,11 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
 
     var success = false;
     try {
-      final offerings = await RevenueCatService.instance.getOfferings();
+      final offerings =
+          _paywallOfferings ?? await RevenueCatService.instance.getOfferings();
+      if (offerings != null && mounted) {
+        setState(() => _paywallOfferings = offerings);
+      }
       final package = offerings == null ? null : _packageForPlan(offerings);
       if (package != null) {
         success = await RevenueCatService.instance.purchasePackage(package);
@@ -191,113 +224,6 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   void _selectPaywallPlan(_PaywallPlan plan) {
     HapticFeedback.selectionClick();
     setState(() => _selectedPaywallPlan = plan);
-  }
-
-  List<Widget> _paywallOverlays(String nodeId, Size size) {
-    if (nodeId != 'IEgGc') return const [];
-
-    double x(double value) => size.width * (value / 440);
-    double y(double value) => size.height * (value / 956);
-
-    return [
-      Positioned(
-        left: x(384),
-        top: y(6),
-        width: x(48),
-        height: y(48),
-        child: _PaywallTapTarget(
-          key: const Key('paywall_close'),
-          label: 'Cerrar y seguir con la versión gratuita',
-          onTap: _next,
-        ),
-      ),
-      Positioned(
-        left: x(24),
-        top: y(341),
-        width: x(392),
-        height: y(76),
-        child: _PaywallPlanTarget(
-          key: const Key('paywall_plan_monthly'),
-          label: 'Plan mensual, 9 dólares con 99 al mes',
-          selected: _selectedPaywallPlan == _PaywallPlan.monthly,
-          radioTop: y(27),
-          onTap: () => _selectPaywallPlan(_PaywallPlan.monthly),
-        ),
-      ),
-      Positioned(
-        left: x(24),
-        top: y(427),
-        width: x(392),
-        height: y(92),
-        child: _PaywallPlanTarget(
-          key: const Key('paywall_plan_annual'),
-          label: 'Plan anual recomendado, 79 dólares al año',
-          selected: _selectedPaywallPlan == _PaywallPlan.annual,
-          radioTop: y(35),
-          onTap: () => _selectPaywallPlan(_PaywallPlan.annual),
-        ),
-      ),
-      Positioned(
-        left: x(24),
-        top: y(820),
-        width: x(392),
-        height: y(58),
-        child: _PaywallTapTarget(
-          key: const Key('paywall_continue'),
-          label: _selectedPaywallPlan == _PaywallPlan.annual
-              ? 'Continuar con Ritual Plus, plan anual'
-              : 'Continuar con Ritual Plus, plan mensual',
-          enabled: !_restoreInProgress,
-          loading: _paywallActionInProgress,
-          onTap: _continueWithRitualPlus,
-        ),
-      ),
-      Positioned(
-        left: x(24),
-        top: y(882),
-        width: x(392),
-        height: y(32),
-        child: _PaywallTapTarget(
-          key: const Key('paywall_continue_free'),
-          label: 'Seguir con la versión gratuita',
-          enabled: !_paywallActionInProgress && !_restoreInProgress,
-          onTap: _next,
-        ),
-      ),
-      Positioned(
-        left: x(24),
-        top: y(910),
-        width: x(392),
-        height: y(38),
-        child: Row(
-          children: [
-            Expanded(
-              child: _PaywallTapTarget(
-                key: const Key('paywall_terms'),
-                label: 'Términos de uso',
-                onTap: () => context.push('/terms'),
-              ),
-            ),
-            Expanded(
-              child: _PaywallTapTarget(
-                key: const Key('paywall_privacy'),
-                label: 'Política de privacidad',
-                onTap: () => context.push('/terms'),
-              ),
-            ),
-            Expanded(
-              child: _PaywallTapTarget(
-                key: const Key('paywall_restore'),
-                label: 'Restaurar compra',
-                enabled: !_paywallActionInProgress,
-                loading: _restoreInProgress,
-                onTap: _restorePurchase,
-              ),
-            ),
-          ],
-        ),
-      ),
-    ];
   }
 
   List<Widget> _choiceOverlays(String nodeId, Size size) {
@@ -372,7 +298,10 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
       controller: _controller,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: _nodes.length,
-      onPageChanged: (value) => setState(() => _page = value),
+      onPageChanged: (value) {
+        setState(() => _page = value);
+        if (_nodes[value] == 'IEgGc') unawaited(_loadPaywallOfferings());
+      },
       itemBuilder: (context, index) {
         final nodeId = _nodes[index];
 
@@ -405,22 +334,34 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
           );
         }
 
+        if (nodeId == 'IEgGc') {
+          return _OnboardingPaywallPage(
+            currencyCode: _paywallCurrency,
+            monthlyPrice: _paywallPrice(_PaywallPlan.monthly, r'$9.99'),
+            annualPrice: _paywallPrice(_PaywallPlan.annual, r'$79.00'),
+            selectedPlan: _selectedPaywallPlan,
+            purchasing: _paywallActionInProgress,
+            restoring: _restoreInProgress,
+            onSelectPlan: _selectPaywallPlan,
+            onContinue: _continueWithRitualPlus,
+            onContinueFree: _next,
+            onClose: _next,
+            onRestore: _restorePurchase,
+            onTerms: () => context.push('/terms'),
+            onPrivacy: () => context.push('/terms'),
+          );
+        }
+
         return PencilSurface(
           nodeId: nodeId,
           showNavigation: false,
           respectSafeArea: false,
-          overlays: [
-            ..._choiceOverlays(nodeId, size),
-            ..._paywallOverlays(nodeId, size),
-          ],
+          overlays: _choiceOverlays(nodeId, size),
           onTap: (point) {
             if (nodeId == 'wecjl' && point.dy > .32 && point.dy < .69) {
               context.push('/register');
               return;
             }
-            // IEgGc is fully controlled by precise native overlays. Do not let
-            // the generic bottom-of-screen fallback advance the paywall.
-            if (nodeId == 'IEgGc') return;
             // POST · Prueba activada → práctica lista → Home.
             if (nodeId == 'w4GjPh' && point.dy > .80 && point.dy < .90) {
               _next();
@@ -444,133 +385,621 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
 
 enum _PaywallPlan { monthly, annual }
 
-class _PaywallTapTarget extends StatelessWidget {
-  final String label;
-  final VoidCallback onTap;
-  final bool enabled;
-  final bool loading;
+class _OnboardingPaywallPage extends StatelessWidget {
+  static const _background = Color(0xFF09080E);
+  static const _surface = Color(0xFF151219);
+  static const _surfaceSelected = Color(0xFF211627);
+  static const _accent = Color(0xFFD58ACF);
+  static const _text = Color(0xFFF7F2F7);
+  static const _muted = Color(0xFFAAA3B0);
 
-  const _PaywallTapTarget({
-    super.key,
-    required this.label,
-    required this.onTap,
-    this.enabled = true,
-    this.loading = false,
+  final String currencyCode;
+  final String monthlyPrice;
+  final String annualPrice;
+  final _PaywallPlan selectedPlan;
+  final bool purchasing;
+  final bool restoring;
+  final ValueChanged<_PaywallPlan> onSelectPlan;
+  final VoidCallback onContinue;
+  final VoidCallback onContinueFree;
+  final VoidCallback onClose;
+  final VoidCallback onRestore;
+  final VoidCallback onTerms;
+  final VoidCallback onPrivacy;
+
+  const _OnboardingPaywallPage({
+    required this.currencyCode,
+    required this.monthlyPrice,
+    required this.annualPrice,
+    required this.selectedPlan,
+    required this.purchasing,
+    required this.restoring,
+    required this.onSelectPlan,
+    required this.onContinue,
+    required this.onContinueFree,
+    required this.onClose,
+    required this.onRestore,
+    required this.onTerms,
+    required this.onPrivacy,
   });
 
   @override
-  Widget build(BuildContext context) => Semantics(
-    button: true,
-    label: label,
-    enabled: enabled && !loading,
-    child: Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: enabled && !loading ? onTap : null,
-        borderRadius: BorderRadius.circular(18),
-        splashColor: const Color(0x33D7B56D),
-        highlightColor: const Color(0x1FD7B56D),
-        child: loading
-            ? const Center(
-                child: SizedBox.square(
-                  dimension: 22,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2.2,
-                    color: Color(0xFFD7B56D),
+  Widget build(BuildContext context) => AnnotatedRegion<SystemUiOverlayStyle>(
+    value: SystemUiOverlayStyle.light.copyWith(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: _background,
+    ),
+    child: Scaffold(
+      backgroundColor: _background,
+      body: Column(
+        children: [
+          SizedBox(
+            height: 210,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Image.asset(
+                  'assets/images/bT1cU.png',
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                  filterQuality: FilterQuality.high,
+                ),
+                const DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color(0x26000000),
+                        Colors.transparent,
+                        _background,
+                      ],
+                      stops: [0, .56, 1],
+                    ),
                   ),
                 ),
-              )
-            : const SizedBox.expand(),
+                SafeArea(
+                  bottom: false,
+                  minimum: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          height: 38,
+                          padding: const EdgeInsets.symmetric(horizontal: 13),
+                          decoration: BoxDecoration(
+                            color: const Color(0xCC6D477F),
+                            borderRadius: BorderRadius.circular(22),
+                            border: Border.all(color: const Color(0x3DFFFFFF)),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                Icons.public_rounded,
+                                size: 16,
+                                color: _text,
+                              ),
+                              const SizedBox(width: 7),
+                              Text(
+                                'Internacional · $currencyCode',
+                                style: GoogleFonts.manrope(
+                                  color: _text,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Semantics(
+                          button: true,
+                          label: 'Cerrar y seguir gratis',
+                          child: IconButton.filled(
+                            key: const Key('paywall_close'),
+                            onPressed: onClose,
+                            style: IconButton.styleFrom(
+                              backgroundColor: const Color(0xB3745483),
+                              foregroundColor: _text,
+                              minimumSize: const Size.square(44),
+                            ),
+                            icon: const Icon(Icons.close_rounded, size: 22),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: SafeArea(
+              top: false,
+              child: SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
+                padding: const EdgeInsets.fromLTRB(24, 6, 24, 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const _PaywallBadge(),
+                    const SizedBox(height: 7),
+                    Text(
+                      'Una práctica que sí cabe en tu vida',
+                      style: GoogleFonts.manrope(
+                        color: _text,
+                        fontSize: 27,
+                        height: 1.08,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: -.7,
+                      ),
+                    ),
+                    const SizedBox(height: 7),
+                    Row(
+                      children: [
+                        const Text(
+                          '★★★★★',
+                          style: TextStyle(color: _text, fontSize: 12),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'Precio claro · renovación visible · cancela cuando quieras',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.manrope(
+                              color: _muted,
+                              fontSize: 10.5,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    _PaywallPlanCard(
+                      key: const Key('paywall_plan_monthly'),
+                      title: 'Mensual',
+                      subtitle: '$monthlyPrice al mes · cancela cuando quieras',
+                      price: monthlyPrice,
+                      period: '/mes',
+                      selected: selectedPlan == _PaywallPlan.monthly,
+                      onTap: () => onSelectPlan(_PaywallPlan.monthly),
+                    ),
+                    const SizedBox(height: 8),
+                    _PaywallPlanCard(
+                      key: const Key('paywall_plan_annual'),
+                      title: 'Anual',
+                      subtitle: 'Facturación anual · mayor ahorro',
+                      price: annualPrice,
+                      period: '/año',
+                      recommended: true,
+                      selected: selectedPlan == _PaywallPlan.annual,
+                      onTap: () => onSelectPlan(_PaywallPlan.annual),
+                    ),
+                    const SizedBox(height: 10),
+                    const _PaywallBenefits(),
+                    const SizedBox(height: 9),
+                    _PaywallInfoRow(
+                      icon: Icons.notifications_none_rounded,
+                      text:
+                          'Después, $annualPrice/año. Te avisaremos antes de renovar.',
+                    ),
+                    const SizedBox(height: 5),
+                    const _PaywallInfoRow(
+                      icon: Icons.shield_outlined,
+                      text: 'Sin permanencia · cancela cuando quieras',
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 58,
+                      child: FilledButton(
+                        key: const Key('paywall_continue'),
+                        onPressed: purchasing || restoring ? null : onContinue,
+                        style: FilledButton.styleFrom(
+                          backgroundColor: _text,
+                          disabledBackgroundColor: const Color(0xFFB8B0BA),
+                          foregroundColor: const Color(0xFF17121A),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          textStyle: GoogleFonts.manrope(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        child: purchasing
+                            ? const SizedBox.square(
+                                dimension: 22,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2.2,
+                                  color: Color(0xFF17121A),
+                                ),
+                              )
+                            : const FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text('Continuar con Ritual+'),
+                                    SizedBox(width: 10),
+                                    Icon(Icons.arrow_forward_rounded, size: 20),
+                                  ],
+                                ),
+                              ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 34,
+                      child: TextButton(
+                        key: const Key('paywall_continue_free'),
+                        onPressed: purchasing || restoring
+                            ? null
+                            : onContinueFree,
+                        style: TextButton.styleFrom(
+                          foregroundColor: _muted,
+                          textStyle: GoogleFonts.manrope(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        child: const Text('Seguir con la versión gratuita'),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 34,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: _PaywallLegalButton(
+                              key: const Key('paywall_terms'),
+                              label: 'Términos',
+                              onPressed: onTerms,
+                            ),
+                          ),
+                          Expanded(
+                            child: _PaywallLegalButton(
+                              key: const Key('paywall_privacy'),
+                              label: 'Privacidad',
+                              onPressed: onPrivacy,
+                            ),
+                          ),
+                          Expanded(
+                            child: _PaywallLegalButton(
+                              key: const Key('paywall_restore'),
+                              label: restoring
+                                  ? 'Restaurando…'
+                                  : 'Restaurar compra',
+                              onPressed: purchasing || restoring
+                                  ? null
+                                  : onRestore,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     ),
   );
 }
 
-class _PaywallPlanTarget extends StatelessWidget {
-  final String label;
+class _PaywallBadge extends StatelessWidget {
+  const _PaywallBadge();
+
+  @override
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+    decoration: BoxDecoration(
+      color: const Color(0xFF1B1820),
+      borderRadius: BorderRadius.circular(14),
+      border: Border.all(color: const Color(0xFF39343F)),
+    ),
+    child: Text(
+      '✣  7 DÍAS CON RITUAL+',
+      style: GoogleFonts.manrope(
+        color: const Color(0xFFC6BDC9),
+        fontSize: 10,
+        fontWeight: FontWeight.w800,
+        letterSpacing: 1.3,
+      ),
+    ),
+  );
+}
+
+class _PaywallPlanCard extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final String price;
+  final String period;
   final bool selected;
-  final double radioTop;
+  final bool recommended;
   final VoidCallback onTap;
 
-  const _PaywallPlanTarget({
+  const _PaywallPlanCard({
     super.key,
-    required this.label,
+    required this.title,
+    required this.subtitle,
+    required this.price,
+    required this.period,
     required this.selected,
-    required this.radioTop,
     required this.onTap,
+    this.recommended = false,
   });
 
   @override
   Widget build(BuildContext context) => Semantics(
     button: true,
     selected: selected,
-    label: label,
+    label: 'Plan $title, $price $period',
     child: Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
-        splashColor: const Color(0x26D7B56D),
-        highlightColor: const Color(0x14D7B56D),
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: IgnorePointer(
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 180),
-                  decoration: BoxDecoration(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          height: recommended ? 82 : 70,
+          padding: const EdgeInsets.symmetric(horizontal: 14),
+          decoration: BoxDecoration(
+            color: selected
+                ? _OnboardingPaywallPage._surfaceSelected
+                : _OnboardingPaywallPage._surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: selected
+                  ? _OnboardingPaywallPage._accent
+                  : const Color(0xFF37323D),
+              width: selected ? 1.5 : 1,
+            ),
+          ),
+          child: Row(
+            children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 180),
+                width: 22,
+                height: 22,
+                decoration: BoxDecoration(
+                  color: selected
+                      ? _OnboardingPaywallPage._accent
+                      : Colors.transparent,
+                  shape: BoxShape.circle,
+                  border: Border.all(
                     color: selected
-                        ? const Color(0x0FD7B56D)
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      width: selected ? 2 : 1,
-                      color: selected
-                          ? const Color(0xFFD7B56D)
-                          : Colors.transparent,
-                    ),
+                        ? _OnboardingPaywallPage._accent
+                        : const Color(0xFF625B6A),
+                    width: 1.5,
                   ),
                 ),
+                child: selected
+                    ? const Icon(
+                        Icons.check_rounded,
+                        size: 15,
+                        color: Colors.white,
+                      )
+                    : null,
               ),
-            ),
-            Positioned(
-              left: 16,
-              top: radioTop,
-              child: IgnorePointer(
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 180),
-                  width: 22,
-                  height: 22,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF171329),
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: selected
-                          ? const Color(0xFFD7B56D)
-                          : const Color(0xFF8D879F),
-                      width: selected ? 2 : 1.4,
-                    ),
-                  ),
-                  child: selected
-                      ? const Center(
-                          child: SizedBox.square(
-                            dimension: 10,
-                            child: DecoratedBox(
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          title,
+                          style: GoogleFonts.manrope(
+                            color: _OnboardingPaywallPage._text,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        if (recommended) ...[
+                          const SizedBox(width: 7),
+                          Flexible(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 7,
+                                vertical: 3,
+                              ),
                               decoration: BoxDecoration(
-                                color: Color(0xFFD7B56D),
-                                shape: BoxShape.circle,
+                                color: const Color(0xFF8F4E91),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                'RECOMENDADO',
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.manrope(
+                                  color: Colors.white,
+                                  fontSize: 8,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: .6,
+                                ),
                               ),
                             ),
                           ),
-                        )
-                      : null,
+                        ],
+                      ],
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      subtitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.manrope(
+                        color: _OnboardingPaywallPage._muted,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
+              const SizedBox(width: 10),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    price,
+                    style: GoogleFonts.manrope(
+                      color: _OnboardingPaywallPage._text,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  Text(
+                    period,
+                    style: GoogleFonts.manrope(
+                      color: _OnboardingPaywallPage._muted,
+                      fontSize: 9,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     ),
+  );
+}
+
+class _PaywallBenefits extends StatelessWidget {
+  const _PaywallBenefits();
+
+  @override
+  Widget build(BuildContext context) => Container(
+    width: double.infinity,
+    padding: const EdgeInsets.fromLTRB(14, 12, 14, 10),
+    decoration: BoxDecoration(
+      color: _OnboardingPaywallPage._surface,
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(color: const Color(0xFF37323D)),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'TODO LO QUE INCLUYE RITUAL+',
+          style: GoogleFonts.manrope(
+            color: const Color(0xFFE8B8E2),
+            fontSize: 9.5,
+            fontWeight: FontWeight.w800,
+            letterSpacing: 1.1,
+          ),
+        ),
+        const SizedBox(height: 7),
+        const _PaywallBenefit(
+          icon: Icons.headphones_rounded,
+          label: 'Meditaciones guiadas para tu intención',
+        ),
+        const _PaywallBenefit(
+          icon: Icons.auto_awesome_rounded,
+          label: 'Rituales de manifestación personalizados',
+        ),
+        const _PaywallBenefit(
+          icon: Icons.send_outlined,
+          label: 'Peticiones al universo y seguimiento',
+        ),
+      ],
+    ),
+  );
+}
+
+class _PaywallBenefit extends StatelessWidget {
+  final IconData icon;
+  final String label;
+
+  const _PaywallBenefit({required this.icon, required this.label});
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+    height: 23,
+    child: Row(
+      children: [
+        Icon(icon, size: 16, color: _OnboardingPaywallPage._text),
+        const SizedBox(width: 9),
+        Expanded(
+          child: Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.manrope(
+              color: _OnboardingPaywallPage._text,
+              fontSize: 11.5,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+class _PaywallInfoRow extends StatelessWidget {
+  final IconData icon;
+  final String text;
+
+  const _PaywallInfoRow({required this.icon, required this.text});
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+    height: 20,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, size: 14, color: _OnboardingPaywallPage._muted),
+        const SizedBox(width: 7),
+        Flexible(
+          child: Text(
+            text,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.manrope(
+              color: _OnboardingPaywallPage._muted,
+              fontSize: 9.5,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+class _PaywallLegalButton extends StatelessWidget {
+  final String label;
+  final VoidCallback? onPressed;
+
+  const _PaywallLegalButton({
+    super.key,
+    required this.label,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) => TextButton(
+    onPressed: onPressed,
+    style: TextButton.styleFrom(
+      padding: EdgeInsets.zero,
+      foregroundColor: _OnboardingPaywallPage._muted,
+      textStyle: GoogleFonts.manrope(
+        fontSize: 9.5,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+    child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
   );
 }
 
