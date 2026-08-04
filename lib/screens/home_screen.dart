@@ -23,6 +23,10 @@ class _HomeScreenState extends State<HomeScreen> {
     if (_current == 0 && point.dy > .38 && point.dy < .70) {
       context.push('/player');
     }
+    if (_current == 2 && point.dx > .82 && point.dy > .055 && point.dy < .135) {
+      context.push('/new-alarm');
+      return;
+    }
     if (_current == 3 && point.dy > .42 && point.dy < .84) {
       context.push('/marketplace');
     }
