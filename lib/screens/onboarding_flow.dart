@@ -236,12 +236,12 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
           Positioned(
             left: horizontalInset,
             right: horizontalInset,
-            top: size.height * (373 / 956),
-            height: size.height * (222 / 956),
+            top: size.height * (379 / 956),
+            height: size.height * (206 / 956),
             child: _MultiChoiceList(
               values: const [
                 ('Calma y protección', Icons.shield_outlined),
-                ('Bienestar', Icons.spa_outlined),
+                ('Bienestar y energía', Icons.spa_outlined),
                 ('Prosperidad y trabajo', Icons.trending_up_rounded),
                 ('Amor y propósito', Icons.favorite_border_rounded),
               ],
@@ -256,12 +256,12 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
           Positioned(
             left: horizontalInset,
             right: horizontalInset,
-            top: size.height * (411 / 956),
+            top: size.height * (398 / 956),
             height: size.height * (210 / 956),
             child: _MultiChoiceGrid(
               values: const [
-                ('5 minutos', Icons.bubble_chart_outlined),
-                ('5 minutos+', Icons.favorite_border),
+                ('3 minutos', Icons.diamond_outlined),
+                ('5 minutos', Icons.favorite_border),
                 ('10 minutos', Icons.eco_outlined),
                 ('15 minutos', Icons.card_giftcard_outlined),
               ],
@@ -320,7 +320,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
             onContinue: _next,
             videoAsset: 'assets/videos/onboarding_story_01.mp4',
             posterAsset: 'assets/images/onboarding_story_01_poster.png',
-            copyTop: 408,
+            copyTop: 369,
             copy: const _StoryOneCopy(),
             progress: const _StoryProgress(activeStep: 0, stepCount: 3),
             intentionOverlay: false,
@@ -452,7 +452,7 @@ class _OnboardingPaywallPage extends StatelessWidget {
       body: Column(
         children: [
           SizedBox(
-            height: 210,
+            height: 190,
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -543,7 +543,7 @@ class _OnboardingPaywallPage extends StatelessWidget {
                   controller: scrollController,
                   primary: false,
                   physics: const ClampingScrollPhysics(),
-                  padding: const EdgeInsets.fromLTRB(24, 6, 24, 6),
+                  padding: const EdgeInsets.fromLTRB(24, 12, 24, 6),
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
                       minHeight: constraints.maxHeight - 12,
@@ -555,7 +555,7 @@ class _OnboardingPaywallPage extends StatelessWidget {
                           const _PaywallBadge(),
                           const SizedBox(height: 7),
                           Text(
-                            'Una práctica que sí cabe en tu vida',
+                            'Más calma y claridad,\ntodos los días.',
                             style: GoogleFonts.manrope(
                               color: _text,
                               fontSize: 27,
@@ -564,7 +564,7 @@ class _OnboardingPaywallPage extends StatelessWidget {
                               letterSpacing: -.7,
                             ),
                           ),
-                          const SizedBox(height: 7),
+                          const SizedBox(height: 6),
                           Row(
                             children: [
                               const Text(
@@ -601,7 +601,9 @@ class _OnboardingPaywallPage extends StatelessWidget {
                           _PaywallPlanCard(
                             key: const Key('paywall_plan_annual'),
                             title: 'Anual',
-                            subtitle: 'Facturación anual · mayor ahorro',
+                            subtitle:
+                                '$annualPrice al año · equivale a '
+                                r'$6.58/mes',
                             price: annualPrice,
                             period: '/año',
                             recommended: true,
@@ -790,7 +792,7 @@ class _PaywallPlanCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 180),
-          height: recommended ? 82 : 70,
+          height: recommended ? 92 : 76,
           padding: const EdgeInsets.symmetric(horizontal: 14),
           decoration: BoxDecoration(
             color: selected
@@ -859,7 +861,7 @@ class _PaywallPlanCard extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
-                                'RECOMENDADO',
+                                'RECOMENDADO · AHORRA 34%',
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.manrope(
                                   color: Colors.white,
@@ -892,6 +894,16 @@ class _PaywallPlanCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
+                  if (recommended)
+                    Text(
+                      r'$119.88',
+                      style: GoogleFonts.manrope(
+                        color: _OnboardingPaywallPage._muted,
+                        fontSize: 10,
+                        decoration: TextDecoration.lineThrough,
+                        decorationColor: _OnboardingPaywallPage._muted,
+                      ),
+                    ),
                   Text(
                     price,
                     style: GoogleFonts.manrope(
@@ -1332,7 +1344,7 @@ class _StoryOneCopy extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          'MIRAS AL UNIVERSO BUSCANDO UNA SEÑAL',
+          '01 · ESTO ES MANTRALIA',
           style: GoogleFonts.inter(
             color: const Color(0xFFD6B1D8),
             fontSize: 11.5,
@@ -1343,7 +1355,7 @@ class _StoryOneCopy extends StatelessWidget {
         ),
         const SizedBox(height: 15),
         Text(
-          '¿Y si hoy la señal\nte encuentra a ti?',
+          'Medita, manifiesta y\nconecta con el universo.',
           style: GoogleFonts.notoSans(
             color: Colors.white,
             fontSize: 34,
@@ -1354,8 +1366,9 @@ class _StoryOneCopy extends StatelessWidget {
         ),
         const SizedBox(height: 15),
         Text(
-          'Tu cerebro prioriza aquello a lo que prestas atención. Una pausa '
-          'puede ayudarte a reconocer lo que ya estaba frente a ti.',
+          'Un espacio para explorar lo que sientes, convertir deseos en '
+          'intenciones y crear peticiones al universo acompañadas de acciones '
+          'concretas.',
           style: GoogleFonts.inter(
             color: const Color(0xFFDED8E2),
             fontSize: 14,
@@ -1377,7 +1390,7 @@ class _IntentionStoryCopy extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          '05 · PEDIR TAMBIÉN ES ELEGIR',
+          '05 · DE LA INTENCIÓN A LA ACCIÓN',
           style: GoogleFonts.notoSans(
             color: const Color(0xFFDCD6E0),
             fontSize: 12,
@@ -1387,8 +1400,7 @@ class _IntentionStoryCopy extends StatelessWidget {
         ),
         const SizedBox(height: 14),
         Text(
-          'Manifestar no es esperar.\n'
-          'Es darle dirección a tu atención.',
+          'Dale dirección a lo que deseas',
           style: GoogleFonts.notoSans(
             color: Colors.white,
             fontSize: 36,
@@ -1399,8 +1411,8 @@ class _IntentionStoryCopy extends StatelessWidget {
         ),
         const SizedBox(height: 14),
         Text(
-          'Escribe tu petición al universo, visualiza cómo quieres sentirte '
-          'y elige una acción que dependa de ti.',
+          'Nombra cómo quieres sentirte y recibe una práctica para convertir '
+          'esa intención en un paso posible hoy.',
           style: GoogleFonts.notoSans(
             color: const Color(0xFFDCD6E0),
             fontSize: 15,
