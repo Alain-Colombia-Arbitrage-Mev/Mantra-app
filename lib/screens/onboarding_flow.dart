@@ -368,7 +368,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
           respectSafeArea: false,
           overlays: _choiceOverlays(nodeId, size),
           onTap: (point) {
-            if (nodeId == 'wecjl' && point.dy > .32 && point.dy < .69) {
+            if (nodeId == 'wecjl' && point.dy > .84 && point.dy < .93) {
               context.push('/register');
               return;
             }
@@ -1355,10 +1355,10 @@ class _StoryOneCopy extends StatelessWidget {
         ),
         const SizedBox(height: 15),
         Text(
-          'Medita, manifiesta y\nconecta con el universo.',
+          'Cinco minutos pueden cambiar el tono de tu día',
           style: GoogleFonts.notoSans(
             color: Colors.white,
-            fontSize: 34,
+            fontSize: 39,
             fontWeight: FontWeight.w600,
             height: 1.08,
             letterSpacing: -.5,
@@ -1366,12 +1366,11 @@ class _StoryOneCopy extends StatelessWidget {
         ),
         const SizedBox(height: 15),
         Text(
-          'Un espacio para explorar lo que sientes, convertir deseos en '
-          'intenciones y crear peticiones al universo acompañadas de acciones '
-          'concretas.',
+          'Un espacio para reconocer lo que sientes, convertir deseos en '
+          'intenciones y acompañarlas con acciones concretas.',
           style: GoogleFonts.inter(
             color: const Color(0xFFDED8E2),
-            fontSize: 14,
+            fontSize: 16.5,
             height: 1.5,
           ),
         ),
